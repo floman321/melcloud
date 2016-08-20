@@ -1,0 +1,94 @@
+1- Aller dans la configuration du plugin :
+Remplir votre login et mot de passe melcloud et cliquer sur le bouton obtenir token
+
+2. Créer un nouveau périphérique :
+Remplir le champ nom de la machine avec le nom sur l'interface web.
+Attendre 5 minutes, si tout est ok, les 2 autres champs sont remplis (au dessous).
+
+3. Profiter du widget
+
+Liste des rubriques utilsables dans le nom des champs
+
+"LastTimeStamp": "2016-03-18T15:57:00"
+"DeviceType": 0
+"CanCool": true
+"CanHeat": true
+"CanDry": false
+"HasAutomaticFanSpeed": false
+"AirDirectionFunction": true
+"SwingFunction": true
+"NumberOfFanSpeeds": 5
+"UseTemperatureA": true
+"TemperatureIncrementOverride": 0
+"TemperatureIncrement": 0.5
+"MinTempCoolDry": 16
+"MaxTempCoolDry": 31
+"MinTempHeat": 10
+"MaxTempHeat": 31
+"MinTempAutomatic": 16
+"MaxTempAutomatic": 31
+"LegacyDevice": false
+"UnitSupportsStandbyMode": true
+"ModelIsAirCurtain": false
+"ModelSupportsFanSpeed": true
+"ModelSupportsAuto": true
+"ModelSupportsHeat": true
+"ModelSupportsDry": true
+"ModelSupportsVaneVertical": true
+"ModelSupportsVaneHorizontal": true
+"ModelSupportsStandbyMode": true
+"Power": true
+"RoomTemperature": 20
+"SetTemperature": 19
+"ActualFanSpeed": 2
+"FanSpeed": 0
+"AutomaticFanSpeed": true
+"VaneVerticalDirection": 1
+"VaneVerticalSwing": false
+"VaneHorizontalDirection": 0
+"VaneHorizontalSwing": false
+"OperationMode": 1
+"EffectiveFlags": 0
+"InStandbyMode": false
+"DefaultCoolingSetTemperature": null
+"DefaultHeatingSetTemperature": null
+"RoomTemperatureLabel": 0
+"DeviceID": ??????
+"MacAddress": "??????????"
+"SerialNumber": "??????????"
+"TimeZoneID": 121
+"DiagnosticMode": 0
+"DiagnosticEndDate": null
+"ExpectedCommand": 1
+"Owner": null
+"DetectedCountry": 78
+"FirmwareDeployment": null
+"FirmwareUpdateAborted": false
+"WifiSignalStrength": -81
+"WifiAdapterStatus": "NORMAL"
+"Position": "unregistered"
+"PCycle": 5
+"RecordNumMax": 5
+"ErrorCode": 8000
+"HasError": false
+"LastReset": "2015-12-08T09:44:27.907"
+"FlashWrites": 0
+"ProtocolVersion": 768
+"UnitVersion": 8192
+"FirmwareAppVersion": 4000
+"FirmwareWebVersion": 2000
+"FirmwareWlanVersion": 3005009
+"EffectivePCycle": 5
+"Units": [0]
+
+
+Commandes info conseillées : 
+On/Off : marche arret du climatiseur
+SetTemperature : Temprérature réglé sur le climatiseur
+RoomTemperature : Température de la pièce
+
+
+Commande actionnables : 
+ -Consigne (en degré ex:19.5)
+ -Ventilation 1 à 5 sachant que 0 = automatique
+ -Mode : Chaud : 1 Seche : 2 Rafraichir : 3 Ventilation : 7 Auto : 8
