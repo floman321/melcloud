@@ -529,7 +529,9 @@ class melcloud extends eqLogic {
         $Consigne->setTemplate('dashboard','thermostat');
         $Consigne->setSubType('slider');
         $Consigne->setIsHistorized(0);
-		$Consigne->setUnite('°C');
+	$Consigne->setUnite('°C');
+	$Consigne->setConfiguration('maxValue', 30);
+	$Consigne->setConfiguration('minValue', 10);
         $Consigne->setIsVisible(1);
         $Consigne->save();
 		
