@@ -65,7 +65,7 @@ class melcloud extends eqLogic {
                 $v = $cmd->getName();
                 if ($v == 'NextCommunication'){
                     $cmd->setCollectDate('');
-                    $time = strtotime($json['NextCommunication']." + 2 hours"); // Add 1 hour
+                    $time = strtotime($json['NextCommunication']." + 1 hours"); // Add 1 hour
                     $time = date('G:i:s', $time); // Back to string
                     $cmd->event($time); 
                 }
@@ -115,7 +115,7 @@ class melcloud extends eqLogic {
                 $v = $cmd->getName();
                 if ($v == 'NextCommunication'){
                     $cmd->setCollectDate('');
-                    $time = strtotime($json['NextCommunication']." + 2 hours"); // Add 1 hour
+                    $time = strtotime($json['NextCommunication']." + 1 hours"); // Add 1 hour
                     $time = date('G:i:s', $time); // Back to string
                     $cmd->event($time); 
                 }
@@ -167,7 +167,7 @@ class melcloud extends eqLogic {
                 if ($v == 'NextCommunication'){
                     $cmd->setCollectDate('');
 									
-                  $time = strtotime($json['NextCommunication']." + 2 hours"); // Add 1 hour
+                  $time = strtotime($json['NextCommunication']." + 1 hours"); // Add 1 hour
                   $time = date('G:i:s', $time); // Back to string
                   
                     $cmd->event($time); 
@@ -305,6 +305,17 @@ class melcloud extends eqLogic {
                                         
                                         $cmd->setCollectDate('');
                                         $cmd->event($device['Device'][$v]);
+                                      
+                                     // log::add('melcloud', 'info', '0 -'.$v);
+                                      
+                                        if ($v == "SetTemperature"){
+                                          
+                                            log::add('melcloud', 'info', '1');
+                                        	cmd::byEqLogicIdCmdName($mylogical->getId(),'Consigne')->execCmd($options=array('auto'=>'vrai', 'slider'=>$device['Device'][$v] ), $cache=0);
+
+                                            log::add('melcloud', 'info', '2 **'.$device['Device'][$v]);
+                                          
+                                        }
                                         
                                     }
                           
@@ -461,7 +472,7 @@ class melcloud extends eqLogic {
       }
      
   
-  
+        
   
 
 
@@ -484,9 +495,10 @@ class melcloud extends eqLogic {
         $RoomTemperature->setLogicalId('temperature');
         $RoomTemperature->setType('info');
         $RoomTemperature->setSubType('numeric');
-        $RoomTemperature->setIsHistorized(1);
+        $RoomTemperature->setIsHistorized(0);
         $RoomTemperature->setIsVisible(1);
 		$RoomTemperature->setUnite('°C');
+        $RoomTemperature->setTemplate('dashboard','tile');
         $RoomTemperature->save();
         $RoomTemperature->setValue(0);
         $RoomTemperature->event(0);
@@ -500,6 +512,7 @@ class melcloud extends eqLogic {
         $SetTemperature->setSubType('numeric');
         $SetTemperature->setIsHistorized(0);
 		$SetTemperature->setUnite('°C');
+        $SetTemperature->setTemplate('dashboard','tile');
         $SetTemperature->setIsVisible(1);
         $SetTemperature->save();
         $SetTemperature->setValue(0);
@@ -513,6 +526,7 @@ class melcloud extends eqLogic {
         $Consigne->setEqLogic_id($this->getId());
         $Consigne->setLogicalId('temperature');
         $Consigne->setType('action');
+        $Consigne->setTemplate('dashboard','thermostat');
         $Consigne->setSubType('slider');
         $Consigne->setIsHistorized(0);
 		$Consigne->setUnite('°C');
@@ -538,6 +552,7 @@ class melcloud extends eqLogic {
         $ventilation->setType('action');
         $ventilation->setSubType('slider');
         $ventilation->setIsHistorized(0);
+        $ventilation->setTemplate('dashboard','thermostat');
         $ventilation->setIsVisible(0);
         $ventilation->save();
         
@@ -550,6 +565,35 @@ class melcloud extends eqLogic {
         $mode->setIsHistorized(0);
         $mode->setIsVisible(0);
         $mode->save();
+      
+      
+        $ActualFanSpeed = null;
+        $ActualFanSpeed = new melcloudCmd();
+        $ActualFanSpeed->setName('ActualFanSpeed');
+        $ActualFanSpeed->setEqLogic_id($this->getId());
+        $ActualFanSpeed->setLogicalId('ActualFanSpeed');
+        $ActualFanSpeed->setType('info');
+        $ActualFanSpeed->setSubType('numeric');
+        $ActualFanSpeed->setIsHistorized(0);
+        $ActualFanSpeed->setTemplate('dashboard','tile');
+        $ActualFanSpeed->setIsVisible(1);
+        $ActualFanSpeed->save();
+        $ActualFanSpeed->setValue(0);
+        $ActualFanSpeed->event(0);
+      
+        $FanSpeed = null;
+        $FanSpeed = new melcloudCmd();
+        $FanSpeed->setName('FanSpeed');
+        $FanSpeed->setEqLogic_id($this->getId());
+        $FanSpeed->setLogicalId('FanSpeed');
+        $FanSpeed->setType('info');
+        $FanSpeed->setSubType('numeric');
+        $FanSpeed->setIsHistorized(0);
+        $FanSpeed->setTemplate('dashboard','tile');
+        $FanSpeed->setIsVisible(1);
+        $FanSpeed->save();
+        $FanSpeed->setValue(0);
+        $FanSpeed->event(0);
       
 		
     }
@@ -614,8 +658,8 @@ class melcloudCmd extends cmd {
       $myeqLogic = $this->getEqLogic();
       
       if ( $myname == 'Consigne' ){
-       
-        if (isset($_options['slider'])){
+        
+        if (isset($_options['slider']) && isset($_options['auto']) == false ) {
             
         	$newTemp = $_options['slider'];
             melcloud::SetTemp($newTemp,$myeqLogic);
