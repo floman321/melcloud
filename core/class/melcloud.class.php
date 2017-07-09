@@ -258,166 +258,102 @@ class melcloud extends eqLogic
 
     public static function pull()
     {
-
         $montoken = config::byKey('MyToken', 'melcloud', '');
-
         if ($montoken != '') {
-
             log::add('melcloud', 'info', 'pull 5 minutes mytoken =' . $montoken);
-
             //$request = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/Get?id='.$devideid.'&buildingID='.$buildid);
-
             $request = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/User/ListDevices');
             $request->setHeader(array('X-MitsContextKey: ' . $montoken));
             $json = $request->exec(30000, 2);
             $values = json_decode($json, true);
-
             foreach ($values as $maison) {
-
                 log::add('melcloud', 'debug', 'Maison ' . $maison['Name']);
-
                 for ($i = 0; $i < count($maison['Structure']['Devices']); $i++) {
-
                     log::add('melcloud', 'debug', 'pull : device 1 ' . $i . ' ' . $device['DeviceName']);
-
                     $device = $maison['Structure']['Devices'][$i];
-
-                    if ($device['DeviceID'] == '') continue;
-
-                    log::add('melcloud', 'debug', $i . ' =>' . $device['DeviceID'] . ' ' . $device['DeviceName']);
-
-                    foreach (eqLogic::byType('melcloud', true) as $mylogical) {
-
-                        if ($mylogical->getConfiguration('namemachine') != $device['DeviceName']) continue;
-
-                        log::add('melcloud', 'debug', 'setdevice ' . $device['Device']['DeviceID']);
-
-                        $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
-                        $mylogical->setConfiguration('buildid', $device['BuildingID']);
-                        $mylogical->save();
-
-                        cmd::byEqLogicIdCmdName($mylogical->getId(), 'Ventilation')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['FanSpeed']), $cache = 0);
-                        cmd::byEqLogicIdCmdName($mylogical->getId(), 'On/Off')->execCmd($options = array('auto' => 'vrai', 'slider' => intval($device['Device']['Power'])), $cache = 0);
-                        cmd::byEqLogicIdCmdName($mylogical->getId(), 'Consigne')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['Consigne']), $cache = 0);
-                        cmd::byEqLogicIdCmdName($mylogical->getId(), 'Mode')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['OperationMode']), $cache = 0);
-
-                        foreach ($mylogical->getCmd() as $cmd) {
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][$cmd->getName()]);
-                            if ('LastTimeStamp' == $cmd->getName()) {
-                                $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getName()]));
-                            } else {
-                                $cmd->setCollectDate('');
-                                $cmd->event($device['Device'][$cmd->getName()]);
-                            }
-                            $cmd->save();
-                        }
-                        $mylogical->Refresh();
-                        $mylogical->toHtml('dashboard');
-                        $mylogical->refreshWidget();
-                    }
+                    self::pullCommande($device);
                 }
-
-
                 // FLOORS
                 for ($a = 0; $a < count($maison['Structure']['Floors']); $a++) {
-
                     log::add('melcloud', 'debug', 'FLOORS ' . $a);
-
                     // AREAS IN FLOORS
                     for ($i = 0; $i < count($maison['Structure']['Floors'][$a]['Areas']); $i++) {
-
                         for ($d = 0; $d < count($maison['Structure']['Floors'][$a]['Areas'][$i]['Devices']); $d++) {
-
                             $device = $maison['Structure']['Floors'][$a]['Areas'][$i]['Devices'][$d];
-
-                            foreach (eqLogic::byType('melcloud', true) as $mylogical) {
-
-                                if ($mylogical->getConfiguration('namemachine') != $device['DeviceName']) continue;
-
-                                log::add('melcloud', 'debug', 'setdevice ' . $device['Device']['DeviceID']);
-
-                                $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
-                                $mylogical->setConfiguration('buildid', $device['BuildingID']);
-                                $mylogical->save();
-
-                                foreach ($mylogical->getCmd() as $cmd) {
-
-                                    $cmd->setCollectDate('');
-                                    $cmd->event($device['Device'][$cmd->getName()]);
-
-                                }
-                                $mylogical->Refresh();
-                            }
-
+                            self::pullCommande($device);
                         }
                     }
-
                     // FLOORS
                     for ($i = 0; $i < count($maison['Structure']['Floors'][$a]['Devices']); $i++) {
-
                         $device = $maison['Structure']['Floors'][$a]['Devices'][$i];
-
-                        if ($device['DeviceID'] == '') continue;
-
-                        log::add('melcloud', 'debug', $i . ' =>' . $device['DeviceID'] . ' ' . $device['DeviceName']);
-
-                        foreach (eqLogic::byType('melcloud', true) as $mylogical) {
-
-                            if ($mylogical->getConfiguration('namemachine') != $device['DeviceName']) continue;
-
-                            log::add('melcloud', 'debug', 'setdevice ' . $device['Device']['DeviceID']);
-
-                            $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
-                            $mylogical->setConfiguration('buildid', $device['BuildingID']);
-                            $mylogical->save();
-
-                            foreach ($mylogical->getCmd() as $cmd) {
-                                $cmd->setCollectDate('');
-                                $cmd->event($device['Device'][$cmd->getName()]);
-                            }
-                            $mylogical->Refresh();
-                        }
-
+                        self::pullCommande($device);
                     }
-
                 }
-
-
                 // AREAS
                 for ($a = 0; $a < count($maison['Structure']['Areas']); $a++) {
-
                     log::add('melcloud', 'info', 'AREAS ' . $a);
-
                     for ($i = 0; $i < count($maison['Structure']['Areas'][$a]['Devices']); $i++) {
-
                         log::add('melcloud', 'info', 'machine AREAS ' . $i);
-
                         $device = $maison['Structure']['Areas'][$a]['Devices'][$i];
-
-                        if ($device['DeviceID'] == '') continue;
-
-                        log::add('melcloud', 'info', $i . ' =>' . $device['DeviceID'] . ' ' . $device['DeviceName']);
-
-                        foreach (eqLogic::byType('melcloud', true) as $mylogical) {
-
-                            if ($mylogical->getConfiguration('namemachine') != $device['DeviceName']) continue;
-
-                            log::add('melcloud', 'info', 'setdevice ' . $device['Device']['DeviceID']);
-
-                            $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
-                            $mylogical->setConfiguration('buildid', $device['BuildingID']);
-                            $mylogical->save();
-
-                            foreach ($mylogical->getCmd() as $cmd) {
-                                $cmd->setCollectDate('');
-                                $cmd->event($device['Device'][$cmd->getName()]);
-                            }
-                            $mylogical->Refresh();
-                        }
-
+                        self::pullCommande($device);
                     }
                 }
             }
+        }
+    }
+
+    private static function pullCommande($device) {
+        log::add('melcloud', 'debug', 'pull : ' . $device['DeviceName']);
+        if ($device['DeviceID'] == '') return;
+        log::add('melcloud', 'debug', $device['DeviceID'] . ' ' . $device['DeviceName']);
+        foreach (eqLogic::byType('melcloud', true) as $mylogical) {
+            if ($mylogical->getConfiguration('namemachine') != $device['DeviceName']) continue;
+            log::add('melcloud', 'info', 'setdevice ' . $device['Device']['DeviceID']);
+            $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
+            $mylogical->setConfiguration('buildid', $device['BuildingID']);
+            $mylogical->save();
+            cmd::byEqLogicIdCmdName($mylogical->getId(), 'Ventilation')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['FanSpeed']), $cache = 0);
+            cmd::byEqLogicIdCmdName($mylogical->getId(), 'On/Off')->execCmd($options = array('auto' => 'vrai', 'slider' => intval($device['Device']['Power'])), $cache = 0);
+            cmd::byEqLogicIdCmdName($mylogical->getId(), 'Consigne')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['SetTemperature']), $cache = 0);
+            cmd::byEqLogicIdCmdName($mylogical->getId(), 'Mode')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['OperationMode']), $cache = 0);
+            foreach ($mylogical->getCmd() as $cmd) {
+                //il faut exclure le on/off
+                switch ($cmd->getName()) {
+                    case 'On/Off':
+                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][Power]);
+                        $cmd->setCollectDate('');
+                        $cmd->event($device['Device']['Power']);
+                        break;
+                    case 'Mode':
+                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][OperationMode]);
+                        $cmd->setCollectDate('');
+                        $cmd->event($device['Device']['OperationMode']);
+                        break;
+                    case 'Ventilation':
+                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][FanSpeed]);
+                        $cmd->setCollectDate('');
+                        $cmd->event($device['Device']['FanSpeed']);
+                        break;
+                    case 'Consigne':
+                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][SetTemperature]);
+                        $cmd->setCollectDate('');
+                        $cmd->event($device['Device']['SetTemperature']);
+                        break;
+                    default:
+                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][$cmd->getName()]);
+                        if ('LastTimeStamp' == $cmd->getName()) {
+                            $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getName()]));
+                        } else {
+                            $cmd->setCollectDate('');
+                            $cmd->event($device['Device'][$cmd->getName()]);
+                        }
+                        $cmd->save();
+                        break;
+                }
+            }
+            $mylogical->Refresh();
+            $mylogical->toHtml('dashboard');
+            $mylogical->refreshWidget();
         }
     }
 
