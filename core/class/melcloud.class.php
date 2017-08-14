@@ -307,53 +307,57 @@ class melcloud extends eqLogic
         if ($device['DeviceID'] == '') return;
         log::add('melcloud', 'debug', $device['DeviceID'] . ' ' . $device['DeviceName']);
         foreach (eqLogic::byType('melcloud', true) as $mylogical) {
-            if ($mylogical->getConfiguration('namemachine') != $device['DeviceName']) continue;
-            log::add('melcloud', 'info', 'setdevice ' . $device['Device']['DeviceID']);
-            $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
-            $mylogical->setConfiguration('buildid', $device['BuildingID']);
-            $mylogical->save();
-            cmd::byEqLogicIdCmdName($mylogical->getId(), 'Ventilation')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['FanSpeed']), $cache = 0);
-            cmd::byEqLogicIdCmdName($mylogical->getId(), 'On/Off')->execCmd($options = array('auto' => 'vrai', 'slider' => intval($device['Device']['Power'])), $cache = 0);
-            cmd::byEqLogicIdCmdName($mylogical->getId(), 'Consigne')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['SetTemperature']), $cache = 0);
-            cmd::byEqLogicIdCmdName($mylogical->getId(), 'Mode')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['OperationMode']), $cache = 0);
-            foreach ($mylogical->getCmd() as $cmd) {
-                //il faut exclure le on/off
-                switch ($cmd->getName()) {
-                    case 'On/Off':
-                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['Power']);
-                        $cmd->setCollectDate('');
-                        $cmd->event($device['Device']['Power']);
-                        break;
-                    case 'Mode':
-                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['OperationMode']);
-                        $cmd->setCollectDate('');
-                        $cmd->event($device['Device']['OperationMode']);
-                        break;
-                    case 'Ventilation':
-                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['FanSpeed']);
-                        $cmd->setCollectDate('');
-                        $cmd->event($device['Device']['FanSpeed']);
-                        break;
-                    case 'Consigne':
-                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['SetTemperature']);
-                        $cmd->setCollectDate('');
-                        $cmd->event($device['Device']['SetTemperature']);
-                        break;
-                    default:
-                        log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][$cmd->getName()]);
-                        if ('LastTimeStamp' == $cmd->getName()) {
-                            $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getName()]));
-                        } else {
+            if ($mylogical->getConfiguration('namemachine') == $device['DeviceName']) {
+                log::add('melcloud', 'info', 'setdevice ' . $device['Device']['DeviceID']);
+                $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
+                $mylogical->setConfiguration('buildid', $device['BuildingID']);
+                $mylogical->save();
+                cmd::byEqLogicIdCmdName($mylogical->getId(), 'Ventilation')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['FanSpeed']), $cache = 0);
+                cmd::byEqLogicIdCmdName($mylogical->getId(), 'On/Off')->execCmd($options = array('auto' => 'vrai', 'slider' => intval($device['Device']['Power'])), $cache = 0);
+                cmd::byEqLogicIdCmdName($mylogical->getId(), 'Consigne')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['SetTemperature']), $cache = 0);
+                cmd::byEqLogicIdCmdName($mylogical->getId(), 'Mode')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['OperationMode']), $cache = 0);
+                foreach ($mylogical->getCmd() as $cmd) {
+                    //il faut exclure le on/off
+                    switch ($cmd->getName()) {
+                        case 'On/Off':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['Power']);
                             $cmd->setCollectDate('');
-                            $cmd->event($device['Device'][$cmd->getName()]);
-                        }
-                        $cmd->save();
-                        break;
+                            $cmd->event($device['Device']['Power']);
+                            break;
+                        case 'Mode':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['OperationMode']);
+                            $cmd->setCollectDate('');
+                            $cmd->event($device['Device']['OperationMode']);
+                            break;
+                        case 'Ventilation':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['FanSpeed']);
+                            $cmd->setCollectDate('');
+                            $cmd->event($device['Device']['FanSpeed']);
+                            break;
+                        case 'Consigne':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['SetTemperature']);
+                            $cmd->setCollectDate('');
+                            $cmd->event($device['Device']['SetTemperature']);
+                            break;
+                        case 'Rafraichir':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' .On ne traite pas cette commande');
+                            break;
+                        default:
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][$cmd->getName()]);
+                            if ('LastTimeStamp' == $cmd->getName()) {
+                                $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getName()]));
+                            } else {
+                                $cmd->setCollectDate('');
+                                $cmd->event($device['Device'][$cmd->getName()]);
+                            }
+                            $cmd->save();
+                            break;
+                    }
                 }
+                $mylogical->Refresh();
+                $mylogical->toHtml('dashboard');
+                $mylogical->refreshWidget();
             }
-            $mylogical->Refresh();
-            $mylogical->toHtml('dashboard');
-            $mylogical->refreshWidget();
         }
     }
 
