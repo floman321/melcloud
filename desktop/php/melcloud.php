@@ -145,8 +145,10 @@ $eqLogics = eqLogic::byType($plugin->getId());
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
                     <tr>
-                        <th>{{Nom}}</th>
+                        <th>{{Nom Affiché}}</th>
+                        <th>{{Rubrique Melcloud}}</th>
                         <th>{{Type}}</th>
+                        <th>{{Option}}</th>
                         <th>{{Action}}</th>
                     </tr>
                     </thead>
