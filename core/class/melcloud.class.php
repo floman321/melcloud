@@ -63,7 +63,7 @@ class melcloud extends eqLogic
             $json = json_decode($server_output, true);
 
             foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
+                if ('NextCommunication' == $cmd->getLogicalId()) {
                     $cmd->setCollectDate('');
                     $time = strtotime($json['NextCommunication'] . " + 1 hours"); // Add 1 hour
                     $time = date('G:i:s', $time); // Back to string
@@ -119,7 +119,7 @@ class melcloud extends eqLogic
             $json = json_decode($server_output, true);
 
             foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
+                if ('NextCommunication' == $cmd->getLogicalId()) {
                     $cmd->setCollectDate('');
                     $time = strtotime($json['NextCommunication'] . " + 1 hours"); // Add 1 hour
                     $time = date('G:i:s', $time); // Back to string
@@ -168,7 +168,7 @@ class melcloud extends eqLogic
             $json = json_decode($server_output, true);
 
             foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
+                if ('NextCommunication' == $cmd->getLogicalId()) {
                     $cmd->setCollectDate('');
                     $time = strtotime($json['NextCommunication'] . " + 1 hours"); // Add 1 hour
                     $time = date('G:i:s', $time); // Back to string
@@ -218,7 +218,7 @@ class melcloud extends eqLogic
             $json = json_decode($server_output, true);
 
             foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
+                if ('NextCommunication' == $cmd->getLogicalId()) {
                     $cmd->setCollectDate('');
                     $cmd->event($json['NextCommunication']);
                 }
@@ -318,47 +318,72 @@ class melcloud extends eqLogic
                 cmd::byEqLogicIdCmdName($mylogical->getId(), 'Mode')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['OperationMode']), $cache = 0);
                 foreach ($mylogical->getCmd() as $cmd) {
                     //il faut exclure le on/off
-                    switch ($cmd->getName()) {
-                        case 'On/Off':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['Power']);
+                    switch ($cmd->getLogicalId()) {
+                        case 'OnOff':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['Power']);
                             $cmd->setCollectDate('');
                             $cmd->event($device['Device']['Power']);
                             break;
                         case 'Mode':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['OperationMode']);
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['OperationMode']);
                             $cmd->setCollectDate('');
                             $cmd->event($device['Device']['OperationMode']);
                             break;
                         case 'Ventilation':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['FanSpeed']);
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['FanSpeed']);
                             $cmd->setCollectDate('');
                             $cmd->event($device['Device']['FanSpeed']);
                             break;
                         case 'Consigne':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['SetTemperature']);
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['SetTemperature']);
                             $cmd->setCollectDate('');
                             $cmd->event($device['Device']['SetTemperature']);
                             break;
-                        case 'Rafraichir':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' .On ne traite pas cette commande');
+                        case 'refresh':
+                        case 'CurrentWeather':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' .On ne traite pas cette commande');
                             break;
                         default:
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][$cmd->getName()]);
-                            if ('LastTimeStamp' == $cmd->getName()) {
-                                $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getName()]));
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device'][$cmd->getLogicalId()]);
+                            if ('LastTimeStamp' == $cmd->getLogicalId()) {
+                                $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getLogicalId()]));
                             } else {
                                 $cmd->setCollectDate('');
-                                $cmd->event($device['Device'][$cmd->getName()]);
+                                $cmd->event($device['Device'][$cmd->getLogicalId()]);
                             }
                             $cmd->save();
                             break;
                     }
                 }
+                self::obtenirInfo($mylogical);
                 $mylogical->Refresh();
                 $mylogical->toHtml('dashboard');
                 $mylogical->refreshWidget();
             }
         }
+    }
+
+    public static function obtenirInfo($mylogical)
+    {
+        log::add('melcloud', 'debug', 'Obtenir Info pour la machine:  ' . $mylogical->getConfiguration('namemachine'));
+        $montoken = config::byKey('MyToken', 'melcloud', '');
+        if ($montoken != '') {
+            $devideid = $mylogical->getConfiguration('deviceid');
+            $buildid = $mylogical->getConfiguration('buildid');
+            $req = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/Get?id=' . $devideid . '&buildingID=' . $buildid);
+            $req->setHeader(array('X-MitsContextKey: ' . $montoken));
+            $json = $req->exec(30, 2);
+            $device = json_decode($json, true);
+            log::add('melcloud', 'debug', 'Retour des informations de obtenirInfo ' . print_r($device,true));
+            if(isset($device['WeatherObservations'])) {
+                $cmdCurrent = $mylogical->getCmd(null, 'CurrentWeather');
+                if(is_object($cmdCurrent)) {
+                    log::add('melcloud', 'debug', 'WeatherObservations all = ' . json_encode($device['WeatherObservations'][0]));
+                    $cmdCurrent->event(json_encode($device['WeatherObservations'][0]));
+                }
+            }
+        }
+        $mylogical->Refresh();
     }
 
     //Fonction exécutée automatiquement toutes les minutes par Jeedom
@@ -397,7 +422,7 @@ class melcloud extends eqLogic
         $RoomTemperature = new melcloudCmd();
         $RoomTemperature->setName('RoomTemperature');
         $RoomTemperature->setEqLogic_id($this->getId());
-        $RoomTemperature->setLogicalId('temperature');
+        $RoomTemperature->setLogicalId('RoomTemperature');
         $RoomTemperature->setType('info');
         $RoomTemperature->setSubType('numeric');
         $RoomTemperature->setIsHistorized(0);
@@ -411,7 +436,7 @@ class melcloud extends eqLogic
         $SetTemperature = new melcloudCmd();
         $SetTemperature->setName('SetTemperature');
         $SetTemperature->setEqLogic_id($this->getId());
-        $SetTemperature->setLogicalId('temperature');
+        $SetTemperature->setLogicalId('SetTemperature');
         $SetTemperature->setType('info');
         $SetTemperature->setSubType('numeric');
         $SetTemperature->setIsHistorized(0);
@@ -426,7 +451,7 @@ class melcloud extends eqLogic
         $Consigne = new melcloudCmd();
         $Consigne->setName('Consigne');
         $Consigne->setEqLogic_id($this->getId());
-        $Consigne->setLogicalId('temperature');
+        $Consigne->setLogicalId('Consigne');
         $Consigne->setType('action');
         $Consigne->setTemplate('dashboard', 'thermostat');
         $Consigne->setSubType('slider');
@@ -442,6 +467,7 @@ class melcloud extends eqLogic
         $onoff = new melcloudCmd();
         $onoff->setName('On/Off');
         $onoff->setEqLogic_id($this->getId());
+        $onoff->setLogicalId('OnOff');
         $onoff->setType('action');
         $onoff->setSubType('slider');
         $onoff->setDisplay('slider_placeholder', '1 = Allumer, 0 = Eteindre');
@@ -453,9 +479,11 @@ class melcloud extends eqLogic
         $ventilation = new melcloudCmd();
         $ventilation->setName('Ventilation');
         $ventilation->setEqLogic_id($this->getId());
+        $ventilation->setLogicalId('Ventilation');
         $ventilation->setType('action');
         $ventilation->setSubType('slider');
         $ventilation->setIsHistorized(0);
+        //$ventilation->setConfiguration('listValue','0|Automatique;1|Vitesse 1;2|Vitesse 2;3|Vitesse 3;4|Vitesse 4;5|Vitesse 5');
         $ventilation->setDisplay('slider_placeholder', '0 = automatique, 1 a 5 manuel');
         $ventilation->setTemplate('dashboard', 'thermostat');
         $ventilation->setIsVisible(0);
@@ -464,8 +492,10 @@ class melcloud extends eqLogic
         $mode = new melcloudCmd();
         $mode->setName('Mode');
         $mode->setEqLogic_id($this->getId());
+        $mode->setLogicalId('Mode');
         $mode->setType('action');
         $mode->setSubType('slider');
+        //$mode->setConfiguration('listValue','1|Chaud;2|Seche;3|Rafraichir;7|Ventilation;8|Auto');
         $mode->setDisplay('slider_placeholder', 'Chaud : 1 Seche : 2 Rafraichir : 3 Ventilation : 7 Auto :');
         $mode->setIsHistorized(0);
         $mode->setIsVisible(0);
@@ -507,6 +537,20 @@ class melcloud extends eqLogic
         $refresh->setType('action');
         $refresh->setSubType('other');
         $refresh->save();
+
+        $currentWeather = new melcloudCmd();
+        $currentWeather->setName(__('Temps actuel', __FILE__));
+        $currentWeather->setEqLogic_id($this->getId());
+        $currentWeather->setLogicalId('CurrentWeather');
+        $currentWeather->setType('info');
+        $currentWeather->setSubType('string');
+        $currentWeather->setConfiguration('category','actual');
+        $currentWeather->setIsHistorized(0);
+        $currentWeather->setDisplay('generic_type', 'WEATHER_TYPE');
+        $currentWeather->setIsVisible(1);
+        $currentWeather->setValue(0);
+        $currentWeather->setTemplate('dashboard','CurrentWeather');
+        $currentWeather->save();
 
 
     }
@@ -573,14 +617,14 @@ class melcloudCmd extends cmd
     public function execute($_options = array())
     {
 
-        if ('Consigne' ==  $this->name) {
+        if ('Consigne' ==  $this->logicalId) {
 
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
                 melcloud::SetTemp($_options['slider'], $this->getEqLogic());
             }
         }
 
-        if ('On/Off' == $this->name) {
+        if ('OnOff' == $this->logicalId) {
 
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
 
@@ -594,7 +638,7 @@ class melcloudCmd extends cmd
 
         }
 
-        if ('Ventilation' == $this->name) {
+        if ('Ventilation' == $this->logicalId) {
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
 
                 $newFanSpeed = $_options['slider'];
@@ -603,13 +647,13 @@ class melcloudCmd extends cmd
             }
         }
 
-        if ('Mode' == $this->name) {
+        if ('Mode' == $this->logicalId) {
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
                 melcloud::SetMode($_options['slider'], $this->getEqLogic());
             }
         }
 
-        if ('Rafraichir' == $this->name) {
+        if ('refresh' == $this->logicalId) {
             melcloud::pull();
         }
     }
