@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* This file is part of Jeedom.
  *
  * Jeedom is free software: you can redistribute it and/or modify
@@ -25,24 +25,21 @@ if (!isConnect()) {
 <form class="form-horizontal">
     <fieldset>
         <div class="form-group">
+            <label class="col-lg-2 control-label">Mon Email Melcloud</label>
+            <div class="col-lg-2">
+                <input class="configKey form-control" data-l1key="MyEmail" />
+            </div>
+            <label class="col-lg-2 control-label">Mon Mot de passe Melcloud</label>
+            <div class="col-lg-2">
+                <input type="password" class="configKey form-control" data-l1key="MyPassword" />
+           </div>
+        </div>
+	<div class="form-group">
             <label class="col-lg-4 control-label">Mon Token Melcloud (ne pas remplir)</label>
             <div class="col-lg-2">
                 <input class="configKey form-control" data-l1key="MyToken" />
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-lg-4 control-label">Mon Email Melcloud</label>
-            <div class="col-lg-2">
-                <input class="configKey form-control" data-l1key="MyEmail" />
-        </div>
-    <div class="form-group">
-    <label class="col-lg-4 control-label">Mon Mot de passe Melcloud</label>
-    <div class="col-lg-2">
-    <input class="configKey form-control" data-l1key="MyPassword" />
-    </div>
-  
-  </br>
-  </br>
   </br>
   </br>
             <div class="form-group">
