@@ -26,10 +26,9 @@ class melcloud extends eqLogic
 
     /*     * ***********************Methode static*************************** */
 
-    public static function SetPower($option, $mylogical)
-    {
-
-        log::add('melcloud', 'info', 'SetPower');
+  	public static function SetModif($option, $mylogical,$flag,$idflag){
+     
+        log::add('melcloud', 'info', 'Modification');
 
         $montoken = config::byKey('MyToken', 'melcloud', '');
 
@@ -43,8 +42,8 @@ class melcloud extends eqLogic
             $json = $request->exec(30000, 2);
             $device = json_decode($json, true);
 
-            $device['Power'] = $option;
-            $device['EffectiveFlags'] = '1';
+            $device[$flag] = $option;
+            $device['EffectiveFlags'] = $idflag;
             $device['HasPendingCommand'] = 'true';
 
             $ch = curl_init();
@@ -71,157 +70,9 @@ class melcloud extends eqLogic
                 }
             }
         }
-
+      
     }
-
-    public static function SetFan($option, $mylogical)
-    {
-
-        log::add('melcloud', 'info', 'SetFan');
-
-        $montoken = config::byKey('MyToken', 'melcloud', '');
-
-        if ($montoken != '') {
-
-            $montoken = config::byKey('MyToken', 'melcloud', '');
-
-            $devideid = $mylogical->getConfiguration('deviceid');
-            $buildid = $mylogical->getConfiguration('buildid');
-
-            $request = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/Get?id=' . $devideid . '&buildingID=' . $buildid);
-            $request->setHeader(array('X-MitsContextKey: ' . $montoken));
-            $json = $request->exec(30000, 2);
-            $device = json_decode($json, true);
-
-            $device['SetFanSpeed'] = $option;
-            $device['EffectiveFlags'] = '8';
-            $device['HasPendingCommand'] = 'true';
-
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/SetAta");
-            curl_setopt($ch, CURLOPT_POST, 1);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'X-MitsContextKey: ' . $montoken,
-                'content-type: application/json'
-            ));
-
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($device));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $server_output = curl_exec($ch);
-            curl_close($ch);
-            $json = json_decode($server_output, true);
-
-            foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
-                    $cmd->setCollectDate('');
-                    $time = strtotime($json['NextCommunication'] . " + 1 hours"); // Add 1 hour
-                    $time = date('G:i:s', $time); // Back to string
-                    $cmd->event($time);
-                }
-            }
-
-        }
-    }
-
-    public static function SetTemp($newtemp, $mylogical)
-    {
-
-        log::add('melcloud', 'info', 'SetTemp' . $newtemp);
-
-        $montoken = config::byKey('MyToken', 'melcloud', '');
-
-        if ($montoken != '') {
-
-            $devideid = $mylogical->getConfiguration('deviceid');
-            $buildid = $mylogical->getConfiguration('buildid');
-
-            $request = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/Get?id=' . $devideid . '&buildingID=' . $buildid);
-            $request->setHeader(array('X-MitsContextKey: ' . $montoken));
-            $json = $request->exec(30000, 2);
-            $device = json_decode($json, true);
-
-            $device['SetTemperature'] = $newtemp;
-            $device['EffectiveFlags'] = '4';
-            $device['HasPendingCommand'] = 'true';
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/SetAta");
-            curl_setopt($ch, CURLOPT_POST, 1);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'X-MitsContextKey: ' . $montoken,
-                'content-type: application/json'
-            ));
-
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($device));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $server_output = curl_exec($ch);
-
-            curl_close($ch);
-            $json = json_decode($server_output, true);
-
-            foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
-                    $cmd->setCollectDate('');
-                    $time = strtotime($json['NextCommunication'] . " + 1 hours"); // Add 1 hour
-                    $time = date('G:i:s', $time); // Back to string
-                    $cmd->event($time);
-                }
-            }
-
-        }
-    }
-
-
-    public static function SetMode($newmode, $mylogical)
-    {
-
-        log::add('melcloud', 'info', 'SetMode' . $newmode);
-
-        $montoken = config::byKey('MyToken', 'melcloud', '');
-
-        if ($montoken != '') {
-
-            $devideid = $mylogical->getConfiguration('deviceid');
-            $buildid = $mylogical->getConfiguration('buildid');
-
-            $request = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/Get?id=' . $devideid . '&buildingID=' . $buildid);
-            $request->setHeader(array('X-MitsContextKey: ' . $montoken));
-            $json = $request->exec(30000, 2);
-            $device = json_decode($json, true);
-
-            // Mode value : 1 warm, 2 dry, 3 cool, 7 vent, 8 auto
-            $device['OperationMode'] = $newmode;
-            $device['EffectiveFlags'] = '6';
-            $device['HasPendingCommand'] = 'true';
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/SetAta");
-            curl_setopt($ch, CURLOPT_POST, 1);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'X-MitsContextKey: ' . $montoken,
-                'content-type: application/json'
-            ));
-
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($device));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $server_output = curl_exec($ch);
-            curl_close($ch);
-            $json = json_decode($server_output, true);
-
-            foreach ($mylogical->getCmd() as $cmd) {
-                if ('NextCommunication' == $cmd->getName()) {
-                    $cmd->setCollectDate('');
-                    $cmd->event($json['NextCommunication']);
-                }
-            }
-
-        }
-    }
-
+      
 
     public static function gettoken()
     {
@@ -636,25 +487,27 @@ class melcloud extends eqLogic
         $modeauto->setDisplay('icon','<i class="icon fa-refresh"></i>');
         $modeauto->save();
       
-        
-      
-      /*
-        $refresh = new melcloudCmd();
-        $refresh->setLogicalId('SiteMelcloud');
-        $refresh->setIsVisible(1);
-        $refresh->setName('SiteMelcloud');
-        $refresh->setEqLogic_id($this->getId());
-        $refresh->setType('action');
-        $refresh->setSubType('other');
-        $refresh->setOrder(13);
-        $refresh->save();
-         */
-
     }
 
     public function preSave()
     {
-
+      
+        $cmd = $this->getCmd(null, 'lienmelcloud');
+		if (!is_object($cmd)) {
+          $refresh = new melcloudCmd();
+          $refresh->setLogicalId('lienmelcloud');
+          $refresh->setIsVisible(1);
+          $refresh->setName('Site Melcloud');
+          $refresh->setEqLogic_id($this->getId());
+          $refresh->setType('action');
+          $refresh->setSubType('other');
+          $refresh->setOrder(16);
+          $refresh->setHtml('enable','1');
+          $refresh->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
+          
+          $refresh->save();
+        }
+      
     }
 
     public function postSave()
@@ -717,15 +570,15 @@ class melcloudCmd extends cmd
         if ('Consigne' ==  $this->name || 'Consigne' == $this->getLogicalId()) {
 
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
-                melcloud::SetTemp($_options['slider'], $this->getEqLogic());
+                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperature',4);
             }
         }
       
         if ('On' == $this->getLogicalId()) {
-        	melcloud::SetPower('true', $this->getEqLogic());
+        	melcloud::SetModif('true', $this->getEqLogic(),'Power',1);
         }
         if ('Off' == $this->getLogicalId()) {
-        	melcloud::SetPower('false', $this->getEqLogic());
+        	melcloud::SetModif('false', $this->getEqLogic(),'Power',1);
         }
 
         if ('On/Off' == $this->name || 'On/Off' == $this->getLogicalId() ) {
@@ -734,9 +587,9 @@ class melcloudCmd extends cmd
 
                 $newPower = $_options['slider'];
                 if (0 == $_options['slider']) {
-                    melcloud::SetPower('false', $this->getEqLogic());
+                    melcloud::SetModif('false', $this->getEqLogic(),'Power',1);
                 } else {
-                    melcloud::SetPower('true', $this->getEqLogic());
+                    melcloud::SetModif('true', $this->getEqLogic(),'Power',1);
                 }
             }
 
@@ -745,26 +598,26 @@ class melcloudCmd extends cmd
         if ('Ventilation' == $this->name || 'Ventilation' == $this->getLogicalId()) {
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
                 $newFanSpeed = $_options['slider'];
-                melcloud::SetFan($newFanSpeed, $this->getEqLogic());
+                melcloud::SetModif($newFanSpeed, $this->getEqLogic(),'SetFanSpeed',8);
             }
         }
       
         if ('ModeAuto' == $this->getLogicalId()) {
-        	melcloud::SetMode(8, $this->getEqLogic());
+        	melcloud::SetModif(8, $this->getEqLogic(),'OperationMode',6);
         }
         if ('Ventile' == $this->getLogicalId()) {
-        	melcloud::SetMode(7, $this->getEqLogic());
+        	melcloud::SetModif(7, $this->getEqLogic(),'OperationMode',6);
         }
       	if ('Froid' == $this->getLogicalId()) {
-        	melcloud::SetMode(3, $this->getEqLogic());
+        	melcloud::SetModif(3, $this->getEqLogic(),'OperationMode',6);
         }
       	if ('Chauffage' == $this->getLogicalId()) {
-        	melcloud::SetMode(1, $this->getEqLogic());
+        	melcloud::SetModif(1, $this->getEqLogic(),'OperationMode',6);
         }
    
         if ('Mode' == $this->name || 'Mode' == $this->getLogicalId()) {
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
-                melcloud::SetMode($_options['slider'], $this->getEqLogic());
+                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'OperationMode',6);
             }
         }
 
@@ -772,9 +625,6 @@ class melcloudCmd extends cmd
             melcloud::pull();
         }
       
-        if ('SiteMelcloud' == $this->getLogicalId()) {
-            
-        }
       
     }
 
