@@ -492,8 +492,8 @@ class melcloud extends eqLogic
     public function preSave()
     {
       
-        $cmd = $this->getCmd(null, 'lienmelcloud');
-		if (!is_object($cmd)) {
+          $cmd = $this->getCmd(null, 'lienmelcloud');
+	  if (!is_object($cmd)) {
           $refresh = new melcloudCmd();
           $refresh->setLogicalId('lienmelcloud');
           $refresh->setIsVisible(1);
@@ -506,8 +506,27 @@ class melcloud extends eqLogic
           $refresh->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
           
           $refresh->save();
-        }
-      
+          }
+	    
+	    
+	  $cmd = $this->getCmd(null, 'sechage');
+	  if (!is_object($cmd)) {
+          $refresh = new melcloudCmd();
+          $refresh->setLogicalId('sechage');
+          $refresh->setIsVisible(1);
+          $refresh->setName('Mode Séchage');
+          $refresh->setEqLogic_id($this->getId());
+          $refresh->setType('action');
+          $refresh->setSubType('other');
+          $refresh->setOrder(17);
+          $refresh->setHtml('enable','1');
+          $refresh->setHtml('dashboard','<br><br><i class="icon jeedom-ventilo"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
+          
+          $refresh->save();
+          }
+	    
+	    
+	    
     }
 
     public function postSave()
@@ -613,6 +632,9 @@ class melcloudCmd extends cmd
         }
       	if ('Chauffage' == $this->getLogicalId()) {
         	melcloud::SetModif(1, $this->getEqLogic(),'OperationMode',6);
+        }
+	if ('Sechage' == $this->getLogicalId()) {
+        	melcloud::SetModif(2, $this->getEqLogic(),'OperationMode',6);
         }
    
         if ('Mode' == $this->name || 'Mode' == $this->getLogicalId()) {
