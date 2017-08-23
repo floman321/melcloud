@@ -513,8 +513,9 @@ class melcloud extends eqLogic
         $mode->setIsHistorized(0);
         $mode->setIsVisible(1);
         $mode->setOrder(3);
-        $mode->setDisplay('forceReturnLineAfter', '1');
+        $mode->setDisplay('forceReturnLineAfter','1');
         $mode->save();
+
 
         $Consigne = new melcloudCmd();
         $Consigne->setName('Consigne');
@@ -558,6 +559,8 @@ class melcloud extends eqLogic
         $off->save();
 
 
+
+
         $etatclim = new melcloudCmd();
         $etatclim->setName('Etat Clim');
         $etatclim->setEqLogic_id($this->getId());
@@ -568,8 +571,10 @@ class melcloud extends eqLogic
         $etatclim->setIsHistorized(0);
         $etatclim->setIsVisible(1);
         $etatclim->setOrder(7);
-        $etatclim->setDisplay('forceReturnLineAfter', '1');
+        $etatclim->setDisplay('forceReturnLineAfter','1');
         $etatclim->save();
+
+
         $ventilation = new melcloudCmd();
         $ventilation->setName('Ventilation');
         $ventilation->setEqLogic_id($this->getId());
@@ -584,6 +589,9 @@ class melcloud extends eqLogic
         $ventilation->setConfiguration('maxValue', 5);
         $ventilation->setConfiguration('minValue', 0);
         $ventilation->save();
+
+
+
         $ActualFanSpeed = new melcloudCmd();
         $ActualFanSpeed->setName('Vitesse Ventilateur Auto');
         $ActualFanSpeed->setEqLogic_id($this->getId());
@@ -597,6 +605,9 @@ class melcloud extends eqLogic
         $ActualFanSpeed->event(0);
         $ActualFanSpeed->setOrder(10);
         $ActualFanSpeed->save();
+
+
+
         $refresh = new melcloudCmd();
         $refresh->setLogicalId('refresh');
         $refresh->setIsVisible(1);
@@ -615,8 +626,8 @@ class melcloud extends eqLogic
         $Chauffage->setType('action');
         $Chauffage->setSubType('other');
         $Chauffage->setOrder(12);
-        $Chauffage->setDisplay('showIconAndNamedashboard', '1');
-        $Chauffage->setDisplay('icon', '<i class="icon meteo-soleil"></i>');
+        $Chauffage->setDisplay('showIconAndNamedashboard','1');
+        $Chauffage->setDisplay('icon','<i class="icon meteo-soleil"></i>');
         $Chauffage->save();
 
         $Froid = new melcloudCmd();
@@ -627,8 +638,8 @@ class melcloud extends eqLogic
         $Froid->setType('action');
         $Froid->setSubType('other');
         $Froid->setOrder(13);
-        $Froid->setDisplay('showIconAndNamedashboard', '1');
-        $Froid->setDisplay('icon', '<i class="icon nature-snowflake"></i>');
+        $Froid->setDisplay('showIconAndNamedashboard','1');
+        $Froid->setDisplay('icon','<i class="icon nature-snowflake"></i>');
         $Froid->save();
 
         $ventile = new melcloudCmd();
@@ -639,8 +650,8 @@ class melcloud extends eqLogic
         $ventile->setType('action');
         $ventile->setSubType('other');
         $ventile->setOrder(14);
-        $ventile->setDisplay('showIconAndNamedashboard', '1');
-        $ventile->setDisplay('icon', '<i class="icon jeedom-ventilo"></i>');
+        $ventile->setDisplay('showIconAndNamedashboard','1');
+        $ventile->setDisplay('icon','<i class="icon jeedom-ventilo"></i>');
         $ventile->save();
 
 
@@ -652,8 +663,8 @@ class melcloud extends eqLogic
         $modeauto->setType('action');
         $modeauto->setSubType('other');
         $modeauto->setOrder(15);
-        $modeauto->setDisplay('showIconAndNamedashboard', '1');
-        $modeauto->setDisplay('icon', '<i class="icon fa-refresh"></i>');
+        $modeauto->setDisplay('showIconAndNamedashboard','1');
+        $modeauto->setDisplay('icon','<i class="icon fa-refresh"></i>');
         $modeauto->save();
 
         $currentWeather = new melcloudCmd();
