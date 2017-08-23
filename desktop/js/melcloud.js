@@ -45,6 +45,13 @@ function addCmdToTable(_cmd) {
     }
     tr += '</td>';
     tr += '<td>';
+    if (_cmd.subType=='numeric') {
+      tr += '<input class="cmdAttr form-control input-sm" data-l1key="unite"  style="width : 100px;" placeholder="Unité" title="Unité">';
+      tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
+      tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
+    }
+    tr += '</td>';
+    tr += '<td>';
     if (is_numeric(_cmd.id)) {
         tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
