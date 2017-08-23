@@ -149,6 +149,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
                         <th>{{Rubrique Melcloud}}</th>
                         <th>{{Type}}</th>
                         <th>{{Option}}</th>
+                        <th>{{Divers}}</th>
                         <th>{{Action}}</th>
                     </tr>
                     </thead>
