@@ -58,22 +58,6 @@ if (!isConnect()) {
             </div>
 
         </div>
-
-        <div class="form-group">
-            <label class="col-lg-4 control-label">Etape 2 : </label>
-            <div class="col-lg-8">
-                <a class="btn btn-success bt_restartTeleinfoDeamon2">Mise à Jour des informations</a>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-lg-4 control-label">Mon Token Melcloud (ne pas remplir)</label>
-            <div class="col-lg-2">
-                <input class="configKey form-control" data-l1key="MyToken"/>
-            </div>
-        </div>
-
-        </div>
     </fieldset>
 </form>
 
