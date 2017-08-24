@@ -681,43 +681,45 @@ class melcloud extends eqLogic
         $currentWeather->setTemplate('dashboard', 'CurrentWeather');
         $currentWeather->save();
 
+        $cmd = $this->getCmd(null, 'lienmelcloud');
+        if (!is_object($cmd)) {
+            $lienmelcloud = new melcloudCmd();
+            $lienmelcloud->setLogicalId('lienmelcloud');
+            $lienmelcloud->setIsVisible(1);
+            $lienmelcloud->setName('Site Melcloud');
+            $lienmelcloud->setEqLogic_id($this->getId());
+            $lienmelcloud->setType('action');
+            $lienmelcloud->setSubType('other');
+            $lienmelcloud->setOrder(17);
+            $lienmelcloud->setHtml('enable', '1');
+            $lienmelcloud->setHtml('dashboard', '<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
+
+            $lienmelcloud->save();
+        }
+
+
+        $cmd = $this->getCmd(null, 'sechage');
+        if (!is_object($cmd)) {
+            $sechage = new melcloudCmd();
+            $sechage->setLogicalId('sechage');
+            $sechage->setIsVisible(1);
+            $sechage->setName('Mode Séchage');
+            $sechage->setEqLogic_id($this->getId());
+            $sechage->setType('action');
+            $sechage->setSubType('other');
+            $sechage->setOrder(16);
+            $sechage->setDisplay('showIconAndNamedashboard', '1');
+            $sechage->setDisplay('icon', '<i class="icon jeedom-ventilo"></i>');
+            $sechage->save();
+        }
+
 
     }
 
     public function preSave()
     {
 
-        $cmd = $this->getCmd(null, 'lienmelcloud');
-        if (!is_object($cmd)) {
-            $refresh = new melcloudCmd();
-            $refresh->setLogicalId('lienmelcloud');
-            $refresh->setIsVisible(1);
-            $refresh->setName('Site Melcloud');
-            $refresh->setEqLogic_id($this->getId());
-            $refresh->setType('action');
-            $refresh->setSubType('other');
-            $refresh->setOrder(17);
-            $refresh->setHtml('enable', '1');
-            $refresh->setHtml('dashboard', '<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
 
-            $refresh->save();
-        }
-
-
-        $cmd = $this->getCmd(null, 'sechage');
-        if (!is_object($cmd)) {
-            $refresh = new melcloudCmd();
-            $refresh->setLogicalId('sechage');
-            $refresh->setIsVisible(1);
-            $refresh->setName('Mode Séchage');
-            $refresh->setEqLogic_id($this->getId());
-            $refresh->setType('action');
-            $refresh->setSubType('other');
-            $refresh->setOrder(16);
-            $refresh->setDisplay('showIconAndNamedashboard', '1');
-            $refresh->setDisplay('icon', '<i class="icon jeedom-ventilo"></i>');
-            $refresh->save();
-        }
 
 
     }
