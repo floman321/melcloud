@@ -210,46 +210,7 @@ class melcloud extends eqLogic
                             $cmd->save();
                             break;
                     }
-                  
-                  
-                  /*
-                  // POUR RETRO COMPATIBILITE
-                     switch ($cmd->getName()) {
-                        case 'On/Off':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['Power']);
-                            $cmd->setCollectDate('');
-                            $cmd->event($device['Device']['Power']);
-                            break;
-                        case 'Mode':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['OperationMode']);
-                            $cmd->setCollectDate('');
-                            $cmd->event($device['Device']['OperationMode']);
-                            break;
-                        case 'Ventilation':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['FanSpeed']);
-                            $cmd->setCollectDate('');
-                            $cmd->event($device['Device']['FanSpeed']);
-                            break;
-                        case 'Consigne':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['SetTemperature']);
-                            $cmd->setCollectDate('');
-                            $cmd->event($device['Device']['SetTemperature']);
-                            break;
-                        case 'Rafraichir':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' .On ne traite pas cette commande');
-                            break;
-                        default:
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device'][$cmd->getName()]);
-                            if ('LastTimeStamp' == $cmd->getName()) {
-                                $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getName()]));
-                            } else {
-                                $cmd->setCollectDate('');
-                                $cmd->event($device['Device'][$cmd->getName()]);
-                            }
-                            $cmd->save();
-                            break;
-                    }
-                 */ 
+                
                 }
               
               
@@ -487,14 +448,8 @@ class melcloud extends eqLogic
         $modeauto->setDisplay('icon','<i class="icon fa-refresh"></i>');
         $modeauto->save();
       
-    }
-
-    public function preSave()
-    {
       
-          $cmd = $this->getCmd(null, 'lienmelcloud');
-	  if (!is_object($cmd)) {
-          $refresh = new melcloudCmd();
+        $refresh = new melcloudCmd();
           $refresh->setLogicalId('lienmelcloud');
           $refresh->setIsVisible(1);
           $refresh->setName('Site Melcloud');
@@ -504,14 +459,10 @@ class melcloud extends eqLogic
           $refresh->setOrder(17);
           $refresh->setHtml('enable','1');
           $refresh->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
-          
           $refresh->save();
-          }
-	    
-	    
-	  $cmd = $this->getCmd(null, 'sechage');
-	  if (!is_object($cmd)) {
-          $refresh = new melcloudCmd();
+      
+      
+       $refresh = new melcloudCmd();
           $refresh->setLogicalId('sechage');
           $refresh->setIsVisible(1);
           $refresh->setName('Mode Séchage');
@@ -522,7 +473,13 @@ class melcloud extends eqLogic
           $refresh->setDisplay('showIconAndNamedashboard','1');
           $refresh->setDisplay('icon','<i class="icon jeedom-ventilo"></i>');
           $refresh->save();
-          }
+      
+    }
+
+    public function preSave()
+    {
+      
+          
 	    
 	    
 	    
@@ -531,6 +488,7 @@ class melcloud extends eqLogic
     public function postSave()
     {
 
+      
 
     }
 
@@ -643,7 +601,7 @@ class melcloudCmd extends cmd
             }
         }
 
-        if ('Rafraichir' == $this->name || 'Rafraichir' == $this->getLogicalId()) {
+        if ('Rafraichir' == $this->name || 'Rafraichir' == $this->getLogicalId() ||'refresh' == $this->getLogicalId()) {
             melcloud::pull();
         }
       
