@@ -318,6 +318,18 @@ class melcloud extends eqLogic
                 foreach ($mylogical->getCmd() as $cmd) {
 
                     switch ($cmd->getLogicalId()) {
+                        case 'On':
+                        case 'Off':
+                        case 'refresh':
+                        case 'CurrentWeather':
+                        case 'Chauffage':
+                        case 'Froid':
+                        case 'Ventile':
+                        case 'ModeAuto':
+                        case 'sechage':
+                        case 'lienmelcloud':
+                            log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' : On ne traite pas cette commande');
+                            break;
 
                         case 'FanSpeed':
                             cmd::byEqLogicIdAndLogicalId($mylogical->getId(), 'FanSpeed')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['FanSpeed']), $cache = 0);
@@ -348,9 +360,6 @@ class melcloud extends eqLogic
 
                         case 'SetTemperature':
                             $cmd::byEqLogicIdAndLogicalId($mylogical->getId(), 'SetTemperature')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['SetTemperature']), $cache = 0);
-                            break;
-                        case 'Rafraichir':
-                            log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' .On ne traite pas cette commande');
                             break;
                         default:
                             log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $cmd->getLogicalId() . ' ' . $device['Device'][$cmd->getLogicalId()]);
