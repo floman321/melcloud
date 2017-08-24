@@ -28,7 +28,7 @@ class melcloud extends eqLogic
 
   	public static function SetModif($option, $mylogical,$flag,$idflag){
      
-        log::add('melcloud', 'info', 'Modification');
+        log::add('melcloud', 'info', 'Modification'.$flag.' '.$idflag);
 
         $montoken = config::byKey('MyToken', 'melcloud', '');
 
@@ -45,6 +45,58 @@ class melcloud extends eqLogic
             $device[$flag] = $option;
             $device['EffectiveFlags'] = $idflag;
             $device['HasPendingCommand'] = 'true';
+            
+          
+            switch ($flag){
+                
+              case 'OperationMode':
+                
+                 $cmd = cmd::byEqLogicIdAndLogicalId($mylogical->getId(), 'OperationMode');                
+                 $cmd->setCollectDate('');
+                        
+                switch ($option){
+                  case 7:
+                    $cmd->event('Ventilation');
+                    break;
+                  case 1:
+                    $cmd->event('Chauffage');
+                    break;
+                  case 2:
+                    $cmd->event('Sechage');
+                    break;
+                  case 3:
+                    $cmd->event('Froid');
+                    break;
+                  case 8:
+                    $cmd->event('Automatique');
+                    break;
+                }
+                
+                 $cmd->save();
+                 $mylogical->Refresh();
+            	 $mylogical->toHtml('dashboard');
+             	 $mylogical->refreshWidget();
+                
+              case 'Power':
+                
+                $cmd = cmd::byEqLogicIdAndLogicalId($mylogical->getId(), 'Power');
+                if ($option == 'true'){
+                	$cmd->setConfiguration('lastCmdValue',1);  
+                }else{
+                  	$cmd->setConfiguration('lastCmdValue',0);
+                }
+                
+                $cmd->save();
+                $mylogical->Refresh();
+            	$mylogical->toHtml('dashboard');
+             	$mylogical->refreshWidget();
+                
+                break;   
+            }
+          
+          
+          
+            
 
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, "https://app.melcloud.com/Mitsubishi.Wifi.Client/Device/SetAta");
@@ -111,6 +163,7 @@ class melcloud extends eqLogic
             $request = new com_http('https://app.melcloud.com/Mitsubishi.Wifi.Client/User/ListDevices');
             $request->setHeader(array('X-MitsContextKey: ' . $montoken));
             $json = $request->exec(30000, 2);
+          
             $values = json_decode($json, true);
             foreach ($values as $maison) {
                 log::add('melcloud', 'debug', 'Maison ' . $maison['Name']);
@@ -165,7 +218,8 @@ class melcloud extends eqLogic
                     switch ($cmd->getLogicalId()) {
                         
                         case 'FanSpeed':
-                          cmd::byEqLogicIdAndLogicalId($mylogical->getId(), 'FanSpeed')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['FanSpeed']), $cache = 0);
+                          $cmd->setConfiguration('lastCmdValue',$device['Device']['FanSpeed']);
+                          $cmd->save(); 
                         break;
                       
                        case 'OperationMode':
@@ -191,9 +245,16 @@ class melcloud extends eqLogic
                         		
                         break;
                         
+                        case 'Power':
+                          $cmd->setConfiguration('lastCmdValue',$device['Device']['Power']);
+                          $cmd->save(); 
+	
+                        break;
                         
                         case 'SetTemperature':
-                          $cmd::byEqLogicIdAndLogicalId($mylogical->getId(), 'SetTemperature')->execCmd($options = array('auto' => 'vrai', 'slider' => $device['Device']['SetTemperature']), $cache = 0);
+                          $cmd->setConfiguration('lastCmdValue',$device['Device']['SetTemperature']);
+                          $cmd->save(); 
+                        
                         break;
                         
                         case 'Rafraichir':
@@ -323,7 +384,7 @@ class melcloud extends eqLogic
         $on->setSubType('other');
         $on->setTemplate('dashboard', 'button');
         $on->setIsHistorized(0);
-        $on->setIsVisible(1);
+        $on->setIsVisible(0);
         $on->setOrder(5);
         $on->save();
       
@@ -335,7 +396,7 @@ class melcloud extends eqLogic
         $off->setSubType('other');
         $off->setTemplate('dashboard', 'button');
         $off->setIsHistorized(0);
-        $off->setIsVisible(1);
+        $off->setIsVisible(0);
         $off->setOrder(6);
         $off->save();
 
@@ -346,13 +407,13 @@ class melcloud extends eqLogic
         $etatclim->setName('Etat Clim');
         $etatclim->setEqLogic_id($this->getId());
         $etatclim->setLogicalId('Power');
-        $etatclim->setType('info');
-        $etatclim->setSubType('binary');
-        $etatclim->setTemplate('dashboard', 'line');
+        $etatclim->setType('action');
+        $etatclim->setSubType('other');
+        $etatclim->setTemplate('dashboard', 'prise');
         $etatclim->setIsHistorized(0);
         $etatclim->setIsVisible(1);
         $etatclim->setOrder(7);
-        $etatclim->setDisplay('forceReturnLineAfter','1');
+        $etatclim->setDisplay('showNameOndashboard','0');
         $etatclim->save();
 
 
@@ -369,6 +430,7 @@ class melcloud extends eqLogic
         $ventilation->setOrder(8);
         $ventilation->setConfiguration('maxValue', 5);
         $ventilation->setConfiguration('minValue', 0);
+        $ventilation->setDisplay('forceReturnLineAfter','1');
         $ventilation->save();
 
 
@@ -542,6 +604,8 @@ class melcloudCmd extends cmd
 
     public function execute($_options = array())
     {
+      
+      
 
         if ('Consigne' ==  $this->name || 'Consigne' == $this->getLogicalId()) {
 
@@ -557,7 +621,7 @@ class melcloudCmd extends cmd
         	melcloud::SetModif('false', $this->getEqLogic(),'Power',1);
         }
 
-        if ('On/Off' == $this->name || 'On/Off' == $this->getLogicalId() ) {
+        if ('On/Off' == $this->name || 'On/Off' == $this->getLogicalId() || 'Power' == $this->getLogicalId() ) {
 
             if (isset($_options['slider']) && isset($_options['auto']) == false) {
 
@@ -566,6 +630,15 @@ class melcloudCmd extends cmd
                     melcloud::SetModif('false', $this->getEqLogic(),'Power',1);
                 } else {
                     melcloud::SetModif('true', $this->getEqLogic(),'Power',1);
+                }
+              
+            }else{
+              
+              	if ($this->getLastValue() == 0){
+                  
+                   melcloud::SetModif('true', $this->getEqLogic(),'Power',1);
+                }else{
+                   melcloud::SetModif('false', $this->getEqLogic(),'Power',0);
                 }
             }
 
