@@ -50,6 +50,10 @@ function addCmdToTable(_cmd) {
       tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
       tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
     }
+    if (_cmd.logicalId=='FanSpeed') {
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
+    }
     tr += '</td>';
     tr += '<td>';
     if (is_numeric(_cmd.id)) {
