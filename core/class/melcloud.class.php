@@ -373,50 +373,6 @@ class melcloud extends eqLogic
                             break;
                     }
 
-
-                    /*
-                    // POUR RETRO COMPATIBILITE
-                       switch ($cmd->getName()) {
-                          case 'On/Off':
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getName() . ' ' . $device['Device']['Power']);
-                      //il faut exclure le on/off
-                      switch ($cmd->getLogicalId()) {
-                          case 'OnOff':
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['Power']);
-                              $cmd->setCollectDate('');
-                              $cmd->event($device['Device']['Power']);
-                              break;
-                          case 'Mode':
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['OperationMode']);
-                              $cmd->setCollectDate('');
-                              $cmd->event($device['Device']['OperationMode']);
-                              break;
-                          case 'Ventilation':
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['FanSpeed']);
-                              $cmd->setCollectDate('');
-                              $cmd->event($device['Device']['FanSpeed']);
-                              break;
-                          case 'Consigne':
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device']['SetTemperature']);
-                              $cmd->setCollectDate('');
-                              $cmd->event($device['Device']['SetTemperature']);
-                              break;
-                          case 'refresh':
-                          case 'CurrentWeather':
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' .On ne traite pas cette commande');
-                              break;
-                          default:
-                              log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' ' . $device['Device'][$cmd->getLogicalId()]);
-                              if ('LastTimeStamp' == $cmd->getLogicalId()) {
-                                  $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getLogicalId()]));
-                              } else {
-                                  $cmd->setCollectDate('');
-                                  $cmd->event($device['Device'][$cmd->getLogicalId()]);
-                              }
-                              $cmd->save();
-                              break;
-                      }
-                   */
                 }
                 self::obtenirInfo($mylogical);
                 $mylogical->Refresh();
@@ -722,20 +678,17 @@ class melcloud extends eqLogic
             $sechage->save();
         }
 
-
     }
 
     public function preSave()
     {
-
-
-
 
     }
 
     public function postSave()
     {
 
+      
 
     }
 
@@ -846,7 +799,7 @@ class melcloudCmd extends cmd
                 melcloud::SetModif($_options['slider'], $this->getEqLogic(), 'OperationMode', 6);
             }
         }
-        if ('Rafraichir' == $this->name || 'Rafraichir' == $this->getLogicalId()) {
+        if ('Rafraichir' == $this->name || 'Rafraichir' == $this->getLogicalId() ||'refresh' == $this->getLogicalId()) {
             melcloud::pull();
         }
 
