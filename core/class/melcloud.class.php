@@ -217,11 +217,6 @@ class melcloud extends eqLogic
                     
                     switch ($cmd->getLogicalId()) {
                         
-                        case 'FanSpeed':
-                          $cmd->setConfiguration('lastCmdValue',$device['Device']['FanSpeed']);
-                          $cmd->save(); 
-                        break;
-                      
                        case 'OperationMode':
                           $cmd->setCollectDate('');
                         
@@ -245,30 +240,31 @@ class melcloud extends eqLogic
                         		
                         break;
                         
-                        case 'Power':
-                          $cmd->setConfiguration('lastCmdValue',$device['Device']['Power']);
-                          $cmd->save(); 
-	
-                        break;
-                        
-                        case 'SetTemperature':
-                          $cmd->setConfiguration('lastCmdValue',$device['Device']['SetTemperature']);
-                          $cmd->save(); 
-                        
-                        break;
                         
                         case 'Rafraichir':
                             log::add('melcloud', 'debug', 'log ' . $cmd->getLogicalId() . ' .On ne traite pas cette commande');
                             break;
                         default:
-                            log::add('melcloud', 'debug', 'log '.$cmd->getName().' ' . $cmd->getLogicalId() . ' ' . $device['Device'][$cmd->getLogicalId()]);
-                            if ('LastTimeStamp' == $cmd->getLogicalId()) {
+                        
+                            if ($cmd->getType() == 'action'){
+                              
+                                 log::add('melcloud', 'debug', 'log action '.$cmd->getName().' ' . $cmd->getLogicalId() . ' ' . $device['Device'][$cmd->getLogicalId()]);
+	                             $cmd->setConfiguration('lastCmdValue',$device['Device'][$cmd->getLogicalId()]);
+                              
+                            }else{
+                        
+                              log::add('melcloud', 'debug', 'log info '.$cmd->getName().' ' . $cmd->getLogicalId() . ' ' . $device['Device'][$cmd->getLogicalId()]);
+                              if ('LastTimeStamp' == $cmd->getLogicalId()) {
                                 $cmd->event(str_replace('T', ' ', $device['Device'][$cmd->getLogicalId()]));
-                            } else {
+                              } else {
                                 $cmd->setCollectDate('');
                                 $cmd->event($device['Device'][$cmd->getLogicalId()]);
+                              }
+                            
                             }
-                            $cmd->save();
+                        
+                        	$cmd->save();
+                        
                             break;
                     }
                 
