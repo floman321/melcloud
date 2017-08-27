@@ -15,7 +15,15 @@
  */
 
 
-$("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+$("#table_cmd").sortable({
+    axis: "y",
+    cursor: "move",
+    items: ".cmd",
+    placeholder: "ui-state-highlight",
+    tolerance: "intersect",
+    forcePlaceholderSize: true
+});
+
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
  */
@@ -40,21 +48,17 @@ function addCmdToTable(_cmd) {
     tr += '</td>';
     tr += '<td>';
     tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isVisible" checked/>{{Afficher}}</label><span> ';
-  if(!isset(_cmd.type) || _cmd.type == 'info' ){
+    if (!isset(_cmd.type) || _cmd.type == 'info') {
         tr += '<span><label class="checkbox-inline"><input type="checkbox" class="cmdAttr checkbox-inline" data-l1key="isHistorized" checked/>{{Historiser}}</label></span> ';
     }
     tr += '</td>';
     tr += '<td>';
-    if (_cmd.subType=='numeric') {
-      tr += '<input class="cmdAttr form-control input-sm" data-l1key="unite"  style="width : 100px;" placeholder="Unité" title="Unité">';
-      tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
-      tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
+    if (_cmd.subType == 'numeric') {
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="unite"  style="width : 100px;" placeholder="Unité" title="Unité">';
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
+        tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
     }
-<<<<<<< HEAD
-    if (_cmd.logicalId=='FanSpeed') {
-=======
-   if (_cmd.logicalId=='FanSpeed') {
->>>>>>> upstream/master
+    if (_cmd.logicalId == 'FanSpeed') {
         tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
         tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
     }
@@ -64,7 +68,7 @@ function addCmdToTable(_cmd) {
         tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
     }
-    
+
     tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i>';
     tr += '</td>';
     tr += '</tr>';
