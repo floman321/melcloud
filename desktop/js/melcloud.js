@@ -50,7 +50,11 @@ function addCmdToTable(_cmd) {
       tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
       tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
     }
+<<<<<<< HEAD
     if (_cmd.logicalId=='FanSpeed') {
+=======
+   if (_cmd.logicalId=='FanSpeed') {
+>>>>>>> upstream/master
         tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="minValue" placeholder="Min" title="Min"> ';
         tr += '<input class="cmdAttr form-control input-sm" data-l1key="configuration" style="width : 100px;" data-l2key="maxValue" placeholder="Max" title="Max" style="margin-top : 5px;">';
     }
@@ -60,6 +64,7 @@ function addCmdToTable(_cmd) {
         tr += '<a class="btn btn-default btn-xs cmdAction expertModeVisible" data-action="configure"><i class="fa fa-cogs"></i></a> ';
         tr += '<a class="btn btn-default btn-xs cmdAction" data-action="test"><i class="fa fa-rss"></i> {{Tester}}</a>';
     }
+    
     tr += '<i class="fa fa-minus-circle pull-right cmdAction cursor" data-action="remove"></i>';
     tr += '</td>';
     tr += '</tr>';
