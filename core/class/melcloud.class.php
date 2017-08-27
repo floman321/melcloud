@@ -315,16 +315,14 @@ class melcloud extends eqLogic
     }
 
     //Fonction exécutée automatiquement toutes les minutes par Jeedom
-    public
-    static function cron()
+    public static function cron()
     {
 
 
     }
 
     //Fonction exécutée automatiquement toutes les heures par Jeedom
-    public
-    static function cronHourly()
+    public static function cronHourly()
     {
 
 
@@ -332,8 +330,7 @@ class melcloud extends eqLogic
 
 
     // Fonction exécutée automatiquement tous les jours par Jeedom
-    public
-    static function cronDayly()
+    public static function cronDayly()
     {
 
     }
@@ -341,26 +338,22 @@ class melcloud extends eqLogic
 
     /*     * *********************Méthodes d'instance************************* */
 
-    public
-    function preInsert()
+    public function preInsert()
     {
 
     }
 
-    public
-    function postInsert()
+    public function postInsert()
     {
 
     }
 
-    public
-    function preSave()
+    public function preSave()
     {
 
     }
 
-    public
-    function postSave()
+    public function postSave()
     {
 
         if ($this->getConfiguration('deviceid') == '') {
@@ -372,7 +365,7 @@ class melcloud extends eqLogic
 
         if ($this->getConfiguration('deviceid') != '' && !is_object($RefreshCmd)) {
 
-            if ($this->getConfiguration('typepac') == 'air/air' && false == true) {
+            if ($this->getConfiguration('typepac') == 'air/air') {
 
                 $RoomTemperature = new melcloudCmd();
                 $RoomTemperature->setName('Temperature Sonde');
@@ -740,26 +733,22 @@ class melcloud extends eqLogic
 
     }
 
-    public
-    function preUpdate()
+    public function preUpdate()
     {
 
     }
 
-    public
-    function postUpdate()
+    public function postUpdate()
     {
 
     }
 
-    public
-    function preRemove()
+    public function preRemove()
     {
 
     }
 
-    public
-    function postRemove()
+    public function postRemove()
     {
 
     }
