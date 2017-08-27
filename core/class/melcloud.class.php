@@ -770,7 +770,7 @@ class melcloudCmd extends cmd
       
         if ('SetTemperatureZone1' == $this->getLogicalId()) {
             if (isset($_options['slider'])) {
-                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperatureZone1',34359738880);
+                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperatureZone1', 8589934592);
             }
         }
       
