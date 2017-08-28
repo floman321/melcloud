@@ -341,7 +341,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
       
          if ($this->getConfiguration('deviceid') != '' && !is_object($RefreshCmd)) {
            
-             if ($this->getConfiguration('typepac') == 'air/air'){
+             if ($this->getConfiguration('typepac') == 'air/air' && false==true){
           		
                 $RoomTemperature = new melcloudCmd();
                 $RoomTemperature->setName('Temperature Sonde');
@@ -565,39 +565,37 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                $modesechage->save();
                
              }else{
-              
-               $RoomTemperature = new melcloudCmd();
-               $RoomTemperature->setName('Temp 1');
-               $RoomTemperature->setEqLogic_id($this->getId());
-               $RoomTemperature->setLogicalId('RoomTemperatureZone1');
-               $RoomTemperature->setType('info');
-               $RoomTemperature->setSubType('numeric');
-               $RoomTemperature->setIsHistorized(0);
-               $RoomTemperature->setIsVisible(1);
-               $RoomTemperature->setUnite('°C');
-               $RoomTemperature->setTemplate('dashboard', 'line');
-               $RoomTemperature->setOrder(1);
-               $RoomTemperature->setValue(0);
-               $RoomTemperature->event(0);
-               $RoomTemperature->save();
-
-
-               $RoomTemperature2 = new melcloudCmd();
-               $RoomTemperature2->setName('Temp 2');
-               $RoomTemperature2->setEqLogic_id($this->getId());
-               $RoomTemperature2->setLogicalId('RoomTemperatureZone2');
-               $RoomTemperature2->setType('info');
-               $RoomTemperature2->setSubType('numeric');
-               $RoomTemperature2->setIsHistorized(0);
-               $RoomTemperature2->setIsVisible(1);
-               $RoomTemperature2->setUnite('°C');
-               $RoomTemperature2->setTemplate('dashboard', 'line');
-               $RoomTemperature2->setOrder(2);
-               $RoomTemperature2->setValue(0);
-               $RoomTemperature2->event(0);
-               $RoomTemperature2->save();
-
-               $OutdoorTemperature = new melcloudCmd();
+               
+               
+                 $maj = new melcloudCmd();
+               $maj->setName('Dernière mise à jour');
+               $maj->setEqLogic_id($this->getId());
+               $maj->setLogicalId('LastTimeStamp');
+               $maj->setType('info');
+               $maj->setSubType('string');
+               $maj->setIsHistorized(0);
+               $maj->setIsVisible(1);
+               $maj->setUnite('°C');
+               $maj->setTemplate('dashboard', 'line');
+               $maj->setOrder(1);
+               $maj->setValue(0);
+               $maj->event(0);
+               $maj->save();
+               
+                  $etatclim = new melcloudCmd();
+                $etatclim->setName('Etat Clim');
+                $etatclim->setEqLogic_id($this->getId());
+                $etatclim->setLogicalId('Power');
+                $etatclim->setType('action');
+                $etatclim->setSubType('other');
+                $etatclim->setTemplate('dashboard', 'prise');
+                $etatclim->setIsHistorized(0);
+                $etatclim->setIsVisible(1);
+                $etatclim->setOrder(2);
+                $etatclim->setDisplay('showNameOndashboard','0');
+                $etatclim->save();
+               
+                 $OutdoorTemperature = new melcloudCmd();
                $OutdoorTemperature->setName('Exterieur');
                $OutdoorTemperature->setEqLogic_id($this->getId());
                $OutdoorTemperature->setLogicalId('OutdoorTemperature');
@@ -611,56 +609,22 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                $OutdoorTemperature->setValue(0);
                $OutdoorTemperature->event(0);
                $OutdoorTemperature->save();
-
-               $maj = new melcloudCmd();
-               $maj->setName('Dernière mise à jour');
-               $maj->setEqLogic_id($this->getId());
-               $maj->setLogicalId('LastTimeStamp');
-               $maj->setType('info');
-               $maj->setSubType('string');
-               $maj->setIsHistorized(0);
-               $maj->setIsVisible(1);
-               $maj->setUnite('°C');
-               $maj->setTemplate('dashboard', 'line');
-               $maj->setOrder(4);
-               $maj->setValue(0);
-               $maj->event(0);
-               $maj->save();
-
-               $refresh = new melcloudCmd();
-               $refresh->setLogicalId('refresh');
-               $refresh->setIsVisible(1);
-               $refresh->setName('Rafraichir');
-               $refresh->setEqLogic_id($this->getId());
-               $refresh->setType('action');
-               $refresh->setSubType('other');
-               $refresh->setOrder(5);
-               $refresh->save();
-
-               $lien = new melcloudCmd();
-               $lien->setLogicalId('lienmelcloud');
-               $lien->setIsVisible(1);
-               $lien->setName('Site Melcloud');
-               $lien->setEqLogic_id($this->getId());
-               $lien->setType('action');
-               $lien->setSubType('other');
-               $lien->setOrder(99);
-               $lien->setHtml('enable','1');
-               $lien->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
-               $lien->save();
-
-               $ForcedHotWaterMode = new melcloudCmd();
-               $ForcedHotWaterMode->setName('Eau Chaude Force');
-               $ForcedHotWaterMode->setEqLogic_id($this->getId());
-               $ForcedHotWaterMode->setLogicalId('ForcedHotWaterMode');
-               $ForcedHotWaterMode->setType('action');
-               $ForcedHotWaterMode->setSubType('other');
-               $ForcedHotWaterMode->setTemplate('dashboard', 'prise');
-               $ForcedHotWaterMode->setIsHistorized(0);
-               $ForcedHotWaterMode->setIsVisible(1);
-               $ForcedHotWaterMode->setOrder(6);
-               $ForcedHotWaterMode->setDisplay('showNameOndashboard','1');
-               $ForcedHotWaterMode->save();
+              
+               $RoomTemperature = new melcloudCmd();
+               $RoomTemperature->setName('Temp 1');
+               $RoomTemperature->setEqLogic_id($this->getId());
+               $RoomTemperature->setLogicalId('RoomTemperatureZone1');
+               $RoomTemperature->setType('info');
+               $RoomTemperature->setSubType('numeric');
+               $RoomTemperature->setIsHistorized(0);
+               $RoomTemperature->setIsVisible(1);
+               $RoomTemperature->setUnite('°C');
+               $RoomTemperature->setTemplate('dashboard', 'line');
+               $RoomTemperature->setOrder(4);
+               $RoomTemperature->setValue(0);
+               $RoomTemperature->event(0);
+               $RoomTemperature->save();
+               
                
                 $Consigne = new melcloudCmd();
                 $Consigne->setName('Consigne 1');
@@ -675,8 +639,24 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                 $Consigne->setDisplay('slider_placeholder', 'Temperature en °c ex');
                 $Consigne->setConfiguration('maxValue', 30);
                 $Consigne->setConfiguration('minValue', 10);
-                $Consigne->setOrder(7);
+                $Consigne->setOrder(5);
                 $Consigne->save();
+               
+               
+               $RoomTemperature2 = new melcloudCmd();
+               $RoomTemperature2->setName('Temp 2');
+               $RoomTemperature2->setEqLogic_id($this->getId());
+               $RoomTemperature2->setLogicalId('RoomTemperatureZone2');
+               $RoomTemperature2->setType('info');
+               $RoomTemperature2->setSubType('numeric');
+               $RoomTemperature2->setIsHistorized(0);
+               $RoomTemperature2->setIsVisible(1);
+               $RoomTemperature2->setUnite('°C');
+               $RoomTemperature2->setTemplate('dashboard', 'line');
+               $RoomTemperature2->setOrder(6);
+               $RoomTemperature2->setValue(0);
+               $RoomTemperature2->event(0);
+               $RoomTemperature2->save();
                
                 $Consigne2 = new melcloudCmd();
                 $Consigne2->setName('Consigne 2');
@@ -691,8 +671,64 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                 $Consigne2->setDisplay('slider_placeholder', 'Temperature en °c ex');
                 $Consigne2->setConfiguration('maxValue', 30);
                 $Consigne2->setConfiguration('minValue', 10);
-                $Consigne2->setOrder(8);
+                $Consigne2->setOrder(7);
                 $Consigne2->save();
+
+              
+				   $ForcedHotWaterMode = new melcloudCmd();
+               $ForcedHotWaterMode->setName('Eau Chaude Force');
+               $ForcedHotWaterMode->setEqLogic_id($this->getId());
+               $ForcedHotWaterMode->setLogicalId('ForcedHotWaterMode');
+               $ForcedHotWaterMode->setType('action');
+               $ForcedHotWaterMode->setSubType('other');
+               $ForcedHotWaterMode->setTemplate('dashboard', 'prise');
+               $ForcedHotWaterMode->setIsHistorized(0);
+               $ForcedHotWaterMode->setIsVisible(1);
+               $ForcedHotWaterMode->setOrder(8);
+               $ForcedHotWaterMode->setDisplay('showNameOndashboard','1');
+               $ForcedHotWaterMode->save();
+               
+               
+                $temphotwater = new melcloudCmd();
+               $temphotwater->setName('T° eau chaude');
+               $temphotwater->setEqLogic_id($this->getId());
+               $temphotwater->setLogicalId('TankWaterTemperature');
+               $temphotwater->setType('info');
+               $temphotwater->setSubType('numeric');
+               $temphotwater->setIsHistorized(0);
+               $temphotwater->setIsVisible(1);
+               $temphotwater->setUnite('°C');
+               $temphotwater->setOrder(9);
+               $temphotwater->setValue(0);
+               $temphotwater->event(0);
+               $temphotwater->save();
+             
+
+               $refresh = new melcloudCmd();
+               $refresh->setLogicalId('refresh');
+               $refresh->setIsVisible(1);
+               $refresh->setName('Rafraichir');
+               $refresh->setEqLogic_id($this->getId());
+               $refresh->setType('action');
+               $refresh->setSubType('other');
+               $refresh->setOrder(10);
+               $refresh->save();
+
+               $lien = new melcloudCmd();
+               $lien->setLogicalId('lienmelcloud');
+               $lien->setIsVisible(1);
+               $lien->setName('Site Melcloud');
+               $lien->setEqLogic_id($this->getId());
+               $lien->setType('action');
+               $lien->setSubType('other');
+               $lien->setOrder(99);
+               $lien->setHtml('enable','1');
+               $lien->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
+               $lien->save();
+
+            
+               
+               
                
              }
          }
@@ -761,16 +797,16 @@ class melcloudCmd extends cmd
         if ('ForcedHotWaterMode' == $this->getLogicalId()) {
           
           if ($this->getLastValue() == 0){
-            melcloud::SetModif('true', $this->getEqLogic(),'ForcedHotWaterMode',65536);
+            melcloud::SetModif('true', $this->getEqLogic(),'ForcedHotWaterMode',1);
           }else{
-            melcloud::SetModif('false', $this->getEqLogic(),'ForcedHotWaterMode',65536);
+            melcloud::SetModif('false', $this->getEqLogic(),'ForcedHotWaterMode',0);
           }
           
         }
       
         if ('SetTemperatureZone1' == $this->getLogicalId()) {
             if (isset($_options['slider'])) {
-                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperatureZone1', 8589934592);
+                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperatureZone1',34359738880);
             }
         }
       
