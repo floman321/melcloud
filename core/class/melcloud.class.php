@@ -203,9 +203,12 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
         log::add('melcloud', 'debug', 'pull : ' . $device['DeviceName']);
         if ($device['DeviceID'] == '') return;
         log::add('melcloud', 'debug', $device['DeviceID'] . ' ' . $device['DeviceName']);
+      
         foreach (eqLogic::byType('melcloud', true) as $mylogical) {
+          
             if ($mylogical->getConfiguration('namemachine') == $device['DeviceName']) {
-                log::add('melcloud', 'info', 'setdevice ' . $device['Device']['DeviceID']);
+              
+                log::add('melcloud', 'debug', 'setdevice ' . $device['Device']['DeviceID']);
                 $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
                 $mylogical->setConfiguration('buildid', $device['BuildingID']);
 				
@@ -215,11 +218,17 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                 if ($device['Device']['DeviceType'] == '1'){
                   $mylogical->setConfiguration('typepac', 'air/eau');
                 }
+              
+                $device['Device']['ListHistory24Formatters'] = '';
                 
               
+ 	            if ($mylogical->getConfiguration('rubriques') == '' )
+                {
+                  $rubri = print_r($device['Device']);
+                  $mylogical->setConfiguration('rubriques', $rubri);
+                }
               
                 $mylogical->save();
-              
                 
                 foreach ($mylogical->getCmd() as $cmd) {
                     
@@ -341,7 +350,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
       
          if ($this->getConfiguration('deviceid') != '' && !is_object($RefreshCmd)) {
            
-             if ($this->getConfiguration('typepac') == 'air/air' && false==true){
+             if ($this->getConfiguration('typepac') == 'air/air'){
           		
                 $RoomTemperature = new melcloudCmd();
                 $RoomTemperature->setName('Temperature Sonde');
@@ -806,7 +815,7 @@ class melcloudCmd extends cmd
       
         if ('SetTemperatureZone1' == $this->getLogicalId()) {
             if (isset($_options['slider'])) {
-                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperatureZone1',34359738880);
+                melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperatureZone1',8589934592);
             }
         }
       
