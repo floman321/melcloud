@@ -1,0 +1,26 @@
+<div class="cmd container-fluid tooltips cmd cmd-widget" style="width:200px;" data-type="info"
+     data-subtype="string" data-cmd_id="#id#">
+    <center>
+        <div class='cmdName' style="font-weight: bold;font-size : 12px;">#name#</div>
+    </center>
+    <span class="pull-left">
+            <img class="info iconCmd#id#" width="35px"/>
+    </span>
+    <span class="tempExt#id#"></span>
+    <script>
+        var weatherValue = #state#;
+        $('.iconCmd#id#').empty();
+        if (weatherValue != null) {
+            if (weatherValue.Icon != '') {
+                $('.iconCmd#id#').attr('src', 'https://app.melcloud.com/css/weather/' + weatherValue.Icon + '.png');
+            }
+            if (weatherValue.ConditionName != '') {
+                $('.iconCmd#id#').attr('alt', weatherValue.ConditionName);
+                $('.tempExt#id#').append('<span style="margin-left: 5px;font-size: 0.8em;">' + weatherValue.ConditionName + '</span><br>');
+            }
+            if (weatherValue.Temperature != '' && weatherValue.Humidity != '') {
+                $('.tempExt#id#').append('<span style="margin-left: 5px;font-size: 0.8em;">' + weatherValue.Temperature + ' °C / ' + weatherValue.Humidity + ' %</span>');
+            }
+        }
+    </script>
+</div>
