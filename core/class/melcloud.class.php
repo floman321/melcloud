@@ -341,7 +341,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
       
          if ($this->getConfiguration('deviceid') != '' && !is_object($RefreshCmd)) {
            
-             if ($this->getConfiguration('typepac') == 'air/air' && false==true){
+             if ($this->getConfiguration('typepac') == 'air/air'){
           		
                 $RoomTemperature = new melcloudCmd();
                 $RoomTemperature->setName('Temperature Sonde');
