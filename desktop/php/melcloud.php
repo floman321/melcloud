@@ -134,6 +134,15 @@ $eqLogics = eqLogic::byType($plugin->getId());
                                        data-l2key="buildid" placeholder="Ne pas Remplir"/>
                             </div>
                         </div>
+                        
+                        
+                         <div class="form-group">
+                            <label class="col-sm-3 control-label">Rubriques Exploitables : </label>
+                            <div class="col-sm-3">                              
+                                <textarea name="textarea" rows="10" cols="50" class="eqLogicAttr configuration " data-l1key="configuration"
+                                       data-l2key="rubriques"> </textarea>
+                            </div>
+                        </div>
 
 
                     </fieldset>
