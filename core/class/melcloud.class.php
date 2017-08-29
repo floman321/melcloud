@@ -224,8 +224,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
               
  	            if ($mylogical->getConfiguration('rubriques') == '' )
                 {
-                  $rubri = print_r($device['Device']);
-                  $mylogical->setConfiguration('rubriques', $rubri);
+                  $mylogical->setConfiguration('rubriques', print_r($device['Device'],true));
                 }
               
                 $mylogical->save();
