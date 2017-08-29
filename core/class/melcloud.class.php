@@ -531,6 +531,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                 $ventile->setOrder(14);
                 $ventile->setDisplay('showIconAndNamedashboard','1');
                 $ventile->setDisplay('icon','<i class="icon jeedom-ventilo"></i>');
+                 $ventile->setDisplay('forceReturnLineAfter','1');
                 $ventile->save();
 
 
