@@ -1,13 +1,18 @@
 1- Aller dans la configuration du plugin : +
-Remplir votre login et mot de passe melcloud et cliquer sur le bouton obtenir token+
+Remplir votre login et mot de passe melcloud et cliquer sur le bouton "Obtenir Token aupres de Melcloud"
+puis
+le bouton "Mise à Jour des informations"
 
-2. Créer un nouveau périphérique :+
-Remplir le champ nom de la machine avec le nom sur l'interface web.+
+2. Créer un nouveau équipement : +
+Remplir le champ nom de la machine avec le nom de la clim dans l'application/site web Melcloud.+
 Attendre 5 minutes, si tout est ok, les 2 autres champs sont remplis (au dessous).+
 
 3. Profiter du widget+
 +
-Liste des rubriques utilsables dans le nom des champs+
+Pour modifier l'apparence d'une commande, 
+dans la configuration de la pac, cliquer sur la roue cranté a droit, puis onglet affichage.
++
+Liste des rubriques utilsables dans le nom des champs pour pac AIR/AIR+
 +
 "LastTimeStamp": "2016-03-18T15:57:00"
 "DeviceType": 0
