@@ -54,7 +54,7 @@
 <div class="form-group">
 <label class="col-lg-4 control-label">Etape 2 : </label>
 <div class="col-lg-8">
-<a class="btn btn-success bt_restartTeleinfoDeamon2">Mise à Jour des informations</a>
+<a class="btn btn-success bt_restartTeleinfoDeamon2">Création Automatique et Mise à Jour</a>
 </div>
 </div>
 
