@@ -204,8 +204,6 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
         log::add('melcloud', 'debug', 'pull : ' . $device['DeviceName']);
         if ($device['DeviceID'] == '') return;
         log::add('melcloud', 'debug', $device['DeviceID'] . ' ' . $device['DeviceName']);
-        
-        $device['DeviceName'] .='flo'; 
       
         $theEQlogic = eqLogic::byTypeAndSearhConfiguration('melcloud','"namemachine":"'.$device['DeviceName'].'"');
         if (count($theEQlogic) == 0){
@@ -222,11 +220,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
           
           $mylogical =  $theEQlogic[0];
       
-       // log::add('melcloud', 'debug', 'pull :  trying config build id ' . $theEQlogic[0]->getConfiguration('BuildingID'));
-      
-        //foreach (eqLogic::byType('melcloud', true) as $mylogical) {
-          
-            if ($mylogical->getConfiguration('namemachine') == $device['DeviceName']) {
+            if ($mylogical->getIsEnable()) {
               
                 log::add('melcloud', 'debug', 'setdevice ' . $device['Device']['DeviceID']);
                 $mylogical->setConfiguration('deviceid', $device['Device']['DeviceID']);
