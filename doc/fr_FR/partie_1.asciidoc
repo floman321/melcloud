@@ -1,83 +1,32 @@
-1- Aller dans la configuration du plugin :
-  Remplir votre login et mot de passe melcloud
-  Attendre jusqu'a 1h pour obtenir un token.
-  
-2. Créer un nouveau périphérique : 
-  Remplir le champ nom de la machine avec le nom sur l'interface web.
-  Attendre 5 minutes, si tout est ok, les 2 autres champs sont remplis (au dessous). 
-    
-3. Profiter du widget
+Voici sa structure: tout d’abord un dossier du nom de votre plugin (son identifiant unique plus exactement) qui doit contenir les sous-dossiers suivants :
 
-Liste des rubriques utilsables dans le nom des champs
+- 3rdparty : dossier contenant les librairies externes utilisées dans le plugin (exemple pour le plugin SMS une librairie pour la communication série en php)
+- core : dossier contenant tous les fichiers de fonctionnement interne
+- class : dossier contenant la classe du plugin
+- php : dossier pouvant contenir des fonctions ne devant pas forcément appartenir à une classe (souvent utilisé pour permettre l’inclusion de multiples classes ou fichiers de configuration en une fois)
+- config : fichier de configuration du plugin
+- ajax : dossier contenant les fichiers cibles d’appels AJAX
+- desktop : dossier contenant la vue "bureau" du plugin (en opposition avec la vue "mobile")
+* js : dossier contenant tous les fichiers de type javascript
+* php : dossier contenant tous les fichiers de type php qui font de l’affichage
+* css : il n’y en pas ici mais, si besoin, tous les fichiers css du plugin vont dedans
+* modal  : dossier contenant le code des modals du plugin
+- plugin_info : contient les fichiers permettant à Jeedom de qualifier le plugin, de faire son installation et sa configuration
+* info.xml : fichier contenant les informations de base du plugin (il est obligatoire sinon Jeedom ne verra pas le plugin), il contient entre autre l’identifiant du module, la description, les instructions d’installation...
+* install.php : fichier contenant (si besoin) les méthodes d’installation et de désinstallation du plugin
+* configuration.php : fichier contenant les paramètres à configurer du plugin indépendants des équipements de celui-ci (exemple pour le module Zwave l’ip du Raspberry Pi ayant la carte Razberry)
+- doc : doit contenir la doc du plugin au format asciidoc, la racine et le fichier index.asciidoc. Toutes les images sont dans doc/images. La doc elle-même est dans un dossier en fonction de la langue (ex en francais : doc/fr_FR)
 
-"LastTimeStamp": "2016-03-18T15:57:00"
-"DeviceType": 0
-"CanCool": true
-"CanHeat": true
-"CanDry": false
-"HasAutomaticFanSpeed": false
-"AirDirectionFunction": true
-"SwingFunction": true
-"NumberOfFanSpeeds": 5
-"UseTemperatureA": true
-"TemperatureIncrementOverride": 0
-"TemperatureIncrement": 0.5
-"MinTempCoolDry": 16
-"MaxTempCoolDry": 31
-"MinTempHeat": 10
-"MaxTempHeat": 31
-"MinTempAutomatic": 16
-"MaxTempAutomatic": 31
-"LegacyDevice": false
-"UnitSupportsStandbyMode": true
-"ModelIsAirCurtain": false
-"ModelSupportsFanSpeed": true
-"ModelSupportsAuto": true
-"ModelSupportsHeat": true
-"ModelSupportsDry": true
-"ModelSupportsVaneVertical": true
-"ModelSupportsVaneHorizontal": true
-"ModelSupportsStandbyMode": true
-"Power": true
-"RoomTemperature": 20
-"SetTemperature": 19
-"ActualFanSpeed": 2
-"FanSpeed": 0
-"AutomaticFanSpeed": true
-"VaneVerticalDirection": 1
-"VaneVerticalSwing": false
-"VaneHorizontalDirection": 0
-"VaneHorizontalSwing": false
-"OperationMode": 1
-"EffectiveFlags": 0
-"InStandbyMode": false
-"DefaultCoolingSetTemperature": null
-"DefaultHeatingSetTemperature": null
-"RoomTemperatureLabel": 0
-"DeviceID": ??????
-"MacAddress": "??????????"
-"SerialNumber": "??????????"
-"TimeZoneID": 121
-"DiagnosticMode": 0
-"DiagnosticEndDate": null
-"ExpectedCommand": 1
-"Owner": null
-"DetectedCountry": 78
-"FirmwareDeployment": null
-"FirmwareUpdateAborted": false
-"WifiSignalStrength": -81
-"WifiAdapterStatus": "NORMAL"
-"Position": "unregistered"
-"PCycle": 5
-"RecordNumMax": 5
-"ErrorCode": 8000
-"HasError": false
-"LastReset": "2015-12-08T09:44:27.907"
-"FlashWrites": 0
-"ProtocolVersion": 768
-"UnitVersion": 8192
-"FirmwareAppVersion": 4000
-"FirmwareWebVersion": 2000
-"FirmwareWlanVersion": 3005009
-"EffectivePCycle": 5
-"Units": [0]
+Pour ce qui est de la convention de nommage des fichiers voici les impératifs :
+
+- les fichiers de class php doivent obligatoirement se finir par ".class.php"
+- si ce n’est pas géré par un fichier d’inclusion, le nom du fichier doit être "#nom_class#.class.php"
+- les fichiers servant uniquement de point d’entrée pour inclure de multiples fichiers doivent se finir par ".inc.php"
+- les fichiers de configuration doivent se finir par ".config.php"
+- les fichiers d’aide à une page doivent être nommés de cette forme "help.#nomdelapage#.php". Le plus souvent un plugin n’ayant qu’une page de vue, le fichier d’aide aura donc le nom suivant "help.#PLUGIN_ID#.php" (le nom de la première page d’un plugin est forcément le même que l'ID de celui-ci, et donc que le nom du dossier contenant le plugin)
+
+Voici les recommandations :
+
+- les fichiers de type AJAX doivent se finir par ".ajax.php"
+- le nom de la première page de vue d’un plugin doit être le même que l’ID du plugin
+- le nom du fichier JS (s’il y en a un) de la première page de vue du plugin doit être l’ID du plugin
