@@ -5,3 +5,5 @@ Remplir votre login et mot de passe melcloud et cliquer sur le bouton obtenir to
 
 2- Cliquer sur le bouton mettre a jour
 
+3- Aller voir les pac détectés dans le plugin.
+Rendre visible et activer les pacs.
