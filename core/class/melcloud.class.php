@@ -880,9 +880,9 @@ class melcloudCmd extends cmd
     {
       
       
-        if ('Consigne' ==  $this->name || 'Consigne' == $this->getLogicalId()) {
+        if ('Consigne' ==  $this->name || 'Consigne' == $this->getLogicalId() || 'SetTemperature' == $this->getLogicalId() ) {
 
-            if (isset($_options['slider']) && isset($_options['auto']) == false) {
+            if (isset($_options['slider'])) {
                 melcloud::SetModif($_options['slider'], $this->getEqLogic(),'SetTemperature',4);
             }
         }
