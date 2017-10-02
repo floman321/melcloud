@@ -28,7 +28,7 @@ class melcloud extends eqLogic
 
 public static function SetModif($option, $mylogical,$flag,$idflag){
      
-        log::add('melcloud', 'info', 'Modification '.$flag.' '.$idflag);
+        log::add('melcloud', 'info', 'Modification '.$flag.' '.$idflag.' '.$option);
   
         $montoken = config::byKey('MyToken', 'melcloud', '');
         if ($montoken != '') {
