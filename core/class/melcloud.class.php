@@ -890,9 +890,9 @@ class melcloudCmd extends cmd
         if ('ForcedHotWaterMode' == $this->getLogicalId()) {
           
           if ($this->getLastValue() == 0){
-            melcloud::SetModif('true', $this->getEqLogic(),'ForcedHotWaterMode',1);
+            melcloud::SetModif('true', $this->getEqLogic(),'ForcedHotWaterMode',65536);
           }else{
-            melcloud::SetModif('false', $this->getEqLogic(),'ForcedHotWaterMode',0);
+            melcloud::SetModif('false', $this->getEqLogic(),'ForcedHotWaterMode',65536);
           }
           
         }
