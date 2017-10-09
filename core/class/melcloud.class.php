@@ -539,7 +539,7 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                 }
 
                	$Chauffage = $this->getCmd(null, 'Chauffage');
-                if (!is_object($refresh)) {
+                if (!is_object($Chauffage)) {
                     $Chauffage = new melcloudCmd();
                     $Chauffage->setLogicalId('Chauffage');
                     $Chauffage->setIsVisible(1);
@@ -960,7 +960,7 @@ class melcloudCmd extends cmd
         if ('sechage' == $this->getLogicalId()) {
         	melcloud::SetModif(2, $this->getEqLogic(),'OperationMode',6);
         }
-        if ('Mode' == $this->name || 'Mode' == $this->getLogicalId()) {
+        if ('Mode' == $this->name || 'Mode' == $this->getLogicalId() || 'OperationMode' == $this->getLogicalId()) {
             if (isset($_options['slider'])) {
                 melcloud::SetModif($_options['slider'], $this->getEqLogic(),'OperationMode',6);
             }
