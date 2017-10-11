@@ -628,6 +628,26 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                    $modesechage->setDisplay('icon','<i class="icon jeedom-ventilo"></i>');
                    $modesechage->save();
                }
+		     
+		$NextCommunication = $this->getCmd(null, 'NextCommunication');
+        	if (!is_object($NextCommunication)) {
+
+                  $NextCommunication = new melcloudCmd();
+                  $NextCommunication->setName('Prochaine mise à jour');
+                  $NextCommunication->setEqLogic_id($this->getId());
+                  $NextCommunication->setLogicalId('NextCommunication');
+                  $NextCommunication->setType('info');
+                  $NextCommunication->setSubType('string');
+                  $NextCommunication->setIsHistorized(0);
+                  $NextCommunication->setIsVisible(1);
+                  $NextCommunication->setUnite('°C');
+                  $NextCommunication->setTemplate('dashboard', 'line');
+                  $NextCommunication->setOrder(17);
+                  $NextCommunication->setValue(0);
+                  $NextCommunication->event(0);
+                  $NextCommunication->save();
+                  
+                }
                
              }else{
                
@@ -821,6 +841,26 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
 				   $lien->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
 				   $lien->save();
 			   }
+		     
+		     $NextCommunication = $this->getCmd(null, 'NextCommunication');
+        	if (!is_object($NextCommunication)) {
+
+                  $NextCommunication = new melcloudCmd();
+                  $NextCommunication->setName('Prochaine mise à jour');
+                  $NextCommunication->setEqLogic_id($this->getId());
+                  $NextCommunication->setLogicalId('NextCommunication');
+                  $NextCommunication->setType('info');
+                  $NextCommunication->setSubType('string');
+                  $NextCommunication->setIsHistorized(0);
+                  $NextCommunication->setIsVisible(1);
+                  $NextCommunication->setUnite('°C');
+                  $NextCommunication->setTemplate('dashboard', 'line');
+                  $NextCommunication->setOrder(11);
+                  $NextCommunication->setValue(0);
+                  $NextCommunication->event(0);
+                  $NextCommunication->save();
+                  
+                }
 
 
              }
