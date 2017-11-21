@@ -1,14 +1,14 @@
-1- Aller dans la configuration du plugin :
-Remplir votre login et mot de passe melcloud et cliquer sur le bouton obtenir token
+1- Aller dans la configuration du plugin : +
+Remplir votre login et mot de passe melcloud et cliquer sur le bouton obtenir token+
 
-2. Créer un nouveau périphérique :
-Remplir le champ nom de la machine avec le nom sur l'interface web.
-Attendre 5 minutes, si tout est ok, les 2 autres champs sont remplis (au dessous).
+2. Créer un nouveau périphérique :+
+Remplir le champ nom de la machine avec le nom sur l'interface web.+
+Attendre 5 minutes, si tout est ok, les 2 autres champs sont remplis (au dessous).+
 
-3. Profiter du widget
-
-Liste des rubriques utilsables dans le nom des champs
-
+3. Profiter du widget+
++
+Liste des rubriques utilsables dans le nom des champs+
++
 "LastTimeStamp": "2016-03-18T15:57:00"
 "DeviceType": 0
 "CanCool": true
@@ -82,13 +82,18 @@ Liste des rubriques utilsables dans le nom des champs
 "Units": [0]
 
 
-Commandes info conseillées : 
-On/Off : marche arret du climatiseur
-SetTemperature : Temprérature réglé sur le climatiseur
-RoomTemperature : Température de la pièce
-
-
-Commande actionnables : 
- -Consigne (en degré ex:19.5)
- -Ventilation 1 à 5 sachant que 0 = automatique
- -Mode : Chaud : 1 Seche : 2 Rafraichir : 3 Ventilation : 7 Auto : 8
+Commandes info conseillées : +
+Power : est ce que la clim est en marche/arret +
+SetTemperature : Temprérature réglé sur le climatiseur+
+RoomTemperature : Température de la pièce+
+NextCommunication : prochaine communication (lors d'une commande depuis jeedom ou application mobile)+
+FanSpeed : vitesse ventilation en mode manuel +
+ActualFanSpeed : : vitesse ventilation en mode automatique+
+Mode: Mode encours d'utilisation : Chaud : 1 Seche : 2 Rafraichir : 3 Ventilation : 7 Auto : 8+
+LastTimeStamp : dernier mise à jour sur jeedom+
++
+Commande actionnables : +
+ -Consigne (en degré ex:19.5)+
+ -Ventilation 1 à 5 sachant que 0 = automatique+
+ -Mode : Chaud : 1 Seche : 2 Rafraichir : 3 Ventilation : 7 Auto : 8+
+On/Off : marche arret du climatiseur+
