@@ -1,4 +1,4 @@
-1- Aller dans la configuration du plugin : +
+1- Gehen Sie zur Plugin-Konfiguration : +
 Remplir votre login et mot de passe melcloud et cliquer sur le bouton obtenir token+
 
 2. Créer un nouveau périphérique :+
@@ -73,7 +73,7 @@ Liste des rubriques utilsables dans le nom des champs+
 "HasError": false
 "LastReset": "2015-12-08T09:44:27.907"
 "FlashWrites": 0
-"ProtocolVersion": 768
+"ProtokollVersion": 768
 "UnitVersion": 8192
 "FirmwareAppVersion": 4000
 "FirmwareWebVersion": 2000
