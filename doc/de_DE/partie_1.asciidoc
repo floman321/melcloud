@@ -1,4 +1,4 @@
-1- Aller dans la configuration du plugin :
+1- Gehen Sie zur Plugin-Konfiguration :
   Remplir votre login et mot de passe melcloud
   Attendre jusqu'a 1h pour obtenir un token.
   
