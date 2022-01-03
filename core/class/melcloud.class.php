@@ -166,8 +166,8 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
             foreach ($values as $maison) {
                 log::add('melcloud', 'debug', 'Maison ' . $maison['Name']);
                 for ($i = 0; $i < count($maison['Structure']['Devices']); $i++) {
-                    log::add('melcloud', 'debug', 'pull : device 1 ' . $i . ' ' . $device['DeviceName']);
                     $device = $maison['Structure']['Devices'][$i];
+                    log::add('melcloud', 'debug', 'pull : device 1 ' . $i . ' ' . $device['DeviceName']);
                     self::pullCommande($device);
                 }
                 // FLOORS
