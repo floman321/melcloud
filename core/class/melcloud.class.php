@@ -609,8 +609,8 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
                    $lien->setType('action');
                    $lien->setSubType('other');
                    $lien->setOrder(99);
-                   $lien->setHtml('enable','1');
-                   $lien->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
+                   $lien->setDisplay('enable','1');
+                   $lien->setDisplay('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
                    $lien->save();
                }
 
@@ -817,8 +817,8 @@ public static function SetModif($option, $mylogical,$flag,$idflag){
 				   $lien->setType('action');
 				   $lien->setSubType('other');
 				   $lien->setOrder(99);
-				   $lien->setHtml('enable','1');
-				   $lien->setHtml('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
+				   $lien->setDisplay('enable','1');
+				   $lien->setDisplay('dashboard','<br><br><i class="icon maison-home63"> </i><a href="https://app.melcloud.com" target="_blank">#name_display#</a>');
 				   $lien->save();
 			   }
 
