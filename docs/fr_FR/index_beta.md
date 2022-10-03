@@ -4,7 +4,7 @@ Plugin permettant de communiquer avec les pompes à chaleur (PAC) de la marque M
 
 # Configuration :
 A l'installation du plugin, les paramètres de connexion sont à remplir dans la configuration du plugin :
-![image](./Configuration.png?raw=true)
+![configuration](../Configuration.png?raw=true)
 
 Voici l'ordre des éléments à renseigner :
 1. L'adresse email et le mot de passe utlisé pour se connecter à MELCloud (l'application)
@@ -23,7 +23,7 @@ Il ne vous reste donc qu'à activer et à associer chaque éléments au bon obje
 
 # Widget :
 Une fois créé, chaque équipement sera visible (si demandé) sur le dashboard avec le design suivant :
-![image](./Widget.png?raw=true)
+![widget](../Widget.png?raw=true)
 Design que j'ai voulu le plus proche possible de l'appli MELCloud, afin de garder les habitudes des personnes ayant déjà celle-ci.
 
 Lors de l'envoie d'une nouvelle valeur (de mode, de température, ...) depuis Jeedom, des petits points apparaissent à la suite du mot `rafraichir`, indiquant la communication entre Jeedom et votre PAC via les serveurs MELCloud. Ceux-ci disparaissent quand l'échange est terminé, et l'ensemble du widget est mis à jour avec les dernières valeurs d'état de la PAC.
