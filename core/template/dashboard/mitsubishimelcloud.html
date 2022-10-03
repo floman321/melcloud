@@ -1,0 +1,245 @@
+<div class="eqLogic-widget eqLogic" style="width:#TemplateWidth#px; height:#TemplateHeight#px; background-color: #6b92ab !important;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" >
+  <link rel="stylesheet" href="plugins/mitsubishimelcloud/core/template/css/mitsubishimelcloud.template.css"/>
+  <link rel="stylesheet" href="plugins/mitsubishimelcloud/core/template/css/mitsubishimelcloud.slider.css"/>
+  
+  <!-- <center class="widget-name"><a href="#eqLink#" style="font-size : 1.2em;#hideEqLogicName#"></a>
+    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh#"><i class="fas fa-sync"></i></span>
+  </center> -->
+  
+  <div class="TitleBar">
+    <input type="checkbox" class="PowerOnOff" id="PowerOnOff#id#" #Power# />
+    <label for="PowerOnOff#id#">
+      <span class="PowerOn SwitchOff">#ON#</span>
+      <span class="PowerOff SwitchOn">#OFF#</span>
+    </label>
+    <label class="RefreshButton refresh" data-cmd_id="#refresh#">#RefreshTitle#</label>
+    <span class="RoomName">#MitsuMelcloudName#</span>
+  </div>
+
+  <div class="ScenariosColumn">
+    <div class="CommandTitle">#Scenario#</div>
+    <div class="CommandSetUp" style="width: 138px; height: 342px;"></div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#ModeTitle#</div>
+    <div class="CommandControls">
+      <div class="HoriZone ZoneOn">
+        <img src="plugins/mitsubishimelcloud/data/img/Operate_on_Ata_#OperationMode_Value#.png" style="width: 35px; margin-left:10px; margin-top: 5px;" />
+        <span class="SelectedMode">TBD</span>
+      </div>
+      <div class="VertiButtonZone ModeSelection">
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="Mode_3" id="ButtonMode_3" data-key="3">
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="Mode_2" id="ButtonMode_2" data-key="2">
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="Mode_7" id="ButtonMode_7" data-key="7">
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="Mode_8" id="ButtonMode_8" data-key="8">
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="Mode_1" id="ButtonMode_1" data-key="1">
+        </label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#FanTitle#</div>
+    <div class="CommandControls">
+      <div class="VertiButtonZone FanSelection">
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="FanSpeed_1" id="ButtonFanSpeed_1" data-key="1">
+          <label class="FanSpeedLabelVerti ButtonLabel" id="LabelFanSpeed_1">1</label>
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="FanSpeed_2" id="ButtonFanSpeed_2" data-key="2">
+          <label class="FanSpeedLabelVerti ButtonLabel" id="LabelFanSpeed_2">2</label>
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="FanSpeed_3" id="ButtonFanSpeed_3" data-key="3">
+          <label class="FanSpeedLabelVerti ButtonLabel" id="LabelFanSpeed_3">3</label>
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="FanSpeed_4" id="ButtonFanSpeed_4" data-key="4">
+          <label class="FanSpeedLabelVerti ButtonLabel" id="LabelFanSpeed_4">4</label>
+        </label></div>
+        <div class="VertiZone"><label class="VertiButton ZoneOff" for="FanSpeed_5" id="ButtonFanSpeed_5" data-key="5">
+          <label class="FanSpeedLabelVerti ButtonLabel" id="LabelFanSpeed_5">5</label>
+        </label></div>
+      </div>
+      <div class="HoriZone FanSelection"><label class="HoriButton ZoneOff" for="FanSpeed_0" id="ButtonFanSpeed_0" data-key="0">
+          <label class="FanSpeedLabelHori ButtonLabel" id="LabelFanSpeed_0">Auto</label>
+      </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#HoriTitle#</div>
+    <div class="CommandControls">
+      <div class="SquareButtonZone HoziSelection">
+        <div class="SquareZone ZoneOff" id="ButtonHori">
+          <label class="ButtonLabel" id="HoriBlock_1" data-key="1"></label>
+          <label class="ButtonLabel" id="HoriBlock_2" data-key="2"></label>
+          <label class="ButtonLabel" id="HoriBlock_3" data-key="3"></label>
+          <label class="ButtonLabel" id="HoriBlock_4" data-key="4"></label>
+          <label class="ButtonLabel" id="HoriBlock_5" data-key="5"></label>
+        </div>
+      </div>
+      <div class="RectButtonZone HoziSelection">
+        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonHori_0" data-key="0">
+          <label class="RectLabel ButtonLabel" id="LabelHori_0">Auto</label>
+        </label></div>
+        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonHori_12" data-key="12">
+          <label class="RectLabel ButtonLabel" id="LabelHori_12">Basculer</label>
+        </label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#VertiTitle#</div>
+    <div class="CommandControls">
+      <div class="SquareButtonZone VertiSelection">
+        <div class="SquareZone ZoneOff" id="ButtonVerti">
+          <label class="ButtonLabel" id="VertiBlock_5"  data-key="5"></label>
+          <label class="ButtonLabel" id="VertiBlock_4"  data-key="4"></label>
+          <label class="ButtonLabel" id="VertiBlock_3"  data-key="3"></label>
+          <label class="ButtonLabel" id="VertiBlock_2"  data-key="2"></label>
+          <label class="ButtonLabel" id="VertiBlock_1"  data-key="1"></label>
+        </div>
+      </div>
+      <div class="RectButtonZone VertiSelection">
+        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonVerti_0" data-key="0">
+          <label class="RectLabel ButtonLabel" id="LabelVerti_0">Auto</label>
+        </label></div>
+        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonVerti_7" data-key="7">
+          <label class="RectLabel ButtonLabel" id="LabelVerti_7">Basculer</label>
+        </label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#TempTitle#</div>
+    <div class="CommandControls">
+      <div class="RoomTempLine">
+        <span class="RoomTempLine_1">#RoomTempTitle#</span>
+        <span class="RoomTempLine_2">#RoomTemperature#°C</span>
+      </div>
+      <div class="SetTemp" style='--min:#MinTemperature#; --max:#MaxTemperature#; --step:0.5; --value:#SetTemperature#; --text-value:"#SetTemperature#";'>
+        <span class="SetTempTitle">#SetTempTitle#</span>
+        <input type="range" min="#MinTemperature#" max="#MaxTemperature#" step="0.5" value="#SetTemperature#" style="background-color: transparent !important; z-index: 4;"
+          oninput="this.parentNode.style.setProperty('--value', this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify(this.value));"
+          onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {message: this.value}, notify:true}); AddingDots();">
+        <span></span>
+        <div class='SetTemp__progress'></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#ForecastTitle#</div>
+    <div class="CommandControls" style="height: 166px;">
+
+    </div>
+  </div>
+    
+  <script>
+    /** function to add up to 5 dots on refresh button to display that eh communication is in process */
+    function AddingDots() {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(function(){$('.eqLogic[data-eqLogic_uid=#uid#] .refresh').append('.')}, 500 * i);
+      }
+    }
+
+    /* ON/OFF */
+    // Send selected power status to Melcloud
+    $(".eqLogic[data-eqLogic_uid=#uid#] .SwitchOn").click(function(){
+      jeedom.cmd.execute({id: '#On_Cmd#'});
+      AddingDots();
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] .SwitchOff").click(function(){
+      jeedom.cmd.execute({id: '#Off_Cmd#'});
+      AddingDots();
+    });
+
+
+    /* Refresh button */
+    $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').on('click', function () {
+      jeedom.cmd.execute({id: '#refresh#'});
+      AddingDots();
+    });
+
+    /* Mode */
+    // Button coloration & selected mode name
+    var ModeCorresp = {'1':'#Heat#','3':'#Cool#','2':'#Dry#','7':'#Fan#','8':'Auto'};
+    $(".eqLogic[data-eqLogic_uid=#uid#] .ModeSelection #ButtonMode_#OperationMode_Value#").addClass("ZoneOn");
+    $('.eqLogic[data-eqLogic_uid=#uid#] .SelectedMode').text(ModeCorresp[#OperationMode_Value#]);
+    // Send selected mode to Melcloud
+    $(".eqLogic[data-eqLogic_uid=#uid#] .ModeSelection label").click(function(){
+      jeedom.cmd.execute({id: '#OperationMode_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      AddingDots();
+    });
+
+    /* Fan speed */
+    // Button coloration & selected fan speed
+    $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection #ButtonFanSpeed_#FanSpeed_Value#").addClass("ZoneOn");
+    $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection #LabelFanSpeed_#FanSpeed_Value#").addClass("ZoneOn");
+    // Send selected fan speed to Melcloud
+    $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection label").click(function(){
+      jeedom.cmd.execute({id: '#FanSpeed_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      AddingDots();
+    });
+
+    /* Horizontal Vane */
+    var CurrentHoriImage = "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_off.png')";
+    if (#HoriVane_Value# == 0 || #HoriVane_Value# == 12) {
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori_#HoriVane_Value#").addClass("ZoneOn");
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_off.png')");
+    } else {
+      CurrentHoriImage = "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_#HoriVane_Value#.png')";
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);
+    }
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_1').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_1.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_1').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_2').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_2.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_2').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_3').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_3.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_3').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_4').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_4.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_4').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_5.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    
+    $(".eqLogic[data-eqLogic_uid=#uid#] .HoziSelection label").click(function(){
+      jeedom.cmd.execute({id: '#HoriVane_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      AddingDots();
+    });
+
+    /* Vertical Vane */
+    var CurrentVertiImage = "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_off.png')";
+    if (#VertiVane_Value# == 0 || #VertiVane_Value# == 7) {
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti_#VertiVane_Value#").addClass("ZoneOn");
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_off.png')");
+    } else {
+      CurrentVertiImage = "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_#VertiVane_Value#.png')";
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);
+    }
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_1').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_1.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_1').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_2').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_2.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_2').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_3').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_3.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_3').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_4').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_4.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_4').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_5').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_5.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
+    
+    $(".eqLogic[data-eqLogic_uid=#uid#] .VertiSelection label").click(function(){
+      jeedom.cmd.execute({id: '#VertiVane_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      AddingDots();
+    });
+
+    /* Temperature */
+    // See javascript on input
+  </script>
+  <script src="../js/mitsubishimelcloud.js"></script>
+</div>

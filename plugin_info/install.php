@@ -18,41 +18,53 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function melcloud_install() {
-    
-    $cron = cron::byClassAndFunction('melcloud', 'pull');
+/** Fonction exécutée automatiquement après l'installation du plugin */
+  function mitsubishimelcloud_install() {
+    $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
     if (!is_object($cron)) {
-        $cron = new cron();
-        $cron->setClass('melcloud');
-        $cron->setFunction('pull');
-        $cron->setEnable(1);
-        $cron->setDeamon(0);
-        $cron->setSchedule('*/5 * * * *');
-        $cron->save();
+      $cron = new cron();
+      $cron->setClass('mitsubishimelcloud');
+      $cron->setFunction('SynchronizeMELCloud');
+      $cron->setEnable(1);
+      $cron->setDeamon(0);
+      $cron->setSchedule('*/5 * * * *');
+      $cron->setTimeout('60');
+      $cron->save();
     }
-    
-}
 
-function melcloud_update() {
-  
-  log::add('melcloud', 'error', 'Cron bien installé');
-  
-   $cron = cron::byClassAndFunction('melcloud', 'pull');
+    //Add some configuration, language as French, and latest MELCloud version (when plugin was created)
+    $Language = config::byKey('Language', 'mitsubishimelcloud');
+    if (empty($Language)) {
+      config::save('Language', '7', 'mitsubishimelcloud');
+    }
+    $AppVersion = config::byKey('AppVersion', 'mitsubishimelcloud');
+    if (empty($AppVersion)) {
+      config::save('AppVersion', '1.24.3.0', 'mitsubishimelcloud');
+    }
+  }
+
+/** Fonction exécutée automatiquement après la mise à jour du plugin */
+  function mitsubishimelcloud_update() {
+    $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
     if (!is_object($cron)) {
-        $cron = new cron();
-        $cron->setClass('melcloud');
-        $cron->setFunction('pull');
-        $cron->setEnable(1);
-        $cron->setDeamon(0);
-        $cron->setSchedule('*/5 * * * *');
-        $cron->save();
+      $cron = new cron();
+      $cron->setClass('mitsubishimelcloud');
+      $cron->setFunction('SynchronizeMELCloud');
+      $cron->setEnable(1);
+      $cron->setDeamon(0);
+      $cron->setSchedule('*/5 * * * *');
+      $cron->setTimeout('60');
+      $cron->save();
     }
-    
-}
+    $cron->stop();
+  }
 
-
-function melcloud_remove() {
-    
-}
+/** Fonction exécutée automatiquement après la suppression du plugin */
+  function mitsubishimelcloud_remove() {
+    $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
+    if (is_object($cron)) {
+      $cron->remove();
+    }
+  }
 
 ?>

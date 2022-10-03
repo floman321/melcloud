@@ -1,0 +1,606 @@
+.TitleBar {
+  background-color: #F7F7F7;
+  height: 42px;
+  line-height: 42px;
+  text-align: center;
+  border: 1px solid #4a7190;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.RefreshButton {
+  float: right;
+  background-color: #000000;
+  border-color: #545454;
+  color: #ffffff;
+  text-shadow: 0 1px 0 #444444;
+  width: 90px;
+  height: 31px;
+  line-height: 31px;
+  margin-right: 4px;
+  margin-top: 4px;
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+.RefreshButton:hover {
+  cursor: pointer;
+}
+
+.RoomName {
+  font-size: 16px;
+  color: #817e7e;
+  text-shadow: 0 1px 1px #ffffff;
+  font-weight: bold;
+  position: relative;
+  left: 6px;
+}
+
+.ScenariosColumn {
+  width: 160px;
+  float: left;
+  color: white;
+  font-size: 17px;
+  height: 385px;
+}
+
+.CommandSetUp {
+  text-shadow: rgb(128, 128, 128) 0px 1px 0px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px solid rgb(87, 119, 142);
+  background-color: rgb(130, 155, 175);
+  box-shadow: rgba(115, 141, 158, 0.8) 0px 1px 1px 1px inset;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-left: 10px;
+}
+
+.CommandBlock {
+  color: white;
+  width: 330px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 1.34em;
+  margin-bottom: 0px;
+  display: inline-block;
+  margin-right: -4px;
+}
+
+.CommandTitle {
+  text-shadow: rgb(128, 128, 128) 0px 1px 0px;
+  font-size: 18px;
+  font-weight: normal;
+  text-align: left;
+  display: block;
+  margin: 8px 0 .4em;
+  padding-left: 12px;
+  padding-right: 10px;
+  line-height: 21px;
+}
+
+.CommandControls {
+  text-shadow: rgb(128, 128, 128) 0px 1px 0px;
+  width: 320px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  border: 1px solid rgb(87, 119, 142);
+  background-color: rgb(130, 155, 175);
+  box-shadow: rgba(115, 141, 158, 0.8) 0px 1px 1px 1px inset;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.HoriZone {
+  width: 294px;
+  height: 47px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.HoriButton {
+  width: 294px;
+  height: 47px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 8px;
+  border-radius: 8px;
+  padding-left: 10px;
+  text-align: left;
+}
+
+.HoriButton::before {
+  content: '';
+  position: relative;
+  display: inline-block;
+}
+
+.HoriButton:hover {
+  background-color: rgb(138, 164, 185);
+  cursor: pointer;
+}
+
+.VertiButtonZone {
+  display: inline-block;
+  padding-left: 1px;
+}
+
+.VertiZone {
+  float: left;
+  clear: none;
+  width: 61px;
+  height: 80px;
+  padding-right: 11px;
+}
+
+.VertiButton {
+  height: 75px;
+  width: 50px;
+  border-width: 0px;
+  border-radius: 0.6em;
+  text-shadow: none;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  padding: 0px;
+}
+
+.VertiButton:hover {
+  background-color: rgb(138, 164, 185);
+  cursor: pointer;
+}
+
+.VertiButton::after {
+  content: '';
+  position: relative;
+  display: block;
+  top: 20px;
+}
+
+.ZoneOff {
+  background-color: rgb(116, 140, 160);
+}
+
+.ZoneOn {
+  background-color: rgb(138, 164, 185);
+}
+
+.VertiImg {
+  width: 35px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.SelectedMode {
+  display: block;
+  margin-top: -30px;
+  margin-left: 50px;
+}
+
+.FanSpeedLabelVerti {
+  position: relative;
+  top: 8px;
+  margin-left: 20px;
+}
+
+.FanSpeedLabelHori {
+  position: relative;
+  top: -10px;
+}
+
+.FanSpeedLabelVerti:hover .FanSpeedLabelHori:hover {
+  cursor: pointer;
+}
+
+.RectZone {
+  width: 158px;
+  height: 70px;
+}
+
+.RectButton {
+  height: 60px;
+  width: 145px;
+  text-align: left;
+  border-width: 0px;
+  border-radius: 0.6em;
+  text-shadow: none;
+  box-sizing: border-box;
+}
+
+.RectButton::before {
+  content: '';
+  position: relative;
+  display: block;
+  top: 20px;
+}
+
+.RectLabel {
+  position: relative;
+  left: 44px;
+  top: -17px;
+}
+
+.RectButton:hover {
+  background-color: rgb(138, 164, 185);
+  cursor: pointer;
+}
+
+.ButtonLabel {
+  cursor: pointer;
+  background: transparent;
+}
+
+.SquareZone {
+  width: 138px;
+  height: 130px;
+  border-width: 0px;
+  border-radius: 0.6em;
+  text-shadow: none;
+  box-sizing: border-box;
+  position: relative;
+  right: 12px;
+  float: right;
+}
+
+.RoomTempLine {
+  font-size: 16px;
+  width: 300px;
+}
+
+.RoomTempLine_1 {
+  padding-left: 8px;
+}
+
+.RoomTempLine_2 {
+  float: right;
+  font-weight: bold;
+}
+
+/* .SetTemp {
+  See .slider.css sheet
+} */
+
+.SetTempTitle {
+  font-size: 16px;
+  display: block;
+  width: 150px;
+}
+
+/* Background images related to specific ID */
+  /* Mode */
+#ButtonMode_1::after {
+  background-image: url("../../../data/img/Operate_off_Ata_1.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 20px;
+  left: 7px;
+}
+#ButtonMode_1:hover::after, #ButtonMode_1.ZoneOn::after {
+  background-image: url("../../../data/img/Operate_on_Ata_1.png");
+}
+
+#ButtonMode_2::after {
+  background-image: url("../../../data/img/Operate_off_Ata_2.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 20px;
+  left: 7px;
+}
+#ButtonMode_2:hover::after, #ButtonMode_2.ZoneOn::after {
+  background-image: url("../../../data/img/Operate_on_Ata_2.png");
+}
+
+#ButtonMode_3::after {
+  background-image: url("../../../data/img/Operate_off_Ata_3.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 20px;
+  left: 7px;
+}
+#ButtonMode_3:hover::after, #ButtonMode_3.ZoneOn::after {
+  background-image: url("../../../data/img/Operate_on_Ata_3.png");
+}
+
+#ButtonMode_7::after {
+  background-image: url("../../../data/img/Operate_off_Ata_7.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 20px;
+  left: 7px;
+}
+#ButtonMode_7:hover::after, #ButtonMode_7.ZoneOn::after {
+  background-image: url("../../../data/img/Operate_on_Ata_7.png");
+}
+
+#ButtonMode_8::after {
+  background-image: url("../../../data/img/Operate_off_Ata_8.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 20px;
+  left: 7px;
+}
+#ButtonMode_8:hover::after, #ButtonMode_8.ZoneOn::after {
+  background-image: url("../../../data/img/Operate_on_Ata_8.png");
+}
+
+
+  /* Fan speed */
+#ButtonFanSpeed_1::after {
+  background-image: url("../../../data/img/Fan_speed_off_Ata_1.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 4px;
+  left: 7px;
+}
+#ButtonFanSpeed_1:hover::after, #ButtonFanSpeed_1.ZoneOn::after {
+  background-image: url("../../../data/img/Fan_speed_on_Ata_1.png");
+}
+
+#ButtonFanSpeed_2::after {
+  background-image: url("../../../data/img/Fan_speed_off_Ata_2.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 4px;
+  left: 7px;
+}
+#ButtonFanSpeed_2:hover::after, #ButtonFanSpeed_2.ZoneOn::after {
+  background-image: url("../../../data/img/Fan_speed_on_Ata_2.png");
+}
+
+#ButtonFanSpeed_3::after {
+  background-image: url("../../../data/img/Fan_speed_off_Ata_3.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 4px;
+  left: 7px;
+}
+#ButtonFanSpeed_3:hover::after, #ButtonFanSpeed_3.ZoneOn::after {
+  background-image: url("../../../data/img/Fan_speed_on_Ata_3.png");
+}
+
+#ButtonFanSpeed_4::after {
+  background-image: url("../../../data/img/Fan_speed_off_Ata_4.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 4px;
+  left: 7px;
+}
+#ButtonFanSpeed_4:hover::after, #ButtonFanSpeed_4.ZoneOn::after {
+  background-image: url("../../../data/img/Fan_speed_on_Ata_4.png");
+}
+
+#ButtonFanSpeed_5::after {
+  background-image: url("../../../data/img/Fan_speed_off_Ata_5.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 4px;
+  left: 7px;
+}
+#ButtonFanSpeed_5:hover::after, #ButtonFanSpeed_5.ZoneOn::after {
+  background-image: url("../../../data/img/Fan_speed_on_Ata_5.png");
+}
+
+#ButtonFanSpeed_0::before {
+  background-image: url("../../../data/img/Operate_off_Ata_8.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 2.5px;
+}
+#ButtonFanSpeed_0:hover::before, #ButtonFanSpeed_0.ZoneOn::before {
+  background-image: url("../../../data/img/Operate_on_Ata_8.png");
+}
+
+/* Horizontal vane */
+#ButtonHori_0::before {
+  background-image: url("../../../data/img/Operate_off_Ata_8.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+#ButtonHori_0:hover::before, #ButtonHori_0.ZoneOn::before{
+  background-image: url("../../../data/img/Operate_on_Ata_8.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+
+#ButtonHori_12::before {
+  background-image: url("../../../data/img/VaneHorizontal_off.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+#ButtonHori_12:hover::before, #ButtonHori_12.ZoneOn::before {
+  background-image: url("../../../data/img/VaneHorizontal_animation.gif");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+
+#ButtonHori {
+  background-image: url("../../../data/img/VaneHorizontal_transitions_off.png");
+  background-size: 130px 130px;
+  width: 130px;
+  height: 130px;
+  top: 0px;
+  z-index: 1;
+}
+
+#HoriBlock_1 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(30deg);
+  top: 17px;
+  left: 15px;
+}
+
+#HoriBlock_2 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(15deg);
+  top: 26px;
+  left: 25px;
+}
+
+#HoriBlock_3 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  /* transform: rotate(-45deg); */
+  top: 28px;
+  left: 35px;
+}
+
+#HoriBlock_4 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-15deg);
+  top: 26px;
+  left: 48px;
+}
+
+#HoriBlock_5 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-30deg);
+  top: 17px;
+  left: 59px;
+}
+
+
+/* Vertical vane */
+#ButtonVerti_0::before {
+  background-image: url("../../../data/img/Operate_off_Ata_8.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+#ButtonVerti_0:hover::before, #ButtonVerti_0.ZoneOn::before {
+  background-image: url("../../../data/img/Operate_on_Ata_8.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+
+#ButtonVerti_7::before {
+  background-image: url("../../../data/img/VaneVertical_off.png");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+#ButtonVerti_7:hover::before, #ButtonVerti_7.ZoneOn::before {
+  background-image: url("../../../data/img/VaneVertical_animation.gif");
+  background-size: 35px 35px;
+  width: 35px;
+  height: 35px;
+  top: 13px;
+  left: 4px;
+}
+
+#ButtonVerti {
+  background-image: url("../../../data/img/VaneVertical_transitions_off.png");
+  background-size: 130px 130px;
+  width: 130px;
+  height: 130px;
+  top: 0px;
+  z-index: 1;
+}
+
+#VertiBlock_5 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-15deg);
+  top: 60px;
+  left: 10px;
+}
+
+#VertiBlock_4 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-30deg);
+  top: 50px;
+  left: 23px;
+}
+
+#VertiBlock_3 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-45deg);
+  top: 30px;
+  left: 30px;
+}
+
+#VertiBlock_2 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-60deg);
+  top: 10px;
+  left: 35px;
+}
+
+#VertiBlock_1 {
+  position: relative;
+  float: left;
+  height: 65px;
+  width: 12px;
+  z-index: 2;
+  transform: rotate(-75deg);
+  top: -15px;
+  left: 30px;
+}
