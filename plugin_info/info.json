@@ -12,10 +12,10 @@
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "TBD",
-	"documentation" : "TBD",
-	"changelog_beta" : "TBD",
-	"documentation_beta" : "TBD",
+	"changelog" : "https://github.com/DuchkPy/mitsubishimelcloud/blob/beta/docs/#language#/changelog.md",
+	"documentation" : "https://github.com/DuchkPy/mitsubishimelcloud/blob/beta/docs/#language#/index.md",
+	"changelog_beta" : "https://github.com/DuchkPy/mitsubishimelcloud/blob/beta/docs/#language#/changelog_beta.md",
+	"documentation_beta" : "https://github.com/DuchkPy/mitsubishimelcloud/blob/beta/docs/#language#/index_beta.md",
 	"link" : {
 		"forum" : "TBD"
 	},

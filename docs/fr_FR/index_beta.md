@@ -1,8 +1,3 @@
-| :warning: WARNING          |
-|:---------------------------|
-| Currently in beta ...      |
-| (see relative branch)      |
-
 # Description :
 
 Plugin permettant de communiquer avec les pompes à chaleur (PAC) de la marque Mitsubish, qui sont relié à leurs serveurs MELCloud.
@@ -46,4 +41,4 @@ Puis au premier plugin créé par [Floman321](https://github.com/floman321/melcl
 Comme voulu par MGeek (voir pied de page de son site web), ce plugin est sous licence [Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr), donc gratuit.
 
 # Changelog :
-[Changelog](./changelog.md)
+[Changelog](./changelog_beta.md)
