@@ -7,7 +7,7 @@
 	},
 	"licence" : "AGPLv3",
 	"author" : "DuchkPy",
-	"require" : "4.0",
+	"require" : "3.0",
 	"category" : "wellness",
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
@@ -20,8 +20,7 @@
 		"forum" : "TBD"
 	},
 	"language": [
-		"fr_FR",
-		"en_US"
+		"fr_FR"
 	],
 	"compatibility": [
 		"miniplus",
@@ -29,7 +28,6 @@
 		"rpi",
 		"docker",
 		"diy",
-		"mobile",
 		"v4",
 		"atlas"
 	]
