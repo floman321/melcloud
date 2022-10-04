@@ -19,3 +19,6 @@ This work is licensed under a
 [cc-by-nc-sa-shield]: https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg
 
 More details [here](./docs/fr_FR/index.md)
+
+# Acknowledgment:
+[mGeek](https://github.com/mgeek) for it's initial work on [http://mgeek.fr/blog/un-peu-de-reverse-engineering-sur-melcloud](http://mgeek.fr/blog/un-peu-de-reverse-engineering-sur-melcloud) ([archive](https://web.archive.org/web/20220120005605/http://mgeek.fr/blog/un-peu-de-reverse-engineering-sur-melcloud)) and [floman321](https://github.com/floman321) for it's first [plugin](https://github.com/floman321/melcloud) version which is the source of this code.
