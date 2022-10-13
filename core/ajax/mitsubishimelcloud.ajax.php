@@ -37,7 +37,7 @@ try {
         break;
       
       case 'SynchronizeMELCloud':
-        mitsubishimelcloud::SynchronizeMELCloud();
+        mitsubishimelcloud::SynchronizeMELCloud('button');
         ajax::success();
         break;
     }

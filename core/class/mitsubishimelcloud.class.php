@@ -19,9 +19,10 @@
 /* * ***************************Includes********************************* */
 require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
-class mitsubishimelcloud extends eqLogic
-{
+class mitsubishimelcloud extends eqLogic {
   /*     * *************************Attributs****************************** */
+  const DEFAULT_SYNC_CRON = '38 2 * * *'; //default cron for synchronisation
+  const DEFAULT_SPLIT_CRON = '*/5 * * * *'; //default cron to update splits data
 
   /*
    * Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
@@ -32,59 +33,106 @@ class mitsubishimelcloud extends eqLogic
   /*     * ***********************Methode static*************************** */
   /** Get token from MELCloud*/
   public static function GetToken() {
-    $Email = config::byKey('Email', 'mitsubishimelcloud');
-    $Password = config::byKey('Password', 'mitsubishimelcloud');
-    $Language = config::byKey('Language', 'mitsubishimelcloud');
-    $AppVersion = config::byKey('AppVersion', 'mitsubishimelcloud');
+    $Email = config::byKey('Email', __CLASS__);
+    $Password = config::byKey('Password', __CLASS__);
+    $Language = config::byKey('Language', __CLASS__);
+    $AppVersion = config::byKey('AppVersion', __CLASS__);
 
     $client = new MitsubishiMelcouldClient();
     $response = $client->MelcloudToken($Email, $Password, $Language, $AppVersion);
     
-    config::save('Token', $response, 'mitsubishimelcloud');
+    config::save('Token', $response, __CLASS__);
   }
 
-  /** Collect data from MELCloud app */
-  public static function SynchronizeMELCloud() {
+  /** Collect heat pump data from MELCloud app */
+  public static function SynchronizeMELCloud($action = 'cron') {
     $Token = config::byKey('Token', __CLASS__);
-    if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
-      message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
-      log::add(__CLASS__, 'debug', __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+    log::add(__CLASS__, 'info', __('<--- Start MELCloud synchronization launched by : '.$action, __FILE__));
+
+    if($action == 'cron' AND empty($Token)) {
+      // When function launched by cron, do not launch the function if no token available
+      log::add(__CLASS__, 'debug', __('No MELCloud synchronization as no Token saved', __FILE__));
     } else {
-      log::add(__CLASS__, 'info', '===== Synchronize MELCloud data =====');
+      if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
+        message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+        log::add(__CLASS__, 'debug', __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+      } else {
+        log::add(__CLASS__, 'info', '===== Synchronize all data from MELCloud =====');
 
-      $client = new MitsubishiMelcouldClient();
-      $values = $client->MelcloudAllDevices($Token);
+        $client = new MitsubishiMelcouldClient();
+        $values = $client->MelcloudAllDevices($Token);
 
-      foreach ($values as $maison) {
-        log::add(__CLASS__, 'debug', __('Bâtiment : ', __FILE__) . $maison['Name']);
-        for ($i = 0; $i < count($maison['Structure']['Devices']); $i++) {
-          $device = $maison['Structure']['Devices'][$i];
-          log::add(__CLASS__, 'debug', 'Synchronizing device ' . $i . ' ' . $device['DeviceName']);
-          self::SynchronizeAllCommands('Synchro', $device);
-        }
-        // FLOORS
-        for ($a = 0; $a < count($maison['Structure']['Floors']); $a++) {
-          log::add(__CLASS__, 'debug', 'FLOORS ' . $a);
-          // AREAS IN FLOORS
-          for ($i = 0; $i < count($maison['Structure']['Floors'][$a]['Areas']); $i++) {
-            for ($d = 0; $d < count($maison['Structure']['Floors'][$a]['Areas'][$i]['Devices']); $d++) {
-              $device = $maison['Structure']['Floors'][$a]['Areas'][$i]['Devices'][$d];
+        foreach ($values as $maison) {
+          log::add(__CLASS__, 'debug', __('Bâtiment : ', __FILE__) . $maison['Name']);
+          for ($i = 0; $i < count($maison['Structure']['Devices']); $i++) {
+            $device = $maison['Structure']['Devices'][$i];
+            log::add(__CLASS__, 'debug', 'Synchronizing device ' . $i . ' ' . $device['DeviceName']);
+            self::SynchronizeAllCommands('Synchro', $device);
+          }
+          // FLOORS
+          for ($a = 0; $a < count($maison['Structure']['Floors']); $a++) {
+            log::add(__CLASS__, 'debug', 'FLOORS ' . $a);
+            // AREAS IN FLOORS
+            for ($i = 0; $i < count($maison['Structure']['Floors'][$a]['Areas']); $i++) {
+              for ($d = 0; $d < count($maison['Structure']['Floors'][$a]['Areas'][$i]['Devices']); $d++) {
+                $device = $maison['Structure']['Floors'][$a]['Areas'][$i]['Devices'][$d];
+                self::SynchronizeAllCommands('Synchro', $device);
+              }
+            }
+            // FLOORS
+            for ($i = 0; $i < count($maison['Structure']['Floors'][$a]['Devices']); $i++) {
+              $device = $maison['Structure']['Floors'][$a]['Devices'][$i];
               self::SynchronizeAllCommands('Synchro', $device);
             }
           }
-          // FLOORS
-          for ($i = 0; $i < count($maison['Structure']['Floors'][$a]['Devices']); $i++) {
-            $device = $maison['Structure']['Floors'][$a]['Devices'][$i];
-            self::SynchronizeAllCommands('Synchro', $device);
+          // AREAS
+          for ($a = 0; $a < count($maison['Structure']['Areas']); $a++) {
+            log::add(__CLASS__, 'info', 'AREAS ' . $a);
+            for ($i = 0; $i < count($maison['Structure']['Areas'][$a]['Devices']); $i++) {
+              log::add(__CLASS__, 'info', 'machine AREAS ' . $i);
+              $device = $maison['Structure']['Areas'][$a]['Devices'][$i];
+              self::SynchronizeAllCommands('Synchro', $device);
+            }
           }
         }
-        // AREAS
-        for ($a = 0; $a < count($maison['Structure']['Areas']); $a++) {
-          log::add(__CLASS__, 'info', 'AREAS ' . $a);
-          for ($i = 0; $i < count($maison['Structure']['Areas'][$a]['Devices']); $i++) {
-            log::add(__CLASS__, 'info', 'machine AREAS ' . $i);
-            $device = $maison['Structure']['Areas'][$a]['Devices'][$i];
-            self::SynchronizeAllCommands('Synchro', $device);
+      }
+    }
+    log::add(__CLASS__, 'info', __('<--- End MELCloud synchronization launched by : '.$action, __FILE__));
+  }
+
+  /** Collect split data from MELCloud app */
+  public static function SynchronizeSplit($action = 'cron') {
+    $Token = config::byKey('Token', __CLASS__);
+    log::add(__CLASS__, 'debug', 'Split synchronization launched by : '.$action);
+
+    if($action == '' AND empty($Token)) {
+      // When function launched by cron, do not launch the function if no token available
+      log::add(__CLASS__, 'debug', __('No split synchronization as no Token saved', __FILE__));
+    } else {
+      if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
+        message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+        log::add(__CLASS__, 'debug', __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+      } else {
+        log::add(__CLASS__, 'info', '===== Synchronize split data from MELCloud app =====');
+        
+        
+        $Splits = self::byType(__CLASS__);
+        foreach($Splits as $Split) {
+          // Only available on split that have already been activated once.
+          if($Split->getConfiguration('deviceid') != '') {
+            $client = new MitsubishiMelcouldClient();
+            $Device = $client->MelcloudDeviceInfo(
+              $Split->getConfiguration('deviceid'),
+              $Split->getConfiguration('buildid'),
+              $Token);
+          
+            $Device['FanSpeed'] = $Device['SetFanSpeed'];
+            $Device['VaneVerticalDirection'] = $Device['VaneVertical'];
+            $Device['VaneHorizontalDirection'] = $Device['VaneHorizontal'];
+            $Info['Device'] = $Device;
+            
+            // Register data from server on Jeedom equipment
+            self::SynchronizeAllCommands('Refresh', $Info, $Split);
           }
         }
       }
@@ -247,7 +295,7 @@ class mitsubishimelcloud extends eqLogic
   /** Method called after saving your Jeedom equipment */
   public function postSave() {
     if($this->getConfiguration('deviceid') == ''){
-      self::SynchronizeMELCloud();
+      self::SynchronizeSplit('PostSave');
       if($this->getConfiguration('deviceid') == '') return;
     }
 
@@ -623,18 +671,17 @@ class mitsubishimelcloud extends eqLogic
     $replace['#RoomTempTitle#'] = __('Température de la pièce', __FILE__);
     $replace['#SetTempTitle#'] = __('Régler la température', __FILE__);
 
-    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, 'mitsubishimelcloud', 'mitsubishimelcloud')));
+    return $this->postToHtml($_version, template_replace($replace, getTemplate('core', $version, __CLASS__, __CLASS__)));
   }
 }
 
-class mitsubishimelcloudCmd extends cmd
-{
+class mitsubishimelcloudCmd extends cmd {
   // Exécution d'une commande  
   public function execute($_options = array()) {
     if('refresh' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', '<------------ Refresh requested by button ------------>');
       $mylogical = $this->getEqLogic();
-      
+
       $Token = config::byKey('Token', 'mitsubishimelcloud');
       if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
         message::add('mitsubishimelcloud', __('Merci de récupérer le token MELCloud avant de synchroniser des équipements.', __FILE__));
@@ -645,13 +692,13 @@ class mitsubishimelcloudCmd extends cmd
           $mylogical->getConfiguration('deviceid'),
           $mylogical->getConfiguration('buildid'),
           $Token);
-      }
       
-      $Device['FanSpeed'] = $Device['SetFanSpeed'];
-      $Device['VaneVerticalDirection'] = $Device['VaneVertical'];
-      $Device['VaneHorizontalDirection'] = $Device['VaneHorizontal'];
-      $Info['Device'] = $Device; 
-      mitsubishimelcloud::SynchronizeAllCommands('Refresh', $Info, $mylogical);
+        $Device['FanSpeed'] = $Device['SetFanSpeed'];
+        $Device['VaneVerticalDirection'] = $Device['VaneVertical'];
+        $Device['VaneHorizontalDirection'] = $Device['VaneHorizontal'];
+        $Info['Device'] = $Device; 
+        mitsubishimelcloud::SynchronizeAllCommands('Refresh', $Info, $mylogical);
+      }
     }
     if('On' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'Switch ON requested');
@@ -696,9 +743,8 @@ class MitsubishiMelcouldClient {
   private $clientHttp;
 
   /** Parameters for GuzzleHttp\Client */
-  public function __construct($clientHttp = null)
-  {
-    if ($clientHttp == null) {
+  public function __construct($clientHttp = null) {
+    if($clientHttp == null) {
       $this->clientHttp = new Client([
         'base_uri' => self::URL,
         'timeout' => 60,
@@ -745,9 +791,9 @@ class MitsubishiMelcouldClient {
         'X-MitsContextKey' => $Token,
       ],
     ]);
-    if ($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Erreur lors de la syncrhonisation des appareils', __FILE__));
-        log::add('mitsubishimelcloud', 'error', __('Erreur lors de la syncrhonisation des appareils', __FILE__));
+    if($server_output->getStatusCode() == 401) {
+        throw new Exception(__('Erreur lors de la synchronisation des appareils', __FILE__));
+        log::add('mitsubishimelcloud', 'error', __('Erreur lors de la synchronisation des appareils', __FILE__));
     }
 
     return json_decode($server_output->getBody(), true);
@@ -765,7 +811,7 @@ class MitsubishiMelcouldClient {
         'buildingID' => $BuildID,
       ],
     ]);
-    if ($server_output->getStatusCode() == 401) {
+    if($server_output->getStatusCode() == 401) {
         throw new Exception(__('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
         log::add('mitsubishimelcloud', 'error', __('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
     }
@@ -781,7 +827,7 @@ class MitsubishiMelcouldClient {
       ],
       'json' => $Device,
     ]);
-    if ($server_output->getStatusCode() == 401) {
+    if($server_output->getStatusCode() == 401) {
         throw new Exception(__('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
         log::add('mitsubishimelcloud', 'error', __('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
     }

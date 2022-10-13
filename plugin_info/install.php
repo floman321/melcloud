@@ -20,6 +20,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
 /** Fonction exécutée automatiquement après l'installation du plugin */
   function mitsubishimelcloud_install() {
+    // Create the 2 neededs cron
     $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
     if (!is_object($cron)) {
       $cron = new cron();
@@ -27,24 +28,38 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
       $cron->setFunction('SynchronizeMELCloud');
       $cron->setEnable(1);
       $cron->setDeamon(0);
-      $cron->setSchedule('*/5 * * * *');
+      $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SYNC_CRON));
+      $cron->setTimeout('60');
+      $cron->save();
+    }
+    $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeSplit');
+    if (!is_object($cron)) {
+      $cron = new cron();
+      $cron->setClass('mitsubishimelcloud');
+      $cron->setFunction('SynchronizeSplit');
+      $cron->setEnable(1);
+      $cron->setDeamon(0);
+      $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SPLIT_CRON));
       $cron->setTimeout('60');
       $cron->save();
     }
 
-    //Add some configuration, language as French, and latest MELCloud version (when plugin was created)
+    // Add some configuration, language as French, and latest MELCloud version (when plugin was created)
     $Language = config::byKey('Language', 'mitsubishimelcloud');
     if (empty($Language)) {
       config::save('Language', '7', 'mitsubishimelcloud');
     }
     $AppVersion = config::byKey('AppVersion', 'mitsubishimelcloud');
     if (empty($AppVersion)) {
-      config::save('AppVersion', '1.24.3.0', 'mitsubishimelcloud');
+      config::save('AppVersion', '1.25.0.1', 'mitsubishimelcloud');
     }
   }
 
 /** Fonction exécutée automatiquement après la mise à jour du plugin */
   function mitsubishimelcloud_update() {
+    log::add('mitsubishimelcloud', 'info', '<------------ Start installation update ------------');
+
+    log::add('mitsubishimelcloud', 'debug', 'Update complete synchronisation to MELCloud server');
     $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
     if (!is_object($cron)) {
       $cron = new cron();
@@ -52,16 +67,45 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
       $cron->setFunction('SynchronizeMELCloud');
       $cron->setEnable(1);
       $cron->setDeamon(0);
-      $cron->setSchedule('*/5 * * * *');
+      $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SYNC_CRON));
+      $cron->setTimeout('60');
+      $cron->save();
+    } else {
+      $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SYNC_CRON));
+      $cron->save();
+    }
+    
+    log::add('mitsubishimelcloud', 'debug', 'Update synchronisation of splits to MELCloud server');
+    $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeSplit');
+    if (!is_object($cron)) {
+      $cron = new cron();
+      $cron->setClass('mitsubishimelcloud');
+      $cron->setFunction('SynchronizeSplit');
+      $cron->setEnable(1);
+      $cron->setDeamon(0);
+      $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SPLIT_CRON));
       $cron->setTimeout('60');
       $cron->save();
     }
+
     $cron->stop();
+
+    //Update MELCloud app version
+    log::add('mitsubishimelcloud', 'debug', 'Update MELCloud app version');
+    $AppVersion = config::byKey('AppVersion', 'mitsubishimelcloud');
+    config::save('AppVersion', '1.25.0.1', 'mitsubishimelcloud');
+
+    log::add('mitsubishimelcloud', 'info', '------------ Complete installation update ------------>');
   }
 
 /** Fonction exécutée automatiquement après la suppression du plugin */
   function mitsubishimelcloud_remove() {
     $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
+    if (is_object($cron)) {
+      $cron->remove();
+    }
+
+    $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeSplit');
     if (is_object($cron)) {
       $cron->remove();
     }
