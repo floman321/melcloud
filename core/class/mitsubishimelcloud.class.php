@@ -47,11 +47,11 @@ class mitsubishimelcloud extends eqLogic {
   /** Collect heat pump data from MELCloud app */
   public static function SynchronizeMELCloud($action = 'cron') {
     $Token = config::byKey('Token', __CLASS__);
-    log::add(__CLASS__, 'info', __('<--- Start MELCloud synchronization launched by : '.$action, __FILE__));
+    log::add(__CLASS__, 'info', __('<--- Start of heat pump synchronization launched by : '.$action, __FILE__));
 
     if($action == 'cron' AND empty($Token)) {
       // When function launched by cron, do not launch the function if no token available
-      log::add(__CLASS__, 'debug', __('No MELCloud synchronization as no Token saved', __FILE__));
+      log::add(__CLASS__, 'debug', 'No cron for heat pump synchronization as no Token saved');
     } else {
       if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
         message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
@@ -97,7 +97,7 @@ class mitsubishimelcloud extends eqLogic {
         }
       }
     }
-    log::add(__CLASS__, 'info', __('<--- End MELCloud synchronization launched by : '.$action, __FILE__));
+    log::add(__CLASS__, 'info', __('<--- End of heat pump synchronization launched by : '.$action, __FILE__));
   }
 
   /** Collect split data from MELCloud app */
@@ -107,7 +107,7 @@ class mitsubishimelcloud extends eqLogic {
 
     if($action == 'cron' AND empty($Token)) {
       // When function launched by cron, do not launch the function if no token available
-      log::add(__CLASS__, 'debug', __('No split synchronization as no Token saved', __FILE__));
+      log::add(__CLASS__, 'debug', 'No cron for split synchronization as no Token saved');
     } else {
       if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
         message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
