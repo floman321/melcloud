@@ -143,9 +143,9 @@
     
   <script>
     /** function to add up to 5 dots on refresh button to display that eh communication is in process */
-    function AddingDots() {
+    function AddingDots(IdRefresh) {
       for (let i = 0; i < 5; i++) {
-        setTimeout(function(){$('.eqLogic[data-eqLogic_uid=#uid#] .refresh').append('.')}, 500 * i);
+        setTimeout(function(){$('.eqLogic[data-eqLogic_uid='+IdRefresh+'] .refresh').append('.')}, 500 * i);
       }
     }
 
@@ -153,18 +153,18 @@
     // Send selected power status to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .SwitchOn").click(function(){
       jeedom.cmd.execute({id: '#On_Cmd#'});
-      AddingDots();
+      AddingDots('#uid#');
     });
     $(".eqLogic[data-eqLogic_uid=#uid#] .SwitchOff").click(function(){
       jeedom.cmd.execute({id: '#Off_Cmd#'});
-      AddingDots();
+      AddingDots('#uid#');
     });
 
 
     /* Refresh button */
     $('.eqLogic[data-eqLogic_uid=#uid#] .refresh').on('click', function () {
       jeedom.cmd.execute({id: '#refresh#'});
-      AddingDots();
+      AddingDots('#uid#');
     });
 
     /* Mode */
@@ -175,7 +175,7 @@
     // Send selected mode to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .ModeSelection label").click(function(){
       jeedom.cmd.execute({id: '#OperationMode_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
-      AddingDots();
+      AddingDots('#uid#');
     });
 
     /* Fan speed */
@@ -185,7 +185,7 @@
     // Send selected fan speed to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection label").click(function(){
       jeedom.cmd.execute({id: '#FanSpeed_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
-      AddingDots();
+      AddingDots('#uid#');
     });
 
     /* Horizontal Vane */
@@ -210,7 +210,7 @@
     
     $(".eqLogic[data-eqLogic_uid=#uid#] .HoziSelection label").click(function(){
       jeedom.cmd.execute({id: '#HoriVane_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
-      AddingDots();
+      AddingDots('#uid#');
     });
 
     /* Vertical Vane */
@@ -235,7 +235,7 @@
     
     $(".eqLogic[data-eqLogic_uid=#uid#] .VertiSelection label").click(function(){
       jeedom.cmd.execute({id: '#VertiVane_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
-      AddingDots();
+      AddingDots('#uid#');
     });
 
     /* Temperature */
