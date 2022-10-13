@@ -296,7 +296,8 @@ class mitsubishimelcloud extends eqLogic {
   /** Method called after saving your Jeedom equipment */
   public function postSave() {
     if($this->getConfiguration('deviceid') == ''){
-      self::SynchronizeSplit('PostSave');
+      // If not yet saved, collect first heat pump information
+      self::SynchronizeMELCloud('PostSave');
       if($this->getConfiguration('deviceid') == '') return;
     }
 
@@ -591,6 +592,11 @@ class mitsubishimelcloud extends eqLogic {
         log::add(__CLASS__, 'error', __('Pas de type de PAC trouvé', __FILE__));
         return;
       }
+    }
+
+    if($this->getConfiguration('deviceid') != ''){
+      // If correctly created, collect split information
+      self::SynchronizeSplit('PostSave');
     }
   }
 
