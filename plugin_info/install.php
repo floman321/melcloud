@@ -72,6 +72,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
       $cron->save();
     } else {
       $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SYNC_CRON));
+      $cron->setTimeout('2');
       $cron->save();
     }
     
@@ -85,6 +86,9 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
       $cron->setDeamon(0);
       $cron->setSchedule(checkAndFixCron(mitsubishimelcloud::DEFAULT_SPLIT_CRON));
       $cron->setTimeout('60');
+      $cron->save();
+    } else {
+      $cron->setTimeout('2');
       $cron->save();
     }
 
