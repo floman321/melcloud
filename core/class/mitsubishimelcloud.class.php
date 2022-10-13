@@ -103,9 +103,9 @@ class mitsubishimelcloud extends eqLogic {
   /** Collect split data from MELCloud app */
   public static function SynchronizeSplit($action = 'cron') {
     $Token = config::byKey('Token', __CLASS__);
-    log::add(__CLASS__, 'debug', 'Split synchronization launched by : '.$action);
+    log::add(__CLASS__, 'info', '<--- Start Splits synchronization launched by : '.$action);
 
-    if($action == '' AND empty($Token)) {
+    if($action == 'cron' AND empty($Token)) {
       // When function launched by cron, do not launch the function if no token available
       log::add(__CLASS__, 'debug', __('No split synchronization as no Token saved', __FILE__));
     } else {
@@ -137,6 +137,7 @@ class mitsubishimelcloud extends eqLogic {
         }
       }
     }
+    log::add(__CLASS__, 'info', '<--- End Splits synchronization launched by : '.$action);
   }
 
   /** Collect equipment information from Mitsubishi servers for the equipment */

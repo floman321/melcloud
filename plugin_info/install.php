@@ -59,7 +59,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
   function mitsubishimelcloud_update() {
     log::add('mitsubishimelcloud', 'info', '<------------ Start installation update ------------');
 
-    log::add('mitsubishimelcloud', 'debug', 'Update complete synchronisation to MELCloud server');
+    log::add('mitsubishimelcloud', 'debug', 'Update complete synchronisation cron parameters to MELCloud server');
     $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeMELCloud');
     if (!is_object($cron)) {
       $cron = new cron();
@@ -75,7 +75,7 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
       $cron->save();
     }
     
-    log::add('mitsubishimelcloud', 'debug', 'Update synchronisation of splits to MELCloud server');
+    log::add('mitsubishimelcloud', 'debug', 'Update synchronisation of splits cron parameters to MELCloud server');
     $cron = cron::byClassAndFunction('mitsubishimelcloud', 'SynchronizeSplit');
     if (!is_object($cron)) {
       $cron = new cron();
