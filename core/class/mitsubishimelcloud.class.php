@@ -191,6 +191,12 @@ class mitsubishimelcloud extends eqLogic {
       $mylogical = $DeviceLogicalId;
     }
 
+    // Manage empty weather
+    for($i = 0; $i <= 3; $i++) {
+      if(!isset($device['Device']['WeatherObservations'][$i])) $device['Device']['WeatherObservations'][$i]['ConditionName'] = 'EMPTY';
+    }
+    
+    // Register on each logical item the value from MELCloud servers
     foreach ($mylogical->getCmd() as $cmd) {
       switch ($cmd->getLogicalId()) {
         case 'refresh':
@@ -811,25 +817,40 @@ class mitsubishimelcloud extends eqLogic {
     $replace['#SetTemperature#'] = is_object($SetTemp_Value) ? $SetTemp_Value->execCmd() : '';
 
     for($i = 1; $i <=4; $i++) {
-      $WeatherIcon[$i] = $this->getCmd(null, 'WeatherIcon'.$i);
-      if(is_object($WeatherIcon[$i])) {
-        $replace['#WeatherIcon_'.$i.'#'] = self::getWeatherSymbol($WeatherIcon[$i]->execCmd().'.png');
-      }
-
-      $WeatherDay[$i] = $this->getCmd(null, 'WeatherDay'.$i);
-      $subject = is_object($WeatherDay[$i]) ? $WeatherDay[$i]->execCmd() : '';
-      $search  = array('0', '1', '2', '3', '4', '5', '6');
-      $substitute = array('Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam');
-      $replace['#WeatherDay_'.$i.'#'] = str_replace($search, $substitute, $subject);
-
-      $WeatherTemperature[$i] = $this->getCmd(null, 'WeatherTemperature'.$i);
-      $replace['#WeatherTemperature_'.$i.'#'] = is_object($WeatherTemperature[$i]) ? $WeatherTemperature[$i]->execCmd().'°C' : '';
-
-      $WeatherType[$i] = $this->getCmd(null, 'WeatherType'.$i);
-      $replace['#WeatherType_'.$i.'#'] = is_object($WeatherType[$i]) ? $WeatherType[$i]->execCmd() : '';
-
       $WeatherCondition[$i] = $this->getCmd(null, 'WeatherCondition'.$i);
-      $replace['#WeatherCondition_'.$i.'#'] = is_object($WeatherCondition[$i]) ? $WeatherCondition[$i]->execCmd() : '';
+      $WeatherCondition_[$i] = is_object($WeatherCondition[$i]) ? $WeatherCondition[$i]->execCmd() : '';
+
+      if($WeatherCondition_[$i] == 'EMPTY' || $WeatherCondition_[$i] == '') {
+        // No available weather for this column
+        $replace['#WeatherCondition_'.$i.'#'] = '';
+        $replace['#WeatherIcon_'.$i.'#'] = '';
+        $replace['#WeatherDay_'.$i.'#'] = 'Pas de';
+        $replace['#WeatherTemperature_'.$i.'#'] = '';
+        $replace['#WeatherType_'.$i.'#'] = 'donnée';
+      } else {
+        $replace['#WeatherCondition_'.$i.'#'] = $WeatherCondition_[$i];
+
+        $WeatherIcon[$i] = $this->getCmd(null, 'WeatherIcon'.$i);
+        if(is_object($WeatherIcon[$i])) {
+          $WeatherIcon_[$i] = self::getWeatherSymbol($WeatherIcon[$i]->execCmd().'.png');
+          $replace['#WeatherIcon_'.$i.'#'] = '<img src="'.$WeatherIcon_[$i].'" style="width: 48px; margin-top: 10px; border-radius: 6px" />';
+        }
+
+        $WeatherDay[$i] = $this->getCmd(null, 'WeatherDay'.$i);
+        $subject = is_object($WeatherDay[$i]) ? $WeatherDay[$i]->execCmd() : '';
+        $search  = array('0', '1', '2', '3', '4', '5', '6');
+        $substitute = array('Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam');
+        $replace['#WeatherDay_'.$i.'#'] = str_replace($search, $substitute, $subject);
+
+        $WeatherTemperature[$i] = $this->getCmd(null, 'WeatherTemperature'.$i);
+        $replace['#WeatherTemperature_'.$i.'#'] = is_object($WeatherTemperature[$i]) ? $WeatherTemperature[$i]->execCmd().'°C' : '';
+
+        $WeatherType[$i] = $this->getCmd(null, 'WeatherType'.$i);
+        $subject = is_object($WeatherType[$i]) ? $WeatherType[$i]->execCmd() : '';
+        $search  = array('0', '1', '2');
+        $substitute = array('Act.', 'Jour', 'Nuit');
+        $replace['#WeatherType_'.$i.'#'] = str_replace($search, $substitute, $subject);
+      }
     }
 
     $refresh = $this->getCmd(null, 'refresh');

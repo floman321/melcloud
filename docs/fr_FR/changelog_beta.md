@@ -8,6 +8,7 @@
 # 07/11/2022 (v0.3)
  - Ajout de l'affichage de la météo
  - Correction d'un bug Javascript dans la configuration
+ - Gère la possibilité de ne pas avoir de données météo disponible.
 
 # 13/10/2022 (v0.2)
  - Modification gestion cron. Passage à un cron journalier pour les informations de la PAC et le cron toutes les 5 minutes est remplacé par une récupération des informations des splits.
