@@ -675,7 +675,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setIsVisible(0)
             ->setIsHistorized(0)
             ->setType('info')
-            ->setSubType('other')
+            ->setSubType('string')
             ->setDisplay('generic_type', 'GENERIC_INFO')
             ->setEqLogic_id($this->getId());
             $WeatherIcon[$j]->save();
@@ -691,7 +691,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setIsVisible(0)
             ->setIsHistorized(0)
             ->setType('info')
-            ->setSubType('other')
+            ->setSubType('string')
             ->setDisplay('generic_type', 'GENERIC_INFO')
             ->setEqLogic_id($this->getId());
             $WeatherDay[$j]->save();
@@ -707,7 +707,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setIsVisible(0)
             ->setIsHistorized(0)
             ->setType('info')
-            ->setSubType('other')
+            ->setSubType('string')
             ->setDisplay('generic_type', 'WEATHER_TEMPERATURE')
             ->setEqLogic_id($this->getId());
             $WeatherTemperature[$j]->save();
@@ -723,7 +723,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setIsVisible(0)
             ->setIsHistorized(0)
             ->setType('info')
-            ->setSubType('other')
+            ->setSubType('string')
             ->setDisplay('generic_type', 'GENERIC_INFO')
             ->setEqLogic_id($this->getId());
             $WeatherType[$j]->save();
@@ -739,7 +739,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setIsVisible(0)
             ->setIsHistorized(0)
             ->setType('info')
-            ->setSubType('other')
+            ->setSubType('string')
             ->setDisplay('generic_type', 'WEATHER_CONDITION')
             ->setEqLogic_id($this->getId());
             $WeatherCondition[$j]->save();
