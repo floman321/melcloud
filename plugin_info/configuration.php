@@ -121,12 +121,12 @@ if (!isConnect()) {
   $('.bt_GetToken').on('click', function () {
     //Check if form is completly filled and saved
     if(document.getElementById('email').value == '' || document.getElementById('password').value == '') {
-      $('#div_alert').showAlert({message: '{{Merci de remplir l\'email et le mot de passe avant de récupérer le token}}', level: 'danger'});
+      $('#div_alert').showAlert({message: "{{Merci de remplir l'email et le mot de passe avant de récupérer le token}}", level: 'danger'});
     } else {
       if(ComptChamp > 3) {
-        $('#div_alert').showAlert({message: '{{Merci de sauvegarder la configuration avant de récupérer le token}}', level: 'danger'});
+        $('#div_alert').showAlert({message: "{{Merci de sauvegarder la configuration avant de récupérer le token}}", level: 'danger'});
       } else {
-        $('#div_alert').showAlert({message: '{{En cours de récupération du token...}}', level: 'warning'});
+        $('#div_alert').showAlert({message: "{{En cours de récupération du token...}}", level: 'warning'});
         $.ajax({
           type: 'POST',
           url: 'plugins/mitsubishimelcloud/core/ajax/mitsubishimelcloud.ajax.php',
@@ -136,10 +136,10 @@ if (!isConnect()) {
           dataType: 'json',
           error: function (request, status, error) {
             handleAjaxError(request, status, error, $('#div_alert'));
-            $('#div_alert').showAlert({message: '{{Token non-récupéré}}', level: 'error'});
+            $('#div_alert').showAlert({message: "{{Token non-récupéré}}", level: 'error'});
           },
           success: function (data) {
-            $('#div_alert').showAlert({message: '{{Token récupéré}}', level: 'success'});
+            $('#div_alert').showAlert({message: "{{Token récupéré}}", level: 'success'});
             window.location.reload();
           }
         });

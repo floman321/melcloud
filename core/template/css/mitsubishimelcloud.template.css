@@ -131,7 +131,7 @@
   padding-left: 1px;
 }
 
-.VertiZone {
+.VertiZone5 {
   float: left;
   clear: none;
   width: 61px;
@@ -269,6 +269,25 @@
   font-size: 16px;
   display: block;
   width: 150px;
+}
+
+.VertiZone4 {
+  float: left;
+  clear: none;
+  width: 76px;
+  height: 80px;
+  padding-right: 11px;
+  text-align: center;
+  font-size: 12pt;
+}
+
+.WeatherIconBlock {
+  background: rgb(87, 119, 142) linear-gradient(rgb(87, 119, 142) 0%, rgb(128, 157, 177) 100%) repeat scroll 0% 0%;
+  display: block;
+  height: 95px;
+  border-radius: 00.6em;
+  font-weight: normal;
+  text-shadow: rgb(68, 68, 68) 0px 1px 1px;
 }
 
 /* Background images related to specific ID */

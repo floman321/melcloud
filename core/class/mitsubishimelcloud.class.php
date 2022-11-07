@@ -47,15 +47,15 @@ class mitsubishimelcloud extends eqLogic {
   /** Collect heat pump data from MELCloud app */
   public static function SynchronizeMELCloud($action = 'cron') {
     $Token = config::byKey('Token', __CLASS__);
-    log::add(__CLASS__, 'info', __('<--- Start of heat pump synchronization launched by : '.$action, __FILE__));
+    log::add(__CLASS__, 'info', '<--- Start of heat pump synchronization launched by : '.$action);
 
     if($action == 'cron' AND empty($Token)) {
       // When function launched by cron, do not launch the function if no token available
       log::add(__CLASS__, 'debug', 'No cron for heat pump synchronization as no Token saved');
     } else {
       if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
-        message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
-        log::add(__CLASS__, 'debug', __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+        message::add(__CLASS__, __('Please collect the MELCloud token before creating equipment.', __FILE__));
+        log::add(__CLASS__, 'debug', 'Please collect the MELCloud token before creating equipment.');
       } else {
         log::add(__CLASS__, 'info', '===== Synchronize all data from MELCloud =====');
 
@@ -63,7 +63,7 @@ class mitsubishimelcloud extends eqLogic {
         $values = $client->MelcloudAllDevices($Token);
 
         foreach ($values as $maison) {
-          log::add(__CLASS__, 'debug', __('Bâtiment : ', __FILE__) . $maison['Name']);
+          log::add(__CLASS__, 'debug', 'Building: ' . $maison['Name']);
           for ($i = 0; $i < count($maison['Structure']['Devices']); $i++) {
             $device = $maison['Structure']['Devices'][$i];
             log::add(__CLASS__, 'debug', 'Synchronizing device ' . $i . ' ' . $device['DeviceName']);
@@ -97,7 +97,7 @@ class mitsubishimelcloud extends eqLogic {
         }
       }
     }
-    log::add(__CLASS__, 'info', __('<--- End of heat pump synchronization launched by : '.$action, __FILE__));
+    log::add(__CLASS__, 'info', '<--- End of heat pump synchronization launched by : '.$action);
   }
 
   /** Collect split data from MELCloud app */
@@ -107,11 +107,11 @@ class mitsubishimelcloud extends eqLogic {
 
     if($action == 'cron' AND empty($Token)) {
       // When function launched by cron, do not launch the function if no token available
-      log::add(__CLASS__, 'debug', 'No cron for split synchronization as no Token saved');
+      log::add(__CLASS__, 'debug', 'No available token, cron desactivated');
     } else {
       if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
-        message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
-        log::add(__CLASS__, 'debug', __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+        message::add(__CLASS__, __('Please collect the MELCloud token before creating equipment.', __FILE__));
+        log::add(__CLASS__, 'debug', __('Please collect the MELCloud token before creating equipment.', __FILE__));
       } else {
         log::add(__CLASS__, 'info', '===== Synchronize split data from MELCloud app =====');
         
@@ -169,13 +169,13 @@ class mitsubishimelcloud extends eqLogic {
           $mylogical->setConfiguration('buildid', $device['BuildingID']);
 
           if($device['Device']['DeviceType'] == '0') {
-            log::add(__CLASS__, 'debug', __('PAC type air/air', __FILE__));
+            log::add(__CLASS__, 'debug', 'Heat pump air/air');
             $mylogical->setConfiguration('typepac', 'air/air');
           } elseif($device['Device']['DeviceType'] == '1') {
-            log::add(__CLASS__, 'debug', __('PAC type air/eau', __FILE__));
+            log::add(__CLASS__, 'debug', 'Heat pump air/water');
             $mylogical->setConfiguration('typepac', 'air/eau');
           } else {
-            log::add(__CLASS__, 'error', __('Pas de type de PAC trouvé', __FILE__));
+            log::add(__CLASS__, 'error', 'No heat pump type found');
             return;
           }
 
@@ -200,7 +200,7 @@ class mitsubishimelcloud extends eqLogic {
         case 'VaneVerticalDirection':
         case 'VaneHorizontalDirection':
           // These commands doesn't need and update
-          log::add(__CLASS__, 'debug', 'log : '.$cmd->getLogicalId().__(' : On ne traite pas cette commande', __FILE__));
+          log::add(__CLASS__, 'debug', 'log for '.$cmd->getLogicalId().' : command not processed');
           break;
         
         case 'SetTemperature_Value':
@@ -210,7 +210,7 @@ class mitsubishimelcloud extends eqLogic {
         case 'VaneHorizontalDirection_Value':
           // We do the same operation for these 5 "xx_Value"
           $operation = str_replace('_Value', '', $cmd->getLogicalId());
-          log::add(__CLASS__, 'debug', 'log : '.$cmd->getLogicalId().__(' pour ', __FILE__).$operation.__(' et la valeur ', __FILE__).$device['Device'][$operation]);
+          log::add(__CLASS__, 'debug', 'log for '.$operation.' : '.$cmd->getLogicalId().', value: '.$device['Device'][$operation]);
           $cmd->setCollectDate('');
           $cmd->event($device['Device'][$operation]);
           $cmd->save();
@@ -222,13 +222,13 @@ class mitsubishimelcloud extends eqLogic {
             $stepArray = array('step' => floatval($device['Device']['TemperatureIncrement']));
             $cmd->setDisplay('parameters', $stepArray);
             if($device['Device']['OperationMode'] == 1) {
-              log::add(__CLASS__, 'debug', __('OperationMode : HEAT', __FILE__));
-              log::add(__CLASS__, 'debug', __('definir les temperatures Max / Min : ', __FILE__).intval($device['Device']['MaxTempHeat']).' / '.intval($device['Device']['MinTempHeat']));
+              log::add(__CLASS__, 'debug', 'OperationMode : HEAT');
+              log::add(__CLASS__, 'debug', 'Max / Min temperature definition: '.intval($device['Device']['MaxTempHeat']).' / '.intval($device['Device']['MinTempHeat']));
               $cmd->setConfiguration('maxValue', intval($device['Device']['MaxTempHeat']));
               $cmd->setConfiguration('minValue', intval($device['Device']['MinTempHeat']));
             } else {
-              log::add(__CLASS__, 'debug', __('OperationMode : COOL', __FILE__));
-              log::add(__CLASS__, 'debug', __('definir les temperatures Max / Min : ', __FILE__).intval($device['Device']['MaxTempCoolDry']).' / '.intval($device['Device']['MinTempCoolDry']));
+              log::add(__CLASS__, 'debug', 'OperationMode : COOL');
+              log::add(__CLASS__, 'debug', 'Max / Min temperature definition: '.intval($device['Device']['MaxTempCoolDry']).' / '.intval($device['Device']['MinTempCoolDry']));
               $cmd->setConfiguration('maxValue', intval($device['Device']['MaxTempCoolDry']));
               $cmd->setConfiguration('minValue', intval($device['Device']['MinTempCoolDry']));
             }
@@ -239,14 +239,59 @@ class mitsubishimelcloud extends eqLogic {
           break;
 
         case 'FanSpeed':
-          log::add(__CLASS__, 'debug', __('log pour FanSpeed : ', __FILE__).$cmd->getLogicalId().' '.$device['Device']['NumberOfFanSpeeds']);
+          log::add(__CLASS__, 'debug', 'log for FanSpeed : '.$cmd->getLogicalId().', value: '.$device['Device']['NumberOfFanSpeeds']);
           $cmd->setConfiguration('maxValue', $device['Device']['NumberOfFanSpeeds']);
+          $cmd->save();
+          break;
+
+        case 'WeatherIcon1':
+        case 'WeatherIcon2':
+        case 'WeatherIcon3':
+        case 'WeatherIcon4':
+          log::add(__CLASS__, 'debug', 'log for weather icone, for day'.substr($cmd->getLogicalId(), -1));
+          $cmd->event($device['Device']['WeatherObservations'][substr($cmd->getLogicalId(), -1) - 1]['Icon']);
+          $cmd->save();
+          break;
+
+        case 'WeatherDay1':
+        case 'WeatherDay2':
+        case 'WeatherDay3':
+        case 'WeatherDay4':
+          log::add(__CLASS__, 'debug', 'log for weather day, for day '.substr($cmd->getLogicalId(), -1));
+          $cmd->event($device['Device']['WeatherObservations'][substr($cmd->getLogicalId(), -1) - 1]['Day']);
+          $cmd->save();
+          break;
+
+        case 'WeatherTemperature1':
+        case 'WeatherTemperature2':
+        case 'WeatherTemperature3':
+        case 'WeatherTemperature4':
+          log::add(__CLASS__, 'debug', 'log for weather temperature, for day '.substr($cmd->getLogicalId(), -1));
+          $cmd->event($device['Device']['WeatherObservations'][substr($cmd->getLogicalId(), -1) - 1]['Temperature']);
+          $cmd->save();
+          break;
+
+        case 'WeatherType1':
+        case 'WeatherType2':
+        case 'WeatherType3':
+        case 'WeatherType4':
+          log::add(__CLASS__, 'debug', 'log for weather type, for day '.substr($cmd->getLogicalId(), -1));
+          $cmd->event($device['Device']['WeatherObservations'][substr($cmd->getLogicalId(), -1) - 1]['WeatherType']);
+          $cmd->save();
+          break;
+
+        case 'WeatherCondition1':
+        case 'WeatherCondition2':
+        case 'WeatherCondition3':
+        case 'WeatherCondition4':
+          log::add(__CLASS__, 'debug', 'log for weather condition, for day '.substr($cmd->getLogicalId(), -1));
+          $cmd->event($device['Device']['WeatherObservations'][substr($cmd->getLogicalId(), -1) - 1]['ConditionName']);
           $cmd->save();
           break;
 
         default:
           // For : Power, RoomTemperature
-          log::add(__CLASS__, 'debug','general case : '.$cmd->getLogicalId().' : '.$device['Device'][$cmd->getLogicalId()]);
+          log::add(__CLASS__, 'debug','log for weneral case : '.$cmd->getLogicalId().', value : '.$device['Device'][$cmd->getLogicalId()]);
           $cmd->event($device['Device'][$cmd->getLogicalId()]);
           $cmd->save();
           break;
@@ -263,8 +308,8 @@ class mitsubishimelcloud extends eqLogic {
   public static function SendDeviceUpdate($NewValue, $DeviceLogicalId, $Command, $Flag) {
     $Token = config::byKey('Token', __CLASS__);
     if($Token == '' || substr($Token, 0, 11) == 'Login ERROR') {
-      message::add(__CLASS__, __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
-      log::add(__CLASS__, 'debug', __('Merci de récupérer le token MELCloud avant de créer des équipements.', __FILE__));
+      message::add(__CLASS__, __('Please collect the MELCloud token before creating equipment.', __FILE__));
+      log::add(__CLASS__, 'debug', 'Please collect the MELCloud token before creating equipment.');
     } else {
       log::add(__CLASS__, 'info', 'Send new value '.$NewValue.' for '.$Command.' to MELCloud');
       
@@ -291,6 +336,25 @@ class mitsubishimelcloud extends eqLogic {
     }
   }
   
+  /** Collect weather symbol if not available localy */
+  public function getWeatherSymbol($filename) {
+    $url ='https://app.melcloud.com/css/weather';
+    $localdir = __DIR__ ."/../../data/symbol";
+    if(!file_exists("$localdir/$filename")) {
+      $content = file_get_contents("$url/$filename");
+      if($content === false) {
+        log::add(__CLASS__, 'debug', "Unable to get file: $url/$filename");
+        return("$url/$filename");
+      }
+      if(!is_dir($localdir)) @mkdir($localdir, 0777, true);
+      $res = file_put_contents("$localdir/$filename", $content);
+      if($res === false) {
+        log::add(__CLASS__, 'debug', "Unable to save file: $localdir/$filename");
+        return("$url/$filename");
+      }
+    }
+    return("plugins/" . __CLASS__ ."/data/symbol/$filename");
+  }
 
   /*     * *********************Méthodes d'instance************************* */
   /** Method called after saving your Jeedom equipment */
@@ -301,15 +365,16 @@ class mitsubishimelcloud extends eqLogic {
       if($this->getConfiguration('deviceid') == '') return;
     }
 
-    $RefreshCmd = $this->getCmd(null, 'refresh');
-    if($this->getConfiguration('deviceid') != '' && !is_object($RefreshCmd)) {
+    // If equipment existing, we create required commands
+    if($this->getConfiguration('deviceid') != '') {
+      $i = 1;
       // Create common commande for both style :
       $refresh = $this->getCmd(null, 'refresh');
       if(!is_object($refresh)) {
         $refresh = (new mitsubishimelcloudCmd)
         ->setName(__('Actualiser', __FILE__))
         ->setLogicalId('refresh')
-        ->setOrder(1)
+        ->setOrder($i)
         ->setIsVisible(1)
         ->setType('action')
         ->setSubType('other')
@@ -317,12 +382,13 @@ class mitsubishimelcloud extends eqLogic {
         $refresh->save();
       }
 
+      $i++;
       $PowerState = $this->getCmd(null, 'Power');
       if(!is_object($PowerState)) {
         $PowerState = (new mitsubishimelcloudCmd)
         ->setName(__('Power', __FILE__))
         ->setLogicalId('Power')
-        ->setOrder(2)
+        ->setOrder($i)
         ->setIsVisible(0)
         ->setIsHistorized(0)
         ->setType('info')
@@ -332,12 +398,13 @@ class mitsubishimelcloud extends eqLogic {
         $PowerState->save();
       }
 
+      $i++;
       $On = $this->getCmd(null, 'On');
       if(!is_object($On)) {
         $On = (new mitsubishimelcloudCmd)
         ->setName(__('On', __FILE__))
         ->setLogicalId('On')
-        ->setOrder(3)
+        ->setOrder($i)
         ->setIsVisible(1)
         ->setIsHistorized(0)
         ->setType('action')
@@ -351,12 +418,13 @@ class mitsubishimelcloud extends eqLogic {
         $On->save();
       }
 
+      $i++;
       $Off = $this->getCmd(null, 'Off');
       if(!is_object($Off)) {
         $Off = (new mitsubishimelcloudCmd)
         ->setName(__('Off', __FILE__))
         ->setLogicalId('Off')
-        ->setOrder(4)
+        ->setOrder($i)
         ->setIsVisible(1)
         ->setIsHistorized(0)
         ->setType('action')
@@ -370,6 +438,7 @@ class mitsubishimelcloud extends eqLogic {
         $Off->save();
       }
 
+      $i++;
       // Create command specific of each style :
       if($this->getConfiguration('typepac') == 'air/air'){
         $RoomTemperature = $this->getCmd(null, 'RoomTemperature');
@@ -377,7 +446,7 @@ class mitsubishimelcloud extends eqLogic {
           $RoomTemperature = (new mitsubishimelcloudCmd)
           ->setName(__('Température de la pièce', __FILE__))
           ->setLogicalId('RoomTemperature')
-          ->setOrder(5)
+          ->setOrder($i)
           ->setIsVisible(1)
           ->setIsHistorized(1)
           ->setType('info')
@@ -390,12 +459,13 @@ class mitsubishimelcloud extends eqLogic {
           $RoomTemperature->save();
         }
         
+        $i++;
         $SetTemperature_Value = $this->getCmd(null, 'SetTemperature_Value');
         if(!is_object($SetTemperature_Value)) {
           $SetTemperature_Value = (new mitsubishimelcloudCmd)
           ->setName(__('Valeur température consigne', __FILE__))
           ->setLogicalId('SetTemperature_Value')
-          ->setOrder(6)
+          ->setOrder($i)
           ->setIsVisible(0)
           ->setIsHistorized(1)
           ->setType('info')
@@ -406,12 +476,13 @@ class mitsubishimelcloud extends eqLogic {
           $SetTemperature_Value->save();
         }
         
+        $i++;
         $SetTemperature = $this->getCmd(null, 'SetTemperature');
         if(!is_object($SetTemperature)) {
           $SetTemperature = (new mitsubishimelcloudCmd)
           ->setName(__('Température consigne', __FILE__))
           ->setLogicalId('SetTemperature')
-          ->setOrder(7)
+          ->setOrder($i)
           ->setIsVisible(1)
           ->setIsHistorized(0)
           ->setType('action')
@@ -429,12 +500,13 @@ class mitsubishimelcloud extends eqLogic {
           $SetTemperature->save();
         }
         
+        $i++;
         $OperationMode_Value = $this->getCmd(null, 'OperationMode_Value');
         if(!is_object($OperationMode_Value)) {
           $OperationMode_Value = (new mitsubishimelcloudCmd)
           ->setName(__('Mode actif', __FILE__))
           ->setLogicalId('OperationMode_Value')
-          ->setOrder(8)
+          ->setOrder($i)
           ->setIsVisible(0)
           ->setIsHistorized(1)
           ->setType('info')
@@ -444,12 +516,13 @@ class mitsubishimelcloud extends eqLogic {
           $OperationMode_Value->save();
         }
         
+        $i++;
         $OperationMode = $this->getCmd(null, 'OperationMode');
         if(!is_object($OperationMode)) {
           $OperationMode = (new mitsubishimelcloudCmd)
           ->setName(__('Mode', __FILE__))
           ->setLogicalId('OperationMode')
-          ->setOrder(9)
+          ->setOrder($i)
           ->setIsVisible(1)
           ->setIsHistorized(0)
           ->setType('action')
@@ -465,12 +538,13 @@ class mitsubishimelcloud extends eqLogic {
           $OperationMode->save();
         }
         
+        $i++;
         $FanSpeed_Value = $this->getCmd(null, 'FanSpeed_Value');
         if(!is_object($FanSpeed_Value)) {
           $FanSpeed_Value = (new mitsubishimelcloudCmd)
           ->setName(__('Valeur vitesse ventilation', __FILE__))
           ->setLogicalId('FanSpeed_Value')
-          ->setOrder(10)
+          ->setOrder($i)
           ->setIsVisible(0)
           ->setIsHistorized(1)
           ->setType('info')
@@ -480,12 +554,13 @@ class mitsubishimelcloud extends eqLogic {
           $FanSpeed_Value->save();
         }
         
+        $i++;
         $FanSpeed = $this->getCmd(null, 'FanSpeed');
         if(!is_object($FanSpeed)) {
           $FanSpeed = (new mitsubishimelcloudCmd)
           ->setName(__('Vitesse ventilation', __FILE__))
           ->setLogicalId('FanSpeed')
-          ->setOrder(11)
+          ->setOrder($i)
           ->setIsVisible(1)
           ->setIsHistorized(0)
           ->setType('action')
@@ -501,12 +576,13 @@ class mitsubishimelcloud extends eqLogic {
           $FanSpeed->save();
         }
         
+        $i++;
         $VaneVerticalDirection_Value = $this->getCmd(null, 'VaneVerticalDirection_Value');
         if(!is_object($VaneVerticalDirection_Value)) {
           $VaneVerticalDirection_Value = (new mitsubishimelcloudCmd)
           ->setName(__('Valeur position ailettes verticales', __FILE__))
           ->setLogicalId('VaneVerticalDirection_Value')
-          ->setOrder(12)
+          ->setOrder($i)
           ->setIsVisible(0)
           ->setIsHistorized(1)
           ->setType('info')
@@ -516,12 +592,13 @@ class mitsubishimelcloud extends eqLogic {
           $VaneVerticalDirection_Value->save();
         }
         
+        $i++;
         $VaneVerticalDirection = $this->getCmd(null, 'VaneVerticalDirection');
         if(!is_object($VaneVerticalDirection)) {
           $VaneVerticalDirection = (new mitsubishimelcloudCmd)
           ->setName(__('Position ailettes verticales', __FILE__))
           ->setLogicalId('VaneVerticalDirection')
-          ->setOrder(13)
+          ->setOrder($i)
           ->setIsVisible(1)
           ->setIsHistorized(0)
           ->setType('action')
@@ -543,12 +620,13 @@ class mitsubishimelcloud extends eqLogic {
           $VaneVerticalDirection->save();
         }
         
+        $i++;
         $VaneHorizontalDirection_Value = $this->getCmd(null, 'VaneHorizontalDirection_Value');
         if(!is_object($VaneHorizontalDirection_Value)) {
           $VaneHorizontalDirection_Value = (new mitsubishimelcloudCmd)
           ->setName(__('Valeur position ailettes horizontales', __FILE__))
           ->setLogicalId('VaneHorizontalDirection_Value')
-          ->setOrder(14)
+          ->setOrder($i)
           ->setIsVisible(0)
           ->setIsHistorized(1)
           ->setType('info')
@@ -558,12 +636,13 @@ class mitsubishimelcloud extends eqLogic {
           $VaneHorizontalDirection_Value->save();
         }
         
+        $i++;
         $VaneHorizontalDirection = $this->getCmd(null, 'VaneHorizontalDirection');
         if(!is_object($VaneHorizontalDirection)) {
           $VaneHorizontalDirection = (new mitsubishimelcloudCmd)
           ->setName(__('Position ailettes horizontal', __FILE__))
           ->setLogicalId('VaneHorizontalDirection')
-          ->setOrder(15)
+          ->setOrder($i)
           ->setIsVisible(1)
           ->setIsHistorized(0)
           ->setType('action')
@@ -584,12 +663,94 @@ class mitsubishimelcloud extends eqLogic {
           ->setEqLogic_id($this->getId());
           $VaneHorizontalDirection->save();
         }
+
+        for($j = 1; $j <=4; $j++) {
+          $i++;
+          $WeatherIcon[$j] = $this->getCmd(null, 'WeatherIcon'.$j);
+          if(!is_object($WeatherIcon[$j])) {
+            $WeatherIcon[$j] = (new mitsubishimelcloudCmd)
+            ->setName(__('Icône météo jour n°', __FILE__).$j)
+            ->setLogicalId('WeatherIcon'.$j)
+            ->setOrder($i)
+            ->setIsVisible(0)
+            ->setIsHistorized(0)
+            ->setType('info')
+            ->setSubType('other')
+            ->setDisplay('generic_type', 'GENERIC_INFO')
+            ->setEqLogic_id($this->getId());
+            $WeatherIcon[$j]->save();
+          }
+          
+          $i++;
+          $WeatherDay[$j] = $this->getCmd(null, 'WeatherDay'.$j);
+          if(!is_object($WeatherDay[$j])) {
+            $WeatherDay[$j] = (new mitsubishimelcloudCmd)
+            ->setName(__('Jour météo n°', __FILE__).$j)
+            ->setLogicalId('WeatherDay'.$j)
+            ->setOrder($i)
+            ->setIsVisible(0)
+            ->setIsHistorized(0)
+            ->setType('info')
+            ->setSubType('other')
+            ->setDisplay('generic_type', 'GENERIC_INFO')
+            ->setEqLogic_id($this->getId());
+            $WeatherDay[$j]->save();
+          }
+
+          $i++;
+          $WeatherTemperature[$j] = $this->getCmd(null, 'WeatherTemperature'.$j);
+          if(!is_object($WeatherTemperature[$j])) {
+            $WeatherTemperature[$j] = (new mitsubishimelcloudCmd)
+            ->setName(__('Température jour n°', __FILE__).$j)
+            ->setLogicalId('WeatherTemperature'.$j)
+            ->setOrder($i)
+            ->setIsVisible(0)
+            ->setIsHistorized(0)
+            ->setType('info')
+            ->setSubType('other')
+            ->setDisplay('generic_type', 'WEATHER_TEMPERATURE')
+            ->setEqLogic_id($this->getId());
+            $WeatherTemperature[$j]->save();
+          }
+
+          $i++;
+          $WeatherType[$j] = $this->getCmd(null, 'WeatherType'.$j);
+          if(!is_object($WeatherType[$j])) {
+            $WeatherType[$j] = (new mitsubishimelcloudCmd)
+            ->setName(__('Type météo jour n°', __FILE__).$j)
+            ->setLogicalId('WeatherType'.$j)
+            ->setOrder($i)
+            ->setIsVisible(0)
+            ->setIsHistorized(0)
+            ->setType('info')
+            ->setSubType('other')
+            ->setDisplay('generic_type', 'GENERIC_INFO')
+            ->setEqLogic_id($this->getId());
+            $WeatherType[$j]->save();
+          }
+
+          $i++;
+          $WeatherCondition[$j] = $this->getCmd(null, 'WeatherCondition'.$j);
+          if(!is_object($WeatherCondition[$j])) {
+            $WeatherCondition[$j] = (new mitsubishimelcloudCmd)
+            ->setName(__('Condition météo jour n°', __FILE__).$j)
+            ->setLogicalId('WeatherCondition'.$j)
+            ->setOrder($i)
+            ->setIsVisible(0)
+            ->setIsHistorized(0)
+            ->setType('info')
+            ->setSubType('other')
+            ->setDisplay('generic_type', 'WEATHER_CONDITION')
+            ->setEqLogic_id($this->getId());
+            $WeatherCondition[$j]->save();
+          }
+        }
       } elseif($this->getConfiguration('typepac') == 'air/eau') {
-        log::add(__CLASS__, 'error', __('Non supporté par le plugin pour le moment. Merci de contacter le développeur', __FILE__));
-        throw new Exception(__('Non supporté par le plugin pour le moment. Merci de contacter le développeur', __FILE__));
+        log::add(__CLASS__, 'error', 'Air/water not supported by the plugin at the moment. Please contact the developer');
+        throw new Exception(__('Air/water not supported by the plugin at the moment. Please contact the developer', __FILE__));
         return;
       } else {
-        log::add(__CLASS__, 'error', __('Pas de type de PAC trouvé', __FILE__));
+        log::add(__CLASS__, 'error', 'No type of heat pump found');
         return;
       }
     }
@@ -608,7 +769,7 @@ class mitsubishimelcloud extends eqLogic {
     }
     $version = jeedom::versionAlias($_version);
 
-    $replace['#TemplateWidth#'] = 818;
+    $replace['#TemplateWidth#'] = 804;
     $replace['#TemplateHeight#'] = 640;
 
     $Power = $this->getCmd(null, 'Power');
@@ -648,6 +809,28 @@ class mitsubishimelcloud extends eqLogic {
     $replace['#Temp_Cmd#'] = is_object($SetTemp) ? $SetTemp->getId() : '';
     $SetTemp_Value = $this->getCmd(null, 'SetTemperature_Value');
     $replace['#SetTemperature#'] = is_object($SetTemp_Value) ? $SetTemp_Value->execCmd() : '';
+
+    for($i = 1; $i <=4; $i++) {
+      $WeatherIcon[$i] = $this->getCmd(null, 'WeatherIcon'.$i);
+      if(is_object($WeatherIcon[$i])) {
+        $replace['#WeatherIcon_'.$i.'#'] = self::getWeatherSymbol($WeatherIcon[$i]->execCmd().'.png');
+      }
+
+      $WeatherDay[$i] = $this->getCmd(null, 'WeatherDay'.$i);
+      $subject = is_object($WeatherDay[$i]) ? $WeatherDay[$i]->execCmd() : '';
+      $search  = array('0', '1', '2', '3', '4', '5', '6');
+      $substitute = array('Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam');
+      $replace['#WeatherDay_'.$i.'#'] = str_replace($search, $substitute, $subject);
+
+      $WeatherTemperature[$i] = $this->getCmd(null, 'WeatherTemperature'.$i);
+      $replace['#WeatherTemperature_'.$i.'#'] = is_object($WeatherTemperature[$i]) ? $WeatherTemperature[$i]->execCmd().'°C' : '';
+
+      $WeatherType[$i] = $this->getCmd(null, 'WeatherType'.$i);
+      $replace['#WeatherType_'.$i.'#'] = is_object($WeatherType[$i]) ? $WeatherType[$i]->execCmd() : '';
+
+      $WeatherCondition[$i] = $this->getCmd(null, 'WeatherCondition'.$i);
+      $replace['#WeatherCondition_'.$i.'#'] = is_object($WeatherCondition[$i]) ? $WeatherCondition[$i]->execCmd() : '';
+    }
 
     $refresh = $this->getCmd(null, 'refresh');
     $replace['#refresh#'] = is_object($refresh) ? $refresh->getId() : '';
@@ -752,12 +935,17 @@ class MitsubishiMelcouldClient {
   /** Parameters for GuzzleHttp\Client */
   public function __construct($clientHttp = null) {
     if($clientHttp == null) {
-      $this->clientHttp = new Client([
-        'base_uri' => self::URL,
-        'timeout' => 60,
-        'synchronous' => true,
-        'version' => 2
-      ]);
+      try {
+        $this->clientHttp = new Client([
+          'base_uri' => self::URL,
+          'connect_timeout' => 5,
+          'timeout' => 10,
+          'synchronous' => true,
+          'version' => 2
+        ]);
+      } catch(\GuzzleHttp\Exception\GuzzleException $e) {
+        log::add('mitsubishimelcloud', 'debug', 'MELCloud servers are not responding.');
+      }
     } else {
       $this->clientHttp = $clientHttp;
     }
@@ -782,8 +970,8 @@ class MitsubishiMelcouldClient {
       log::add('mitsubishimelcloud', 'debug', 'Login OK.');
       return $json['LoginData']['ContextKey'];
     } elseif($json['ErrorId'] == 1) {
-      log::add('mitsubishimelcloud', 'debug', __('Login ERROR : identifiant ou mot de passe MELCloud incorrect.', __FILE__));
-      return __('Login ERROR : identifiant ou mot de passe MELCloud incorrect', __FILE__);
+      log::add('mitsubishimelcloud', 'debug', 'Login ERROR : incorrect MELCloud login or password.');
+      return __('incorrect MELCloud login or password', __FILE__);
     } else {
       log::add('mitsubishimelcloud', 'debug', 'Login ERROR : code n°' . $json['ErrorId']);
       return 'Login ERROR : code n°' . $json['ErrorId'];
@@ -799,8 +987,8 @@ class MitsubishiMelcouldClient {
       ],
     ]);
     if($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Erreur lors de la synchronisation des appareils', __FILE__));
-        log::add('mitsubishimelcloud', 'error', __('Erreur lors de la synchronisation des appareils', __FILE__));
+        throw new Exception(__('Error while synchronizing devices', __FILE__));
+        log::add('mitsubishimelcloud', 'error', 'Error while synchronizing devices');
     }
 
     return json_decode($server_output->getBody(), true);
@@ -819,8 +1007,8 @@ class MitsubishiMelcouldClient {
       ],
     ]);
     if($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
-        log::add('mitsubishimelcloud', 'error', __('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
+        throw new Exception(__('Error while collecting device information', __FILE__));
+        log::add('mitsubishimelcloud', 'error', 'Error while collecting device information');
     }
 
     return json_decode($server_output->getBody(), true);
@@ -835,8 +1023,8 @@ class MitsubishiMelcouldClient {
       'json' => $Device,
     ]);
     if($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
-        log::add('mitsubishimelcloud', 'error', __('Erreur lors de la collecte des infos de l\'appareil', __FILE__));
+        throw new Exception(__('Error while collecting device information', __FILE__));
+        log::add('mitsubishimelcloud', 'error', 'Error while collecting device information');
     }
 
     return json_decode($server_output->getBody(), true);
