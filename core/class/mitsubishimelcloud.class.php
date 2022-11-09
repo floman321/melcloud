@@ -483,30 +483,6 @@ class mitsubishimelcloud extends eqLogic {
           $SetTemperature_Value->save();
         }
         
-        // $i++;
-        // $SetTemperature = $this->getCmd(null, 'SetTemperature');
-        // if(!is_object($SetTemperature)) {
-        //   $SetTemperature = (new mitsubishimelcloudCmd)
-        //   ->setName(__('Température consigne', __FILE__))
-        //   ->setLogicalId('SetTemperature')
-        //   ->setOrder($i)
-        //   ->setIsVisible(1)
-        //   ->setIsHistorized(0)
-        //   ->setType('action')
-        //   ->setSubType('slider')
-        //   ->setConfiguration('minValue', 10)
-        //   ->setConfiguration('maxValue', 30)
-        //   ->setConfiguration('step', 1)
-        //   ->setUnite('°C')
-        //   ->setTemplate('dashboard', 'TemperatureMitsubishi')
-        //   ->setTemplate('mobile', 'TemperatureMitsubishi')
-        //   ->setDisplay('generic_type', 'THERMOSTAT_SETPOINT')
-        //   ->setConfiguration('updateCmdId', $SetTemperature_Value->getEqLogic_id())
-        //   ->setValue($SetTemperature_Value->getId())
-        //   ->setEqLogic_id($this->getId());
-        //   $SetTemperature->save();
-        // }
-        
         $i++;
         $SetTemperature = $this->getCmd(null, 'SetTemperature');
         if(!is_object($SetTemperature)) {
@@ -517,8 +493,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setIsVisible(1)
           ->setIsHistorized(0)
           ->setType('action')
-          ->setSubType('select')
-          ->setConfiguration('listvalue', '10|10; 11|11; 12|12; 13|13; 14|14; 15|15; 16|16; 17|17; 18|18; 19|19; 20|20; 21|21; 22|22; 23|23; 24|24; 25|25; 26|26; 27|27; 28|28; 29|29; 30|30')
+          ->setSubType('slider')
+          ->setConfiguration('minValue', 10)
+          ->setConfiguration('maxValue', 30)
+          ->setConfiguration('step', 1)
           ->setUnite('°C')
           ->setTemplate('dashboard', 'TemperatureMitsubishi')
           ->setTemplate('mobile', 'TemperatureMitsubishi')
@@ -943,24 +921,24 @@ class mitsubishimelcloudCmd extends cmd {
       mitsubishimelcloud::SendDeviceUpdate('false', $this->getEqLogic(), 'Power', 1);
     }
     if('OperationMode' == $this->logicalId) {
-      log::add('mitsubishimelcloud', 'debug', 'New mode requested, value : '.$_options['message']);
-      mitsubishimelcloud::SendDeviceUpdate($_options['message'], $this->getEqLogic(), 'OperationMode', 6);
+      log::add('mitsubishimelcloud', 'debug', 'New mode requested, value : '.$_options['slider']);
+      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'OperationMode', 6);
     }
     if('FanSpeed' == $this->logicalId) {
-      log::add('mitsubishimelcloud', 'debug', 'New Fan speed requested, value : '.$_options['message']);
-      mitsubishimelcloud::SendDeviceUpdate($_options['message'], $this->getEqLogic(), 'SetFanSpeed', 8);
+      log::add('mitsubishimelcloud', 'debug', 'New Fan speed requested, value : '.$_options['slider']);
+      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'SetFanSpeed', 8);
     }
     if('SetTemperature' == $this->logicalId) {
-      log::add('mitsubishimelcloud', 'debug', 'New Temperature set : '.floatval($_options['message']));
-      mitsubishimelcloud::SendDeviceUpdate($_options['message'], $this->getEqLogic(), 'SetTemperature', 4);
+      log::add('mitsubishimelcloud', 'debug', 'New Temperature set : '.floatval($_options['slider']));
+      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'SetTemperature', 4);
     }
     if('VaneHorizontalDirection' == $this->logicalId) {
-      log::add('mitsubishimelcloud', 'debug', 'New horizontal vane direction, value : '.intval($_options['message']));
-      mitsubishimelcloud::SendDeviceUpdate($_options['message'], $this->getEqLogic(), 'VaneHorizontal', 256);
+      log::add('mitsubishimelcloud', 'debug', 'New horizontal vane direction, value : '.intval($_options['slider']));
+      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'VaneHorizontal', 256);
     }
     if('VaneVerticalDirection' == $this->logicalId) {
-      log::add('mitsubishimelcloud', 'debug', 'New Vertical vane direction, value : '.intval($_options['message']));
-      mitsubishimelcloud::SendDeviceUpdate($_options['message'], $this->getEqLogic(), 'VaneVertical', 16);
+      log::add('mitsubishimelcloud', 'debug', 'New Vertical vane direction, value : '.intval($_options['slider']));
+      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'VaneVertical', 16);
     }
   }
 }
