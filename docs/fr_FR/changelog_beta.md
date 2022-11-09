@@ -1,9 +1,12 @@
 # TODO
  - Ajouter les PAC air/eau (si vous en possédez une, merci de me contacter)
- - Ajouter la prise en charge des scénarios
+ - Ajouter la prise en charge des scénarios (MELCloud)
  - Mettre à jour la gestion du cron
     - Gestion de la fréquence configurable
  - Ajouter la possibilité de choisir quel élément du widget afficher ou non (parmi `Scénario`, `Mode`, `Vitesse de ventillation`, `Ailettes horizontales`, `Ailettes verticales`, `Température`, `Météo`)
+
+# 09/11/2022 (v0.4)
+ - Ajout de plus d'informations pour le debug lors de l'envoie d'une commande
 
 # 07/11/2022 (v0.3)
  - Ajout de l'affichage de la météo

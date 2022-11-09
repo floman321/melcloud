@@ -330,6 +330,7 @@ class mitsubishimelcloud extends eqLogic {
       $Device['HasPendingCommand'] = 'true';
 
       //Send the data to MELCloud server
+      log::add(__CLASS__, 'debug', 'Envoie de la nouvelle commande : '.print_r($Device, true));
       $UpdatedDevice = $client->MelcloudDeviceUpdate($Device, $Token);
       log::add(__CLASS__, 'debug', 'retour mise à jour device : '.json_encode($UpdatedDevice));
       //Update device info based on feedback from MELCloud server information
@@ -943,6 +944,8 @@ class mitsubishimelcloudCmd extends cmd {
 }
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ClientException;
 
 /** CLASS to connect and exchange with Mitsubishi servers */
 class MitsubishiMelcouldClient {
@@ -959,13 +962,15 @@ class MitsubishiMelcouldClient {
       try {
         $this->clientHttp = new Client([
           'base_uri' => self::URL,
-          'connect_timeout' => 5,
-          'timeout' => 10,
           'synchronous' => true,
           'version' => 2
         ]);
-      } catch(\GuzzleHttp\Exception\GuzzleException $e) {
-        log::add('mitsubishimelcloud', 'debug', 'MELCloud servers are not responding.');
+      } catch (ClientException $e) {
+        log::add('mitsubishimelcloud', 'info', 'MELCloud servers are not responding : ClientException');
+      } catch (RequestException $e) {
+        log::add('mitsubishimelcloud', 'info', 'MELCloud servers are not responding : RequestException');
+      } catch (\Exception $e) {
+        log::add('mitsubishimelcloud', 'info', 'MELCloud servers are not responding : Exception');
       }
     } else {
       $this->clientHttp = $clientHttp;
