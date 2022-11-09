@@ -57,6 +57,27 @@
   margin-left: 10px;
 }
 
+.Preset {
+  height: 73px;
+  width: 118px;
+  margin-bottom: 10px;
+}
+
+.PresetA {
+  width: 118px;
+  height: 73px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  background-color: rgb(116, 140, 160);
+  border-radius: 6px;
+}
+
+.PresetA:hover {
+  background-color: rgb(138, 164, 185);
+  cursor: pointer !important;
+}
+
 .CommandBlock {
   color: white;
   width: 330px;

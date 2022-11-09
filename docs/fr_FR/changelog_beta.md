@@ -5,6 +5,9 @@
     - Gestion de la fréquence configurable
  - Ajouter la possibilité de choisir quel élément du widget afficher ou non (parmi `Scénario`, `Mode`, `Vitesse de ventillation`, `Ailettes horizontales`, `Ailettes verticales`, `Température`, `Météo`)
 
+# 09/11/2022 (0.5)
+ - Correction bug (remonté par jlequen) lié à des commandes non envoyées aux serveurs MELCloud.
+
 # 09/11/2022 (v0.4)
  - Ajout de plus d'informations pour le debug lors de l'envoie d'une commande
 

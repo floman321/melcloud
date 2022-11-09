@@ -14,7 +14,12 @@
 
   <div class="ScenariosColumn">
     <div class="CommandTitle">#Scenario#</div>
-    <div class="CommandSetUp" style="width: 138px; height: 342px;"></div>
+    <div class="CommandSetUp" style="width: 138px; height: 342px;">
+      <div class="Preset"><span class="PresetA">Préréglage 1</span></div>
+      <div class="Preset"><span class="PresetA">Préréglage 2</span></div>
+      <div class="Preset"><span class="PresetA">Préréglage 3</span></div>
+      <div class="Preset"><span class="PresetA">Préréglage 4</span></div>
+    </div>
   </div>
 
   <div class="CommandBlock">
@@ -123,7 +128,7 @@
         <span class="SetTempTitle">#SetTempTitle#</span>
         <input type="range" min="#MinTemperature#" max="#MaxTemperature#" step="0.5" value="#SetTemperature#" style="background-color: transparent !important; z-index: 4;"
           oninput="this.parentNode.style.setProperty('--value', this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify(this.value));"
-          onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {message: this.value}, notify:true}); AddingDots();">
+          onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {slider: this.value}, notify:true}); AddingDots();">
         <span></span>
         <div class='SetTemp__progress'></div>
       </div>
@@ -175,7 +180,7 @@
     $('.eqLogic[data-eqLogic_uid=#uid#] .SelectedMode').text(ModeCorresp[#OperationMode_Value#]);
     // Send selected mode to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .ModeSelection label").click(function(){
-      jeedom.cmd.execute({id: '#OperationMode_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      jeedom.cmd.execute({id: '#OperationMode_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
       AddingDots('#uid#');
     });
 
@@ -185,7 +190,7 @@
     $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection #LabelFanSpeed_#FanSpeed_Value#").addClass("ZoneOn");
     // Send selected fan speed to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection label").click(function(){
-      jeedom.cmd.execute({id: '#FanSpeed_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      jeedom.cmd.execute({id: '#FanSpeed_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
       AddingDots('#uid#');
     });
 
@@ -210,7 +215,7 @@
     $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
     
     $(".eqLogic[data-eqLogic_uid=#uid#] .HoziSelection label").click(function(){
-      jeedom.cmd.execute({id: '#HoriVane_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      jeedom.cmd.execute({id: '#HoriVane_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
       AddingDots('#uid#');
     });
 
@@ -235,7 +240,7 @@
     $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
     
     $(".eqLogic[data-eqLogic_uid=#uid#] .VertiSelection label").click(function(){
-      jeedom.cmd.execute({id: '#VertiVane_Cmd#', value: {message: parseInt($(this).attr('data-key'))}, notify:true});
+      jeedom.cmd.execute({id: '#VertiVane_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
       AddingDots('#uid#');
     });
 
