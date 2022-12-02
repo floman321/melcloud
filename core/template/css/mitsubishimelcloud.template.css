@@ -35,6 +35,16 @@
   left: 6px;
 }
 
+.WarningZone {
+  font-size: 18px;
+  font-weight: normal;
+  text-align: right;
+  display: block;
+  color: red;
+  font-family: Helvetica, Arial, sans-serif;
+  margin-right: 10px;
+}
+
 .ScenariosColumn {
   width: 160px;
   float: left;
@@ -69,12 +79,12 @@
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  background-color: rgb(116, 140, 160);
+  background-color: #718ea3;
   border-radius: 6px;
 }
 
 .PresetA:hover {
-  background-color: rgb(138, 164, 185);
+  background-color: #89a8bd;
   cursor: pointer !important;
 }
 
@@ -143,7 +153,7 @@
 }
 
 .HoriButton:hover {
-  background-color: rgb(138, 164, 185);
+  background-color: #89a8bd;
   cursor: pointer;
 }
 
@@ -172,7 +182,7 @@
 }
 
 .VertiButton:hover {
-  background-color: rgb(138, 164, 185);
+  background-color: #89a8bd;
   cursor: pointer;
 }
 
@@ -184,11 +194,11 @@
 }
 
 .ZoneOff {
-  background-color: rgb(116, 140, 160);
+  background-color: #718ea3;
 }
 
 .ZoneOn {
-  background-color: rgb(138, 164, 185);
+  background-color: #89a8bd;
 }
 
 .VertiImg {
@@ -247,7 +257,7 @@
 }
 
 .RectButton:hover {
-  background-color: rgb(138, 164, 185);
+  background-color: #89a8bd;
   cursor: pointer;
 }
 

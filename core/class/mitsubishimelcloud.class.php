@@ -21,7 +21,7 @@ require_once __DIR__  . '/../../../../core/php/core.inc.php';
 
 class mitsubishimelcloud extends eqLogic {
   /*     * *************************Attributs****************************** */
-  const DEFAULT_SYNC_CRON = '38 2 * * *'; //default cron for synchronisation
+  const DEFAULT_SYNC_CRON = '38 23 * * *'; //default cron for synchronisation
   const DEFAULT_SPLIT_CRON = '*/5 * * * *'; //default cron to update splits data
 
   /*
@@ -296,7 +296,7 @@ class mitsubishimelcloud extends eqLogic {
           break;
 
         default:
-          // For : Power, RoomTemperature
+          // For : Power, RoomTemperature, WarningText
           log::add(__CLASS__, 'debug','log for weneral case : '.$cmd->getLogicalId().', value : '.$device['Device'][$cmd->getLogicalId()]);
           $cmd->event($device['Device'][$cmd->getLogicalId()]);
           $cmd->save();
@@ -446,7 +446,22 @@ class mitsubishimelcloud extends eqLogic {
       }
 
       $i++;
+      $WarningText = $this->getCmd(null, 'WarningText');
+      if(!is_object($WarningText)) {
+        $WarningText = (new mitsubishimelcloudCmd)
+        ->setName(__('Error message', __FILE__))
+        ->setLogicalId('WarningText')
+        ->setOrder($i)
+        ->setIsVisible(1)
+        ->setIsHistorized(0)
+        ->setType('info')
+        ->setSubType('string')
+        ->setEqLogic_id($this->getId());
+        $WarningText->save();
+      }
+
       // Create command specific of each style :
+      $i++;
       if($this->getConfiguration('typepac') == 'air/air'){
         $RoomTemperature = $this->getCmd(null, 'RoomTemperature');
         if(!is_object($RoomTemperature)) {
@@ -810,6 +825,13 @@ class mitsubishimelcloud extends eqLogic {
     $RoomTemperature = $this->getCmd(null, 'RoomTemperature');
     $replace['#RoomTemperature#'] = is_object($RoomTemperature) ? $RoomTemperature->execCmd() : '';
 
+    $WarningText = $this->getCmd(null, 'WarningText');
+    if(is_object($WarningText)) {
+      $replace['#WarningText#'] = is_numeric($WarningText->execCmd()) ? '' : $WarningText->execCmd();
+    } else {
+      $replace['#WarningText#'] = '';
+    }
+
     $SetTemp = $this->getCmd(null, 'SetTemperature');
     $replace['#MinTemperature#'] = is_object($SetTemp) ? $SetTemp->getConfiguration('minValue') : '';
     $replace['#MaxTemperature#'] = is_object($SetTemp) ? $SetTemp->getConfiguration('maxValue') : '';
@@ -944,8 +966,10 @@ class mitsubishimelcloudCmd extends cmd {
 }
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 
 /** CLASS to connect and exchange with Mitsubishi servers */
 class MitsubishiMelcouldClient {
@@ -959,19 +983,11 @@ class MitsubishiMelcouldClient {
   /** Parameters for GuzzleHttp\Client */
   public function __construct($clientHttp = null) {
     if($clientHttp == null) {
-      try {
-        $this->clientHttp = new Client([
+      $this->clientHttp = new Client([
           'base_uri' => self::URL,
           'synchronous' => true,
           'version' => 2
         ]);
-      } catch (ClientException $e) {
-        log::add('mitsubishimelcloud', 'info', 'MELCloud servers are not responding : ClientException');
-      } catch (RequestException $e) {
-        log::add('mitsubishimelcloud', 'info', 'MELCloud servers are not responding : RequestException');
-      } catch (\Exception $e) {
-        log::add('mitsubishimelcloud', 'info', 'MELCloud servers are not responding : Exception');
-      }
     } else {
       $this->clientHttp = $clientHttp;
     }
@@ -979,19 +995,18 @@ class MitsubishiMelcouldClient {
 
   /** Collect Token from MelCloud server */
   public function MelcloudToken($Email = '', $Password = '', $Language = '', $AppVersion = '') {
-    $server_output = $this->clientHttp->post(self::LOGIN, [
-      'form_params' => [
-        'Email' => $Email,
-        'Password' => $Password,
-        'Language' => $Language,
-        'AppVersion' => $AppVersion,
-        'Persist' => 'true',
-        'CaptchaChallenge' => '',
-        'CaptchaResponse' => '',
-      ],
-    ]);
+    $json = self::MelcloudContact('POST', self::LOGIN, [
+          'form_params' => [
+            'Email' => $Email,
+            'Password' => $Password,
+            'Language' => $Language,
+            'AppVersion' => $AppVersion,
+            'Persist' => 'true',
+            'CaptchaChallenge' => '',
+            'CaptchaResponse' => '',
+          ],
+        ]);
 
-    $json = json_decode($server_output->getBody(), true);
     if($json['ErrorId'] == null) {
       log::add('mitsubishimelcloud', 'debug', 'Login OK.');
       return $json['LoginData']['ContextKey'];
@@ -1006,53 +1021,71 @@ class MitsubishiMelcouldClient {
 
   /** Collect All devices from MelCloud server */
   public function MelcloudAllDevices($Token) {
-    $server_output = $this->clientHttp->get(self::LISTDEVICES, [
-      'headers' => [
-        'Accept' => 'application/json',
-        'X-MitsContextKey' => $Token,
-      ],
-    ]);
-    if($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Error while synchronizing devices', __FILE__));
-        log::add('mitsubishimelcloud', 'error', 'Error while synchronizing devices');
-    }
-
-    return json_decode($server_output->getBody(), true);
+    return self::MelcloudContact('GET', self::LISTDEVICES, [
+          'headers' => [
+            'Accept' => 'application/json',
+            'X-MitsContextKey' => $Token,
+          ],
+        ]);
   }
 
   /** Collect information of the device from Melclould server */
   public function MelcloudDeviceInfo($DeviceId = '', $BuildID = '', $Token) {
-    $server_output = $this->clientHttp->get(self::DEVICE, [
-      'headers' => [
-        'Accept' => 'application/json',
-        'X-MitsContextKey' => $Token,
-      ],
-      'query' => [
-        'id' => $DeviceId,
-        'buildingID' => $BuildID,
-      ],
-    ]);
-    if($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Error while collecting device information', __FILE__));
-        log::add('mitsubishimelcloud', 'error', 'Error while collecting device information');
-    }
-
-    return json_decode($server_output->getBody(), true);
+    return self::MelcloudContact('GET', self::DEVICE, [
+          'headers' => [
+            'Accept' => 'application/json',
+            'X-MitsContextKey' => $Token,
+          ],
+          'query' => [
+            'id' => $DeviceId,
+            'buildingID' => $BuildID,
+          ],
+        ]);
   }
 
   /** Publish data of the device on MelCloud server */
   public function MelcloudDeviceUpdate($Device, $Token) {
-    $server_output = $this->clientHttp->post(self::SETATA, [
-      'headers' => [
-        'X-MitsContextKey' => $Token,
-      ],
-      'json' => $Device,
-    ]);
-    if($server_output->getStatusCode() == 401) {
-        throw new Exception(__('Error while collecting device information', __FILE__));
-        log::add('mitsubishimelcloud', 'error', 'Error while collecting device information');
+    return self::MelcloudContact('POST', self::SETATA, [
+          'headers' => [
+            'X-MitsContextKey' => $Token,
+          ],
+          'json' => $Device,
+        ]);
+  }
+
+  /** Function to exchange with MELCloud server */
+  public function MelcloudContact($Type, $Link, $Info) {
+    try {
+      if($Type == 'POST') {
+        $server_output = $this->clientHttp->post($Link, $Info);
+      } elseif ($Type == 'GET') {
+        $server_output = $this->clientHttp->get($Link, $Info);
+      }
+      return json_decode($server_output->getBody(), true);
+    } catch (ConnectException $e) {
+      log::add('mitsubishimelcloud', 'info', 'MELCloud servers error : ConnectException = network error');
+      $Device['WarningText'] = 'MELCloud servers error : ConnectException = network error';
+    } catch (ClientException $e) {
+      log::add('mitsubishimelcloud', 'info', 'MELCloud servers error : ClientException = HTTP 400 errors');
+      $Device['WarningText'] = 'MELCloud servers error : ClientException = HTTP 400 errors';
+    } catch (RequestException $e) {
+      log::add('mitsubishimelcloud', 'info', 'MELCloud servers error : RequestException');
+      $Device['WarningText'] = 'MELCloud servers error : RequestException';
+    } catch (ServerException $e) {
+      log::add('mitsubishimelcloud', 'info', 'MELCloud servers error : ServerException = HTTP 500 erros');
+      $Device['WarningText'] = 'MELCloud servers error : ServerException = HTTP 500 erros';
+    } catch (\Exception $e) {
+      log::add('mitsubishimelcloud', 'info', 'MELCloud servers error : Exception');
+      $Device['WarningText'] = 'MELCloud servers error : Exception';
     }
 
-    return json_decode($server_output->getBody(), true);
+    // Set values for error display
+    $Device['SetFanSpeed'] = 6;
+    $Device['OperationMode'] = 6;
+    $Device['VaneHorizontal'] = 6;
+    $Device['VaneVertical'] = 6;
+    $Device['SetTemperature'] = "N/A";
+    $Device['RoomTemperature'] = "N/A";
+    return $Device;
   }
 }
