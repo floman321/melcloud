@@ -107,3 +107,12 @@ $('.bt_Synch').off('click').on('click', function () {
     }
   });
 });
+
+/** Show / hide scenario parameters */
+function ShowScenario(IdScenario) {
+  if(document.getElementById('scenario'+IdScenario).checked) {
+    document.getElementById('ScenarioParameter_'+IdScenario).style.display = "block";
+  } else {
+    document.getElementById('ScenarioParameter_'+IdScenario).style.display = "none";
+  }
+}

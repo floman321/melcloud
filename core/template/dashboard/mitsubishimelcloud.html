@@ -19,10 +19,10 @@
   <div class="ScenariosColumn">
     <div class="CommandTitle">#Scenario#</div>
     <div class="CommandSetUp" style="width: 138px; height: 342px;">
-      <div class="Preset"><span class="PresetA">Préréglage 1</span></div>
-      <div class="Preset"><span class="PresetA">Préréglage 2</span></div>
-      <div class="Preset"><span class="PresetA">Préréglage 3</span></div>
-      <div class="Preset"><span class="PresetA">Préréglage 4</span></div>
+      <div class="Preset"><span class="PresetA Scenario1">Préréglage 1</span></div>
+      <div class="Preset"><span class="PresetA Scenario2">Préréglage 2</span></div>
+      <div class="Preset"><span class="PresetA Scenario3">Préréglage 3</span></div>
+      <div class="Preset"><span class="PresetA Scenario4">Préréglage 4</span></div>
     </div>
   </div>
 
@@ -158,6 +158,25 @@
         setTimeout(function(){$('.eqLogic[data-eqLogic_uid='+IdRefresh+'] .refresh').append('.')}, 500 * i);
       }
     }
+
+    /* Scenarii buttons */
+    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario1").click(function(){
+      jeedom.cmd.execute({id: '#Scenario1_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario2").click(function(){
+      jeedom.cmd.execute({id: '#Scenario2_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario3").click(function(){
+      jeedom.cmd.execute({id: '#Scenario3_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario4").click(function(){
+      jeedom.cmd.execute({id: '#Scenario4_Cmd#'});
+      AddingDots('#uid#');
+    });
+
 
     /* ON/OFF */
     // Send selected power status to Melcloud

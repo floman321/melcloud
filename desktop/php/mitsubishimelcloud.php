@@ -122,6 +122,84 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="isVisible" checked/>{{Visible}}</label>
 								</div>
 							</div>
+							<legend><i class="fas fa-cogs"></i> {{Gestion des scénarii}}</legend>
+							<?php for($i = 1; $i <=4; $i++) {
+							echo '<div class="form-group">
+								<label class="col-sm-3 control-label" for="scenario'. $i. '">{{Scenario :}} '. $i. '</label>
+								<div class="col-sm-7">
+									<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Scenario_'. $i. '" id="scenario'. $i. '" onchange="ShowScenario(' . $i . ')"/><br />
+									<div id="ScenarioParameter_'.$i.'" style="display: none;">
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="mode'. $i. '">{{Mode :}}</label>
+										<div class="col-sm-7">
+											<select class="eqLogicAttr" data-l1key="configuration" data-l2key="Mode_'. $i. '" id="mode'. $i. '">
+												<option value="8">{{Auto}}</option>
+												<option value="3">{{Mode froid}}</option>
+												<option value="2">{{Séchage}}</option>
+												<option value="7">{{Ventilation}}</option>
+												<option value="1">{{Mode chaud}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="Span'. $i. '">{{Fan speed :}}</label>
+										<div class="col-sm-7">
+											<select class="eqLogicAttr" data-l1key="configuration" data-l2key="FanSpeed_'. $i. '" id="Span'. $i. '">
+												<option value="0">{{Auto}}</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="Hori'. $i. '">{{Horizontal vane :}}</label>
+										<div class="col-sm-7">
+											<select class="eqLogicAttr" data-l1key="configuration" data-l2key="HoriVane_'. $i. '" id="Hori'. $i. '">
+												<option value="0">{{Auto}}</option>
+												<option value="12">{{Basculer}}</option>
+												<option value="1">{{Gauche}}</option>
+												<option value="2">{{Milieu-gauche}}</option>
+												<option value="3">{{Milieu}}</option>
+												<option value="4">{{Milieu-droite}}</option>
+												<option value="5">{{Droite}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="Verti'. $i. '">{{Vertical vane :}}</label>
+										<div class="col-sm-7">
+											<select class="eqLogicAttr" data-l1key="configuration" data-l2key="VertiVane_'. $i. '" id="Verti'. $i. '">
+												<option value="0">{{Auto}}</option>
+												<option value="7">{{Basculer}}</option>
+												<option value="5">{{Bas}}</option>
+												<option value="4">{{Milieu-bas}}</option>
+												<option value="3">{{Milieu}}</option>
+												<option value="2">{{Milieu-haut}}</option>
+												<option value="1">{{haut}}</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="Temp'. $i. '">{{Temperature :}}
+										<sup><i class="fas fa-question-circle tooltips" title="{{Depending of selected mode, minimum temperature can be up to 16°C}}"></i></sup>
+										</label>
+										<div class="col-sm-7">
+											<select class="eqLogicAttr" data-l1key="configuration" data-l2key="Temp_'. $i. '" id="Temp'. $i. '">
+												';
+												for($j = 20; $j <=62; $j++) {
+													echo '<option value="'. $j .'">'. $j/2 .'</option>';
+												}
+												echo '</select>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div>';
+							} ?>
+
 <!--
 							<legend><i class="fas fa-cogs"></i> {{Paramètres d'affichage}}</legend>
 							<div class="form-group">

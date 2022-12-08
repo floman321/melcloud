@@ -317,7 +317,11 @@ class mitsubishimelcloud extends eqLogic {
       message::add(__CLASS__, __('Please collect the MELCloud token before creating equipment.', __FILE__));
       log::add(__CLASS__, 'debug', 'Please collect the MELCloud token before creating equipment.');
     } else {
-      log::add(__CLASS__, 'info', 'Send new value '.$NewValue.' for '.$Command.' to MELCloud');
+      if(count($NewValue) == 1) {
+        log::add(__CLASS__, 'info', 'Send new value '.$NewValue[0].' for '.$Command[0].' to MELCloud');
+      } else {
+        log::add(__CLASS__, 'info', 'Send scenario request to MELCloud');
+      }
       
       $client = new MitsubishiMelcouldClient();
       $Device = $client->MelcloudDeviceInfo(
@@ -325,7 +329,9 @@ class mitsubishimelcloud extends eqLogic {
         $DeviceLogicalId->getConfiguration('buildid'),
         $Token);
       
-      $Device[$Command] = $NewValue;
+      for($i = 0; $i < count($NewValue); $i++) {
+        $Device[$Command[$i]] = $NewValue[$i];
+      }
       $Device['EffectiveFlags'] = $Flag;
       $Device['HasPendingCommand'] = 'true';
 
@@ -339,7 +345,6 @@ class mitsubishimelcloud extends eqLogic {
       $UpdatedDevice['VaneHorizontalDirection'] = $UpdatedDevice['VaneHorizontal'];
       $Info['Device'] = $UpdatedDevice;
       self::SynchronizeAllCommands('Refresh', $Info, $DeviceLogicalId);
-      
     }
   }
   
@@ -366,6 +371,7 @@ class mitsubishimelcloud extends eqLogic {
   /*     * *********************Méthodes d'instance************************* */
   /** Method called after saving your Jeedom equipment */
   public function postSave() {
+
     if($this->getConfiguration('deviceid') == ''){
       // If not yet saved, collect first heat pump information
       self::SynchronizeMELCloud('PostSave');
@@ -458,6 +464,23 @@ class mitsubishimelcloud extends eqLogic {
         ->setSubType('string')
         ->setEqLogic_id($this->getId());
         $WarningText->save();
+      }
+
+      for($j = 1; $j <=4; $j++) {
+        $i++;
+        $Scenario[$j] = $this->getCmd(null, 'Scenario_'.$j);
+        if(!is_object($Scenario[$j])) {
+          $Scenario[$j] = (new mitsubishimelcloudCmd)
+          ->setName(__('Scenario n°'.$j, __FILE__))
+          ->setLogicalId('Scenario_'.$j)
+          ->setOrder($i)
+          ->setIsVisible(1)
+          ->setIsHistorized(0)
+          ->setType('action')
+          ->setSubType('other')
+          ->setEqLogic_id($this->getId());
+          $Scenario[$j]->save();
+        }
       }
 
       // Create command specific of each style :
@@ -694,7 +717,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setName(__('Icône météo jour n°', __FILE__).$j)
             ->setLogicalId('WeatherIcon'.$j)
             ->setOrder($i)
-            ->setIsVisible(0)
+            ->setIsVisible(1)
             ->setIsHistorized(0)
             ->setType('info')
             ->setSubType('string')
@@ -710,7 +733,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setName(__('Jour météo n°', __FILE__).$j)
             ->setLogicalId('WeatherDay'.$j)
             ->setOrder($i)
-            ->setIsVisible(0)
+            ->setIsVisible(1)
             ->setIsHistorized(0)
             ->setType('info')
             ->setSubType('string')
@@ -726,7 +749,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setName(__('Température jour n°', __FILE__).$j)
             ->setLogicalId('WeatherTemperature'.$j)
             ->setOrder($i)
-            ->setIsVisible(0)
+            ->setIsVisible(1)
             ->setIsHistorized(0)
             ->setType('info')
             ->setSubType('string')
@@ -742,7 +765,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setName(__('Type météo jour n°', __FILE__).$j)
             ->setLogicalId('WeatherType'.$j)
             ->setOrder($i)
-            ->setIsVisible(0)
+            ->setIsVisible(1)
             ->setIsHistorized(0)
             ->setType('info')
             ->setSubType('string')
@@ -758,7 +781,7 @@ class mitsubishimelcloud extends eqLogic {
             ->setName(__('Condition météo jour n°', __FILE__).$j)
             ->setLogicalId('WeatherCondition'.$j)
             ->setOrder($i)
-            ->setIsVisible(0)
+            ->setIsVisible(1)
             ->setIsHistorized(0)
             ->setType('info')
             ->setSubType('string')
@@ -801,6 +824,11 @@ class mitsubishimelcloud extends eqLogic {
     $replace['#On_Cmd#'] = is_object($PowerOn) ? $PowerOn->getId() : '';
     $PowerOff = $this->getCmd(null, 'Off');
     $replace['#Off_Cmd#'] = is_object($PowerOff) ? $PowerOff->getId() : '';
+    
+    for($i = 1; $i <= 4; $i++){
+      $Scenario[$i] = $this->getCmd(null, 'Scenario_'.$i);
+      $replace['#Scenario'. $i .'_Cmd#'] = is_object($Scenario[$i]) ? $Scenario[$i]->getId() : '';
+    }
 
     $OperationMode_Value = $this->getCmd(null, 'OperationMode_Value');
     $replace['#OperationMode_Value#'] = is_object($OperationMode_Value) ? $OperationMode_Value->execCmd() : '';
@@ -936,31 +964,67 @@ class mitsubishimelcloudCmd extends cmd {
     }
     if('On' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'Switch ON requested');
-      mitsubishimelcloud::SendDeviceUpdate('true', $this->getEqLogic(), 'Power', 1);
+      $NewValue[0] = 'true';
+      $Command[0] = 'Power';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 1);
     }
     if('Off' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'Switch OFF requested');
-      mitsubishimelcloud::SendDeviceUpdate('false', $this->getEqLogic(), 'Power', 1);
+      $NewValue[0] = 'false';
+      $Command[0] = 'Power';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 1);
     }
     if('OperationMode' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'New mode requested, value : '.$_options['slider']);
-      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'OperationMode', 6);
+      $NewValue[0] = $_options['slider'];
+      $Command[0] = 'OperationMode';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 6);
     }
     if('FanSpeed' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'New Fan speed requested, value : '.$_options['slider']);
-      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'SetFanSpeed', 8);
+      $NewValue[0] = $_options['slider'];
+      $Command[0] = 'SetFanSpeed';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 8);
     }
     if('SetTemperature' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'New Temperature set : '.floatval($_options['slider']));
-      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'SetTemperature', 4);
+      $NewValue[0] = $_options['slider'];
+      $Command[0] = 'SetTemperature';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 4);
     }
     if('VaneHorizontalDirection' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'New horizontal vane direction, value : '.intval($_options['slider']));
-      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'VaneHorizontal', 256);
+      $NewValue[0] = $_options['slider'];
+      $Command[0] = 'VaneHorizontal';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 256);
     }
     if('VaneVerticalDirection' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', 'New Vertical vane direction, value : '.intval($_options['slider']));
-      mitsubishimelcloud::SendDeviceUpdate($_options['slider'], $this->getEqLogic(), 'VaneVertical', 16);
+      $NewValue[0] = $_options['slider'];
+      $Command[0] = 'VaneVertical';
+      mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 16);
+    }
+    if('Scenario_' == substr($this->logicalId, 0, 9)) {
+      if($this->getEqLogic()->getConfiguration('Scenario_'.substr($this->logicalId, -1)) == 1) {
+        log::add('mitsubishimelcloud', 'debug', 'Launch scenario n°'.substr($this->logicalId, -1));
+        $NewValue[0] = $this->getEqLogic()->getConfiguration('Mode_'.substr($this->logicalId, -1));
+        $Command[0] = 'OperationMode';
+        $NewValue[1] = $this->getEqLogic()->getConfiguration('FanSpeed_'.substr($this->logicalId, -1));
+        $Command[1] = 'SetFanSpeed';
+        $NewValue[2] = $this->getEqLogic()->getConfiguration('HoriVane_'.substr($this->logicalId, -1));
+        $Command[2] = 'VaneHorizontal';
+        $NewValue[3] = $this->getEqLogic()->getConfiguration('VertiVane_'.substr($this->logicalId, -1));
+        $Command[3] = 'VaneVertical';
+        $NewValue[4] = $this->getEqLogic()->getConfiguration('Temp_'.substr($this->logicalId, -1)) / 2;
+        $Command[4] = 'SetTemperature';
+
+        for($i = 0; $i < count($NewValue); $i++) {
+          log::add('mitsubishimelcloud', 'debug', '   Command '.$Command[$i].' with value'.$NewValue[$i]);
+        }
+        mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 287);
+      } else {
+        log::add('mitsubishimelcloud', 'debug', "Scenario not activated, can't be launched");
+      }
     }
   }
 }
