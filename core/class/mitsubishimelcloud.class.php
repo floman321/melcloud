@@ -406,7 +406,7 @@ class mitsubishimelcloud extends eqLogic {
         ->setIsHistorized(0)
         ->setType('info')
         ->setSubType('binary')
-        ->setGeneric_type('ENERGY_STATE')
+        ->setGeneric_type('AC_STATE')
         ->setEqLogic_id($this->getId());
         $PowerState->save();
       }
@@ -424,7 +424,7 @@ class mitsubishimelcloud extends eqLogic {
         ->setSubType('other')
         ->setTemplate('dashboard', 'OnOffMitsubishi')
         ->setTemplate('mobile', 'OnOffMitsubishi')
-        ->setDisplay('generic_type', 'ENERGY_ON')
+        ->setDisplay('generic_type', 'AC_ON')
         ->setConfiguration('updateCmdId', $PowerState->getEqLogic_id())
         ->setConfiguration('updateCmdToValue', 1)
         ->setEqLogic_id($this->getId());
@@ -444,7 +444,7 @@ class mitsubishimelcloud extends eqLogic {
         ->setSubType('other')
         ->setTemplate('dashboard', 'OnOffMitsubishi')
         ->setTemplate('mobile', 'OnOffMitsubishi')
-        ->setDisplay('generic_type', 'ENERGY_OFF')
+        ->setDisplay('generic_type', 'AC_OFF')
         ->setConfiguration('updateCmdId', $PowerState->getEqLogic_id())
         ->setConfiguration('updateCmdToValue', 0)
         ->setEqLogic_id($this->getId());
@@ -499,7 +499,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setUnite('°C')
           ->setTemplate('dashboard', 'TemperatureMitsubishi')
           ->setTemplate('mobile', 'TemperatureMitsubishi')
-          ->setDisplay('generic_type', 'THERMOSTAT_TEMPERATURE')
+          ->setDisplay('generic_type', 'AC_TEMPERATURE')
           ->setEqLogic_id($this->getId());
           $RoomTemperature->save();
         }
@@ -516,7 +516,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setType('info')
           ->setSubType('numeric')
           ->setUnite('°C')
-          ->setDisplay('generic_type', 'THERMOSTAT_SETPOINT')
+          ->setDisplay('generic_type', 'AC_SET_TEMPERATURE')
           ->setEqLogic_id($this->getId());
           $SetTemperature_Value->save();
         }
@@ -538,7 +538,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setUnite('°C')
           ->setTemplate('dashboard', 'TemperatureMitsubishi')
           ->setTemplate('mobile', 'TemperatureMitsubishi')
-          ->setDisplay('generic_type', 'THERMOSTAT_SETPOINT')
+          ->setDisplay('generic_type', 'AC_SET_TEMPERATURE')
           ->setConfiguration('updateCmdId', $SetTemperature_Value->getEqLogic_id())
           ->setValue($SetTemperature_Value->getId())
           ->setEqLogic_id($this->getId());
@@ -556,31 +556,35 @@ class mitsubishimelcloud extends eqLogic {
           ->setIsHistorized(1)
           ->setType('info')
           ->setSubType('numeric')
-          ->setDisplay('generic_type', 'THERMOSTAT_MODE')
+          ->setDisplay('generic_type', 'AC_MODE')
           ->setEqLogic_id($this->getId());
           $OperationMode_Value->save();
         }
         
-        $i++;
-        $OperationMode = $this->getCmd(null, 'OperationMode');
-        if(!is_object($OperationMode)) {
-          $OperationMode = (new mitsubishimelcloudCmd)
-          ->setName(__('Mode', __FILE__))
-          ->setLogicalId('OperationMode')
-          ->setOrder($i)
-          ->setIsVisible(1)
-          ->setIsHistorized(0)
-          ->setType('action')
-          ->setSubType('slider')
-          ->setConfiguration('minValue', 1)
-          ->setConfiguration('maxValue', 8)
-          ->setTemplate('dashboard', 'ModeMitsubishi')
-          ->setTemplate('mobile', 'ModeMitsubishi')
-          ->setDisplay('generic_type', 'THERMOSTAT_SET_MODE')
-          ->setConfiguration('updateCmdId', $OperationMode_Value->getEqLogic_id())
-          ->setValue($OperationMode_Value->getId())
-          ->setEqLogic_id($this->getId());
-          $OperationMode->save();
+        $OperationModeList = [1, 2, 3, 7, 8];
+        $OperationModeName = [__('Mode chaud', __FILE__), __('Séchage', __FILE__), __('Mode froid', __FILE__), __('Ventilation', __FILE__), __('Auto', __FILE__)];
+        for($j = 0; $j < count($OperationModeList); $j++) {
+          $i++;
+          $OperationMode[$OperationModeList[$j]] = $this->getCmd(null, 'OperationMode_'.$OperationModeList[$j]);
+          if(!is_object($OperationMode[$OperationModeList[$j]])) {
+            $OperationMode[$OperationModeList[$j]] = (new mitsubishimelcloudCmd)
+            ->setName($OperationModeName[$j])
+            ->setLogicalId('OperationMode_'.$OperationModeList[$j])
+            ->setOrder($i)
+            ->setIsVisible(1)
+            ->setIsHistorized(0)
+            ->setType('action')
+            ->setSubType('slider')
+            ->setConfiguration('minValue', 1)
+            ->setConfiguration('maxValue', 8)
+            ->setTemplate('dashboard', 'ModeMitsubishi')
+            ->setTemplate('mobile', 'ModeMitsubishi')
+            ->setDisplay('generic_type', 'AC_SET_MODE')
+            ->setConfiguration('updateCmdId', $OperationMode_Value->getEqLogic_id())
+            ->setValue($OperationMode_Value->getId())
+            ->setEqLogic_id($this->getId());
+            $OperationMode[$OperationModeList[$j]]->save();
+          }
         }
         
         $i++;
@@ -594,7 +598,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setIsHistorized(1)
           ->setType('info')
           ->setSubType('numeric')
-          ->setDisplay('generic_type', 'FAN_SPEED_STATE')
+          ->setDisplay('generic_type', 'AC_FAN_MODE')
           ->setEqLogic_id($this->getId());
           $FanSpeed_Value->save();
         }
@@ -614,7 +618,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setConfiguration('maxValue', 5)
           ->setTemplate('dashboard', 'FanSpeedMitsubishi')
           ->setTemplate('mobile', 'FanSpeedMitsubishi')
-          ->setDisplay('generic_type', 'FAN_SPEED')
+          ->setDisplay('generic_type', 'AC_SET_FAN_MODE')
           ->setConfiguration('updateCmdId', $FanSpeed_Value->getEqLogic_id())
           ->setValue($FanSpeed_Value->getId())
           ->setEqLogic_id($this->getId());
@@ -832,8 +836,11 @@ class mitsubishimelcloud extends eqLogic {
 
     $OperationMode_Value = $this->getCmd(null, 'OperationMode_Value');
     $replace['#OperationMode_Value#'] = is_object($OperationMode_Value) ? $OperationMode_Value->execCmd() : '';
-    $OperationMode = $this->getCmd(null, 'OperationMode');
-    $replace['#OperationMode_Cmd#'] = is_object($OperationMode) ? $OperationMode->getId() : '';
+    $OperationModeList = [1, 2, 3, 7, 8];
+    for($i = 0; $i < count($OperationModeList); $i++) {
+      $OperationMode[$i] = $this->getCmd(null, 'OperationMode_'.$OperationModeList[$i]);
+      $replace['#OperationMode'.$OperationModeList[$i].'_Cmd#'] = is_object($OperationMode[$i]) ? $OperationMode[$i]->getId() : '';
+    }
 
     $FanSpeed_Value = $this->getCmd(null, 'FanSpeed_Value');
     $replace['#FanSpeed_Value#'] = is_object($FanSpeed_Value) ? $FanSpeed_Value->execCmd() : '';
@@ -974,9 +981,9 @@ class mitsubishimelcloudCmd extends cmd {
       $Command[0] = 'Power';
       mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 1);
     }
-    if('OperationMode' == $this->logicalId) {
-      log::add('mitsubishimelcloud', 'debug', 'New mode requested, value : '.$_options['slider']);
-      $NewValue[0] = $_options['slider'];
+    if('OperationMode_' == substr($this->logicalId, 0, 14)) {
+      log::add('mitsubishimelcloud', 'debug', 'New mode requested, value : '.substr($this->logicalId, -1));
+      $NewValue[0] = substr($this->logicalId, -1);
       $Command[0] = 'OperationMode';
       mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 6);
     }
@@ -1019,7 +1026,7 @@ class mitsubishimelcloudCmd extends cmd {
         $Command[4] = 'SetTemperature';
 
         for($i = 0; $i < count($NewValue); $i++) {
-          log::add('mitsubishimelcloud', 'debug', '   Command '.$Command[$i].' with value'.$NewValue[$i]);
+          log::add('mitsubishimelcloud', 'debug', '   Command '.$Command[$i].' with value '.$NewValue[$i]);
         }
         mitsubishimelcloud::SendDeviceUpdate($NewValue, $this->getEqLogic(), $Command, 287);
       } else {
@@ -1042,6 +1049,7 @@ class MitsubishiMelcouldClient {
   const LOGIN = 'Login/ClientLogin';
   const LISTDEVICES = 'User/ListDevices';
   const SETATA = 'Device/SetAta';
+  const SETPOWER = 'Device/SetPower';
   private $clientHttp;
 
   /** Parameters for GuzzleHttp\Client */

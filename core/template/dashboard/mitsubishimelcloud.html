@@ -202,8 +202,24 @@
     $(".eqLogic[data-eqLogic_uid=#uid#] .ModeSelection #ButtonMode_#OperationMode_Value#").addClass("ZoneOn");
     $('.eqLogic[data-eqLogic_uid=#uid#] .SelectedMode').text(ModeCorresp[#OperationMode_Value#]);
     // Send selected mode to Melcloud
-    $(".eqLogic[data-eqLogic_uid=#uid#] .ModeSelection label").click(function(){
-      jeedom.cmd.execute({id: '#OperationMode_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
+    $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonMode_1").click(function(){
+      jeedom.cmd.execute({id: '#OperationMode1_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonMode_2").click(function(){
+      jeedom.cmd.execute({id: '#OperationMode2_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonMode_3").click(function(){
+      jeedom.cmd.execute({id: '#OperationMode3_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonMode_7").click(function(){
+      jeedom.cmd.execute({id: '#OperationMode7_Cmd#'});
+      AddingDots('#uid#');
+    });
+    $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonMode_8").click(function(){
+      jeedom.cmd.execute({id: '#OperationMode8_Cmd#'});
       AddingDots('#uid#');
     });
 
