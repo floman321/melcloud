@@ -499,7 +499,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setUnite('°C')
           ->setTemplate('dashboard', 'TemperatureMitsubishi')
           ->setTemplate('mobile', 'TemperatureMitsubishi')
-          ->setDisplay('generic_type', 'AC_TEMPERATURE')
+          ->setDisplay('generic_type', 'AC_INDOOR_TEMPERATURE')
           ->setEqLogic_id($this->getId());
           $RoomTemperature->save();
         }
@@ -516,7 +516,7 @@ class mitsubishimelcloud extends eqLogic {
           ->setType('info')
           ->setSubType('numeric')
           ->setUnite('°C')
-          ->setDisplay('generic_type', 'AC_SET_TEMPERATURE')
+          ->setDisplay('generic_type', 'AC_TEMPERATURE')
           ->setEqLogic_id($this->getId());
           $SetTemperature_Value->save();
         }

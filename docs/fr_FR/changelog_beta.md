@@ -4,6 +4,9 @@
     - Gestion de la fréquence configurable
  - Ajouter la possibilité de choisir quel élément du widget afficher ou non (parmi `Scénario`, `Mode`, `Vitesse de ventilation`, `Ailettes horizontales`, `Ailettes verticales`, `Température`, `Météo`)
 
+# 20/12/2022 (v0.8)
+ - Mise à jour du core du plugin pour être pleinement compatible avec le plugin JeedomConnect.
+
 # 08/12/2022 (v0.7)
  - Ajout de la gestion des scénarios. Juste 4 possible par équipement.
 
