@@ -17,6 +17,7 @@
  */
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
+require_once dirname(__FILE__) . '/../core/class/mitsubishimelcloud.class.php';
 
 /** Fonction exécutée automatiquement après l'installation du plugin */
   function mitsubishimelcloud_install() {
@@ -98,6 +99,10 @@ require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
     log::add('mitsubishimelcloud', 'debug', 'Update MELCloud app version');
     $AppVersion = config::byKey('AppVersion', 'mitsubishimelcloud');
     config::save('AppVersion', '1.25.0.1', 'mitsubishimelcloud');
+
+    // Syncrhonise MELCLoud
+    log::add('mitsubishimelcloud', 'debug', 'Syncrhonization to update th plugin');
+    mitsubishimelcloud::SynchronizeMELCloud('PluginUpdate');
 
     log::add('mitsubishimelcloud', 'info', '------------ Complete installation update ------------>');
   }
