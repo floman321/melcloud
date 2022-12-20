@@ -409,6 +409,10 @@ class mitsubishimelcloud extends eqLogic {
         ->setGeneric_type('AC_STATE')
         ->setEqLogic_id($this->getId());
         $PowerState->save();
+      } else {
+        $PowerState = (new mitsubishimelcloudCmd)
+        ->setGeneric_type('AC_STATE');
+        $PowerState->save();
       }
 
       $i++;
@@ -429,6 +433,10 @@ class mitsubishimelcloud extends eqLogic {
         ->setConfiguration('updateCmdToValue', 1)
         ->setEqLogic_id($this->getId());
         $On->save();
+      } else {
+        $On = (new mitsubishimelcloudCmd)
+        ->setGeneric_type('AC_ON');
+        $On->save();
       }
 
       $i++;
@@ -448,6 +456,10 @@ class mitsubishimelcloud extends eqLogic {
         ->setConfiguration('updateCmdId', $PowerState->getEqLogic_id())
         ->setConfiguration('updateCmdToValue', 0)
         ->setEqLogic_id($this->getId());
+        $Off->save();
+      } else {
+        $Off = (new mitsubishimelcloudCmd)
+        ->setGeneric_type('AC_OFF');
         $Off->save();
       }
 
@@ -502,6 +514,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setDisplay('generic_type', 'AC_INDOOR_TEMPERATURE')
           ->setEqLogic_id($this->getId());
           $RoomTemperature->save();
+        } else {
+          $RoomTemperature = (new mitsubishimelcloudCmd)
+          ->setGeneric_type('AC_INDOOR_TEMPERATURE');
+          $RoomTemperature->save();
         }
         
         $i++;
@@ -518,6 +534,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setUnite('°C')
           ->setDisplay('generic_type', 'AC_TEMPERATURE')
           ->setEqLogic_id($this->getId());
+          $SetTemperature_Value->save();
+        } else {
+          $SetTemperature_Value = (new mitsubishimelcloudCmd)
+          ->setGeneric_type('AC_TEMPERATURE');
           $SetTemperature_Value->save();
         }
         
@@ -543,6 +563,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setValue($SetTemperature_Value->getId())
           ->setEqLogic_id($this->getId());
           $SetTemperature->save();
+        } else {
+          $SetTemperature = (new mitsubishimelcloudCmd)
+          ->setGeneric_type('AC_SET_TEMPERATURE');
+          $SetTemperature->save();
         }
         
         $i++;
@@ -558,6 +582,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setSubType('numeric')
           ->setDisplay('generic_type', 'AC_MODE')
           ->setEqLogic_id($this->getId());
+          $OperationMode_Value->save();
+        } else {
+          $OperationMode_Value = (new mitsubishimelcloudCmd)
+          ->setGeneric_type('AC_MODE');
           $OperationMode_Value->save();
         }
         
@@ -584,6 +612,10 @@ class mitsubishimelcloud extends eqLogic {
             ->setValue($OperationMode_Value->getId())
             ->setEqLogic_id($this->getId());
             $OperationMode[$OperationModeList[$j]]->save();
+          } else {
+            $OperationMode[$OperationModeList[$j]] = (new mitsubishimelcloudCmd)
+            ->setGeneric_type('AC_SET_MODE');
+            $OperationMode[$OperationModeList[$j]]->save();
           }
         }
         
@@ -600,6 +632,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setSubType('numeric')
           ->setDisplay('generic_type', 'AC_FAN_MODE')
           ->setEqLogic_id($this->getId());
+          $FanSpeed_Value->save();
+        } else {
+          $FanSpeed_Value = (new mitsubishimelcloudCmd)
+          ->setGeneric_type('AC_FAN_MODE');
           $FanSpeed_Value->save();
         }
         
@@ -622,6 +658,10 @@ class mitsubishimelcloud extends eqLogic {
           ->setConfiguration('updateCmdId', $FanSpeed_Value->getEqLogic_id())
           ->setValue($FanSpeed_Value->getId())
           ->setEqLogic_id($this->getId());
+          $FanSpeed->save();
+        } else {
+          $FanSpeed = (new mitsubishimelcloudCmd)
+          ->setGeneric_type('AC_SET_FAN_MODE');
           $FanSpeed->save();
         }
         
