@@ -9,7 +9,7 @@
       <span class="PowerOff SwitchOn">#OFF#</span>
     </label>
     <label class="RefreshButton refresh" data-cmd_id="#refresh#">#RefreshTitle#</label>
-    <span class="RoomName">#MitsuMelcloudName#</span>
+    <a class="RoomName" href="#eqLink#">#MitsuMelcloudName#</a>
   </div>
 
   <div class="WarningZone">
@@ -132,7 +132,7 @@
         <span class="SetTempTitle">#SetTempTitle#</span>
         <input type="range" min="#MinTemperature#" max="#MaxTemperature#" step="0.5" value="#SetTemperature#" style="background-color: transparent !important; z-index: 4;"
           oninput="this.parentNode.style.setProperty('--value', this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify(this.value));"
-          onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {slider: this.value}, notify:true}); AddingDots();">
+          onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {slider: this.value}, notify:true}); AddingDots('#uid#');">
         <span></span>
         <div class='SetTemp__progress'></div>
       </div>
@@ -284,7 +284,6 @@
     });
 
     /* Temperature */
-    // See javascript on input
+    // See javascript on input, above
   </script>
-  <script src="../js/mitsubishimelcloud.js"></script>
 </div>
