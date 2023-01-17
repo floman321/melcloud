@@ -1,16 +1,25 @@
-<div class="eqLogic-widget eqLogic" style="width:#width#; height:#height#; background-color: #6b92ab !important;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#" >
+<div class="eqLogic eqLogic-widget col2" style="width:100%; height:#height#; background-color: #6b92ab !important;" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#">
   <link rel="stylesheet" href="plugins/mitsubishimelcloud/core/template/css/mitsubishimelcloud.template.css"/>
-  <link rel="stylesheet" href="plugins/mitsubishimelcloud/core/template/css/mitsubishimelcloud.dashboard.css"/>
-  <link rel="stylesheet" href="plugins/mitsubishimelcloud/core/template/css/mitsubishimelcloud.slider.css"/>
+  <link rel="stylesheet" href="plugins/mitsubishimelcloud/core/template/css/mitsubishimelcloud.mobile.css"/>
   
   <div class="TitleBar">
-    <input type="checkbox" class="PowerOnOff" id="PowerOnOff#id#" #Power# />
-    <label for="PowerOnOff#id#">
-      <span class="PowerOn SwitchOff">#ON#</span>
-      <span class="PowerOff SwitchOn">#OFF#</span>
-    </label>
+    <div style="display: none;">
+      <input type="checkbox" class="PowerOnOff" id="PowerOnOff#id#" #Power# oninput="alert('input');" onchange="alert('changement');" />
+    </div>
+    <div id="SwitchOn#id#" class="SwitchOn" style="display: #PowerOnMobile#;">
+      <div class="SwitchBlock SwitchOnBlock">
+        <span class="SwitchOnText">#ON#</span>
+        <div class="SwitchButton SwitchOnButton"></div>
+      </div>
+    </div>
+    <div id="SwitchOff#id#" class="SwitchOff" style="display: #PowerOffMobile#;">
+      <div class="SwitchBlock SwitchOffBlock">
+        <span class="SwitchOffText">#OFF#</span>
+        <div class="SwitchButton SwitchOffButton"></div>
+      </div>
+    </div>
     <label class="RefreshButton refresh" data-cmd_id="#refresh#">#RefreshTitle#</label>
-    <a class="RoomName" href="#eqLink#">#MitsuMelcloudName#</a>
+    <span class="RoomName">#MitsuMelcloudName#</span>
   </div>
 
   <div class="WarningZone">
@@ -19,11 +28,14 @@
 
   <div class="ScenariosColumn">
     <div class="CommandTitle">#Scenario#</div>
-    <div class="CommandSetUp" style="width: 138px; height: 342px;">
-      <div class="Preset"><span class="PresetA Scenario1">Préréglage 1</span></div>
-      <div class="Preset"><span class="PresetA Scenario2">Préréglage 2</span></div>
-      <div class="Preset"><span class="PresetA Scenario3">Préréglage 3</span></div>
-      <div class="Preset"><span class="PresetA Scenario4">Préréglage 4</span></div>
+    <div class="CommandSetUp">
+      <div>
+        <div class="Preset"><span class="PresetA Scenario1">Préréglage 1</span></div>
+        <div class="Preset"><span class="PresetA Scenario2">Préréglage 2</span></div>
+      </div><div>
+        <div class="Preset"><span class="PresetA Scenario3">Préréglage 3</span></div>
+        <div class="Preset"><span class="PresetA Scenario4">Préréglage 4</span></div>
+      </div>
     </div>
   </div>
 
@@ -45,6 +57,36 @@
         </label></div>
         <div class="VertiZone5"><label class="VertiButton ZoneOff" for="Mode_1" id="ButtonMode_1" data-key="1">
         </label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#TempTitle#</div>
+    <div class="CommandControls">
+      <div class="RoomTempLine">
+        <span class="RoomTempLine_1">#RoomTempTitle#</span>
+        <span class="RoomTempLine_2">#RoomTemperature#°C</span>
+      </div>
+      <div class="SetTemp" style='--min:#MinTemperature#; --max:#MaxTemperature#; --step:0.5; --value:#SetTemperature#; --text-value:"#SetTemperature#";'>
+        <span class="SetTempTitle">#SetTempTitle#</span><span class="TempValue">#SetTemperature#°C</span>
+          <input type="number" data-type="range" min="#MinTemperature#" max="#MaxTemperature#" step="0.5" value="#SetTemperature#" style="display: none;"
+            oninput="this.parentNode.style.setProperty('--value', this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify(this.value));"
+            onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {slider: this.value}, notify:true}); AddingDots('#uid#'); $('.eqLogic-widget[data-eqLogic_uid=#uid#] .TempValue').text(this.value+'°C');">
+        <span></span>
+        <!-- <div class='SetTemp__progress'></div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
+    <div class="CommandTitle">#ForecastTitle#</div>
+    <div class="CommandControls" style="height: 166px;">
+      <div class="VertiButtonZone WeatherArea">
+        <div class="VertiZone4">#WeatherDay_1#<br />#WeatherType_1#<label class="WeatherIconBlock">#WeatherIcon_1##WeatherTemperature_1#</label></div>
+        <div class="VertiZone4">#WeatherDay_2#<br />#WeatherType_2#<label class="WeatherIconBlock">#WeatherIcon_2##WeatherTemperature_2#</label></div>
+        <div class="VertiZone4">#WeatherDay_3#<br />#WeatherType_3#<label class="WeatherIconBlock">#WeatherIcon_3##WeatherTemperature_3#</label></div>
+        <div class="VertiZone4">#WeatherDay_4#<br />#WeatherType_4#<label class="WeatherIconBlock">#WeatherIcon_4##WeatherTemperature_4#</label></div>
       </div>
     </div>
   </div>
@@ -77,6 +119,29 @@
   </div>
 
   <div class="CommandBlock">
+    <div class="CommandTitle">#VertiTitle#</div>
+    <div class="CommandControls">
+      <div class="SquareButtonZone VertiSelection">
+        <div class="SquareZone ZoneOff" id="ButtonVerti">
+          <label class="ButtonLabel" id="VertiBlock_5" data-key="5"></label>
+          <label class="ButtonLabel" id="VertiBlock_4" data-key="4"></label>
+          <label class="ButtonLabel" id="VertiBlock_3" data-key="3"></label>
+          <label class="ButtonLabel" id="VertiBlock_2" data-key="2"></label>
+          <label class="ButtonLabel" id="VertiBlock_1" data-key="1"></label>
+        </div>
+      </div>
+      <div class="RectButtonZone VertiSelection">
+        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonVerti_0" data-key="0">
+          <label class="RectLabel ButtonLabel" id="LabelVerti_0">Auto</label>
+        </label></div>
+        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonVerti_7" data-key="7">
+          <label class="RectLabel ButtonLabel" id="LabelVerti_7">Basculer</label>
+        </label></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="CommandBlock">
     <div class="CommandTitle">#HoriTitle#</div>
     <div class="CommandControls">
       <div class="SquareButtonZone HoziSelection">
@@ -99,59 +164,6 @@
     </div>
   </div>
 
-  <div class="CommandBlock">
-    <div class="CommandTitle">#VertiTitle#</div>
-    <div class="CommandControls">
-      <div class="SquareButtonZone VertiSelection">
-        <div class="SquareZone ZoneOff" id="ButtonVerti">
-          <label class="ButtonLabel" id="VertiBlock_5"  data-key="5"></label>
-          <label class="ButtonLabel" id="VertiBlock_4"  data-key="4"></label>
-          <label class="ButtonLabel" id="VertiBlock_3"  data-key="3"></label>
-          <label class="ButtonLabel" id="VertiBlock_2"  data-key="2"></label>
-          <label class="ButtonLabel" id="VertiBlock_1"  data-key="1"></label>
-        </div>
-      </div>
-      <div class="RectButtonZone VertiSelection">
-        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonVerti_0" data-key="0">
-          <label class="RectLabel ButtonLabel" id="LabelVerti_0">Auto</label>
-        </label></div>
-        <div class="RectZone"><label class="RectButton ZoneOff" id="ButtonVerti_7" data-key="7">
-          <label class="RectLabel ButtonLabel" id="LabelVerti_7">Basculer</label>
-        </label></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="CommandBlock">
-    <div class="CommandTitle">#TempTitle#</div>
-    <div class="CommandControls">
-      <div class="RoomTempLine">
-        <span class="RoomTempLine_1">#RoomTempTitle#</span>
-        <span class="RoomTempLine_2">#RoomTemperature#°C</span>
-      </div>
-      <div class="SetTemp" style='--min:#MinTemperature#; --max:#MaxTemperature#; --step:0.5; --value:#SetTemperature#; --text-value:"#SetTemperature#";'>
-        <span class="SetTempTitle">#SetTempTitle#</span>
-        <input type="range" min="#MinTemperature#" max="#MaxTemperature#" step="0.5" value="#SetTemperature#" style="background-color: transparent !important; z-index: 4;"
-          oninput="this.parentNode.style.setProperty('--value', this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify(this.value));"
-          onchange="jeedom.cmd.execute({id: '#Temp_Cmd#', value: {slider: this.value}, notify:true}); AddingDots('#uid#');">
-        <span></span>
-        <div class='SetTemp__progress'></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="CommandBlock">
-    <div class="CommandTitle">#ForecastTitle#</div>
-    <div class="CommandControls" style="height: 166px;">
-      <div class="VertiButtonZone WeatherArea">
-        <div class="VertiZone4">#WeatherDay_1#<br />#WeatherType_1#<label class="WeatherIconBlock">#WeatherIcon_1##WeatherTemperature_1#</label></div>
-        <div class="VertiZone4">#WeatherDay_2#<br />#WeatherType_2#<label class="WeatherIconBlock">#WeatherIcon_2##WeatherTemperature_2#</label></div>
-        <div class="VertiZone4">#WeatherDay_3#<br />#WeatherType_3#<label class="WeatherIconBlock">#WeatherIcon_3##WeatherTemperature_3#</label></div>
-        <div class="VertiZone4">#WeatherDay_4#<br />#WeatherType_4#<label class="WeatherIconBlock">#WeatherIcon_4##WeatherTemperature_4#</label></div>
-      </div>
-    </div>
-  </div>
-    
   <script>
     /** function to add up to 5 dots on refresh button to display that eh communication is in process */
     function AddingDots(IdRefresh) {
@@ -160,33 +172,18 @@
       }
     }
 
-    /* Scenarii buttons */
-    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario1").click(function(){
-      jeedom.cmd.execute({id: '#Scenario1_Cmd#'});
-      AddingDots('#uid#');
-    });
-    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario2").click(function(){
-      jeedom.cmd.execute({id: '#Scenario2_Cmd#'});
-      AddingDots('#uid#');
-    });
-    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario3").click(function(){
-      jeedom.cmd.execute({id: '#Scenario3_Cmd#'});
-      AddingDots('#uid#');
-    });
-    $(".eqLogic[data-eqLogic_uid=#uid#] .Scenario4").click(function(){
-      jeedom.cmd.execute({id: '#Scenario4_Cmd#'});
-      AddingDots('#uid#');
-    });
-
-
     /* ON/OFF */
     // Send selected power status to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .SwitchOn").click(function(){
-      jeedom.cmd.execute({id: '#On_Cmd#'});
+      $('.eqLogic[data-eqLogic_uid=#uid#] #SwitchOn#id#').css('display', 'none');
+      $('.eqLogic[data-eqLogic_uid=#uid#] #SwitchOff#id#').css('display', '');
+      jeedom.cmd.execute({id: '#Off_Cmd#'});
       AddingDots('#uid#');
     });
     $(".eqLogic[data-eqLogic_uid=#uid#] .SwitchOff").click(function(){
-      jeedom.cmd.execute({id: '#Off_Cmd#'});
+      $('.eqLogic[data-eqLogic_uid=#uid#] #SwitchOn#id#').css("display", "");
+      $('.eqLogic[data-eqLogic_uid=#uid#] #SwitchOff#id#').css("display", "none");
+      jeedom.cmd.execute({id: '#On_Cmd#'});
       AddingDots('#uid#');
     });
 
@@ -224,6 +221,8 @@
       AddingDots('#uid#');
     });
 
+    /* Temperature */
+
     /* Fan speed */
     // Button coloration & selected fan speed
     $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection #ButtonFanSpeed_#FanSpeed_Value#").addClass("ZoneOn");
@@ -231,31 +230,6 @@
     // Send selected fan speed to Melcloud
     $(".eqLogic[data-eqLogic_uid=#uid#] .FanSelection label").click(function(){
       jeedom.cmd.execute({id: '#FanSpeed_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
-      AddingDots('#uid#');
-    });
-
-    /* Horizontal Vane */
-    var CurrentHoriImage = "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_off.png')";
-    if (#HoriVane_Value# == 0 || #HoriVane_Value# == 12) {
-      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori_#HoriVane_Value#").addClass("ZoneOn");
-      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_off.png')");
-    } else {
-      CurrentHoriImage = "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_#HoriVane_Value#.png')";
-      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);
-    }
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_1').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_1.png')");});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_1').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_2').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_2.png')");});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_2').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_3').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_3.png')");});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_3').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_4').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_4.png')");});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_4').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_5.png')");});
-    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
-    
-    $(".eqLogic[data-eqLogic_uid=#uid#] .HoziSelection label").click(function(){
-      jeedom.cmd.execute({id: '#HoriVane_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
       AddingDots('#uid#');
     });
 
@@ -278,13 +252,36 @@
     $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_4').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
     $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_5').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneVertical_transitions_5.png')");});
     $('.eqLogic[data-eqLogic_uid=#uid#] #VertiBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonVerti").css("background-image", CurrentVertiImage);});
-    
+
     $(".eqLogic[data-eqLogic_uid=#uid#] .VertiSelection label").click(function(){
       jeedom.cmd.execute({id: '#VertiVane_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
       AddingDots('#uid#');
     });
 
-    /* Temperature */
-    // See javascript on input, above
+    /* Horizontal Vane */
+    var CurrentHoriImage = "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_off.png')";
+    if (#HoriVane_Value# == 0 || #HoriVane_Value# == 12) {
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori_#HoriVane_Value#").addClass("ZoneOn");
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_off.png')");
+    } else {
+      CurrentHoriImage = "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_#HoriVane_Value#.png')";
+      $(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);
+    }
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_1').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_1.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_1').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_2').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_2.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_2').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_3').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_3.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_3').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_4').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_4.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_4').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseover(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", "url('plugins/mitsubishimelcloud/data/img/VaneHorizontal_transitions_5.png')");});
+    $('.eqLogic[data-eqLogic_uid=#uid#] #HoriBlock_5').mouseout(function(){$(".eqLogic[data-eqLogic_uid=#uid#] #ButtonHori").css("background-image", CurrentHoriImage);});
+
+    $(".eqLogic[data-eqLogic_uid=#uid#] .HoziSelection label").click(function(){
+      jeedom.cmd.execute({id: '#HoriVane_Cmd#', value: {slider: parseInt($(this).attr('data-key'))}, notify:true});
+      AddingDots('#uid#');
+    });
+
   </script>
 </div>

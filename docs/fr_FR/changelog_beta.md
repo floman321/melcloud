@@ -4,7 +4,10 @@
     - Gestion de la fréquence configurable
  - Ajouter la possibilité de choisir quel élément du widget afficher ou non (parmi `Scénario`, `Mode`, `Vitesse de ventilation`, `Ailettes horizontales`, `Ailettes verticales`, `Température`, `Météo`)
 
-# 11/01/2022 (V0.9)
+# 17/01/2023 (0.10)
+ - Mise en place du template mobile
+
+# 11/01/2023 (V0.9)
  - Bug fix, corrige une remonté d'erreur dans les logs http.error
 
 # 20/12/2022 (v0.8)

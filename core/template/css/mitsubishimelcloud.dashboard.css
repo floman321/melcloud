@@ -1,0 +1,113 @@
+.ScenariosColumn {
+  width: 160px;
+  float: left;
+  height: 385px;
+}
+
+.CommandSetUp {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.Preset {
+  height: 73px;
+}
+
+.PresetA {
+  width: 118px;
+}
+
+.CommandBlock {
+  width: 330px;
+  display: inline-block;
+}
+
+.CommandTitle {
+  margin: 8px 0 .4em;
+  padding-left: 12px;
+}
+
+.CommandControls {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.HoriZone {
+  width: 294px;
+}
+
+.VertiZone5 {
+  padding-right: 11px;
+}
+
+.VertiImg {
+  width: 35px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.SelectedMode {
+  display: block;
+  margin-top: -30px;
+  margin-left: 50px;
+}
+
+.FanSpeedLabelHori {
+  top: -10px;
+}
+
+.RectButton {
+  width: 145px;
+}
+
+.SetTempTitle {
+  font-size: 16px;
+  display: block;
+  width: 150px;
+}
+
+.VertiZone4 {
+  width: 76px;
+}
+
+.WeatherIconBlock {
+  display: block;
+  font-weight: normal;
+}
+
+/* Background images related to specific ID */
+  /* Fan speed */
+#ButtonFanSpeed_1::after {
+  top: 4px;
+}
+
+#ButtonFanSpeed_2::after {
+  top: 4px;
+}
+
+#ButtonFanSpeed_3::after {
+  top: 4px;
+}
+
+#ButtonFanSpeed_4::after {
+  top: 4px;
+}
+
+#ButtonFanSpeed_5::after {
+  top: 4px;
+}
+
+#ButtonFanSpeed_0::before {
+  top: 2.5px;
+}
+
+  /* Horizontal vane */
+#ButtonHori {
+  width: 130px;
+}
+
+  /* Vertical vane */
+#ButtonVerti {
+  width: 130px
+}

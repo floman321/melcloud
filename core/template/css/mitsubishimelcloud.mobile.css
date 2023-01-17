@@ -1,0 +1,212 @@
+.SwitchBlock {
+  float: left;
+  height: 31px;
+  width: 75px;
+  line-height: 31px;
+  border-radius: 16px;
+  position: relative;
+  cursor: pointer;
+  -moz-transition: all 0.25s ease-in;
+  -o-transition: all 0.25s ease-in;
+  -webkit-transition: all 0.25s ease-in;
+  transition: all 0.25s ease-in;
+  -moz-box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0px 0px 2px rgba(0, 0, 0, 0.5);
+  margin-top: 4px;
+  margin-left: 6px;
+}
+
+.SwitchOnBlock {
+  background-color: #3388cc;
+  color: rgb(255, 255, 255);
+  text-shadow: rgb(0, 85, 153) 0px 1px 0px;
+}
+
+.SwitchOffBlock {
+  background-color: #ccc;
+  color: rgb(129, 126, 126);
+  text-shadow: rgb(255, 255, 255) 0px 1px 1px;
+}
+
+.SwitchOnText {
+  margin-left: -10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.SwitchOffText {
+  margin-left: 28px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.SwitchButton {
+  content: '';
+  position: absolute;
+  top: 1px;
+  width: 27px;
+  height: 27px;
+  background: #fff;
+  z-index: 2;
+  -moz-transition: all 0.25s ease-in;
+  -o-transition: all 0.25s ease-in;
+  -webkit-transition: all 0.25s ease-in;
+  transition: all 0.25s ease-in;
+  -moz-border-radius: 14px;
+  -webkit-border-radius: 14px;
+  border-radius: 14px;
+  border: 1px solid rgb(87, 119, 142);
+}
+
+.SwitchOnButton {
+  left: 45px;
+}
+
+.SwitchOffButton {
+  left: 1px;
+}
+
+.ScenariosColumn {
+  height: 178px;
+  margin-bottom: 40px;
+}
+
+.CommandSetUp {
+  border-radius: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 320px;
+  height: 165px;
+}
+
+.Preset {
+  display: inline;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.PresetA {
+  width: 140px;
+}
+
+.CommandTitle {
+  margin: 15px auto .4em;
+  padding-left: 18px;
+  width: 320px;
+}
+
+.CommandControls {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.HoriZone {
+  width: 309px;
+}
+
+.VertiButtonZone {
+  width: 330px
+}
+
+.VertiZone5 {
+  padding-right: 3.5px;
+}
+
+.SetTemp {
+  background: rgb(87, 119, 142) linear-gradient(rgb(87, 119, 142) 0%, rgb(128, 157, 177) 100%) repeat scroll 0% 0%;
+  width: 310px; 
+  border-radius: 0.6em;
+  text-shadow: none;
+  box-sizing: border-box;
+  padding-top: 15px;
+  padding-left: 20px;
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.SetTempTitle {
+  display: inline-block;
+  width: 50%;
+  font-size: 17px;
+}
+
+.TempValue {
+  display: inline-block;
+  font-size: 37px;
+  width: 45%;
+  text-align: right;
+}
+
+.VertiZone4 {
+  width: 67px;
+}
+
+.WeatherIconBlock {
+  color: white !important;
+  font-size: 16px !important;
+}
+
+.FanSpeedLabelVerti {
+  color: white !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+}
+
+.FanSpeedLabelHori {
+  top: -25px;
+  margin-left: 45px !important;
+  color: white !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+}
+
+.RectButton {
+  width: 155px;
+}
+
+.ButtonLabel {
+  color: white !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+}
+
+.RectButtonZone {
+  margin-bottom: 10px;
+}
+
+/* Background images related to specific ID */
+  /* Fan speed */
+#ButtonFanSpeed_1::after {
+  top: 10px;
+}
+
+#ButtonFanSpeed_2::after {
+  top: 10px;
+}
+
+#ButtonFanSpeed_3::after {
+  top: 10px;
+}
+
+#ButtonFanSpeed_4::after {
+  top: 10px;
+}
+
+#ButtonFanSpeed_5::after {
+  top: 10px;
+}
+
+#ButtonFanSpeed_0::before {
+  top: 7.5px;
+}
+
+  /* Horizontal vane */
+#ButtonHori {
+  width: 135px;
+}
+
+  /* Vertical vane */
+#ButtonVerti {
+  width: 135px;
+}

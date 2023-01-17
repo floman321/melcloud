@@ -11,13 +11,13 @@
   float: right;
   background-color: #000000;
   border-color: #545454;
-  color: #ffffff;
-  text-shadow: 0 1px 0 #444444;
+  color: #ffffff !important;
+  text-shadow: 0 1px 0 #444444 !important;
   width: 90px;
   height: 31px;
   line-height: 31px;
-  margin-right: 4px;
-  margin-top: 4px;
+  margin-right: 4px !important;
+  margin-top: 4px !important;
   border-radius: 16px;
   font-size: 12px;
 }
@@ -46,35 +46,25 @@
 }
 
 .ScenariosColumn {
-  width: 160px;
-  float: left;
   color: white;
   font-size: 17px;
-  height: 385px;
 }
 
 .CommandSetUp {
   text-shadow: rgb(128, 128, 128) 0px 1px 0px;
   position: relative;
-  display: inline-block;
-  vertical-align: middle;
   border: 1px solid rgb(87, 119, 142);
   background-color: rgb(130, 155, 175);
   box-shadow: rgba(115, 141, 158, 0.8) 0px 1px 1px 1px inset;
-  border-radius: 10px;
   padding-left: 10px;
   padding-top: 10px;
-  margin-left: 10px;
 }
 
 .Preset {
-  height: 73px;
-  width: 118px;
   margin-bottom: 10px;
 }
 
 .PresetA {
-  width: 118px;
   height: 73px;
   display: table-cell;
   vertical-align: middle;
@@ -89,12 +79,10 @@
 }
 
 .CommandBlock {
-  color: white;
-  width: 330px;
   font-family: Helvetica, Arial, sans-serif;
+  color: white;
   font-size: 1.34em;
   margin-bottom: 0px;
-  display: inline-block;
   margin-right: -4px;
 }
 
@@ -104,8 +92,6 @@
   font-weight: normal;
   text-align: left;
   display: block;
-  margin: 8px 0 .4em;
-  padding-left: 12px;
   padding-right: 10px;
   line-height: 21px;
 }
@@ -114,18 +100,15 @@
   text-shadow: rgb(128, 128, 128) 0px 1px 0px;
   width: 320px;
   position: relative;
-  display: inline-block;
-  vertical-align: middle;
   border: 1px solid rgb(87, 119, 142);
   background-color: rgb(130, 155, 175);
-  box-shadow: rgba(115, 141, 158, 0.8) 0px 1px 1px 1px inset;
   border-radius: 10px;
   padding-left: 10px;
   padding-top: 10px;
+  box-shadow: rgba(115, 141, 158, 0.8) 0px 1px 1px 1px inset;
 }
 
 .HoriZone {
-  width: 294px;
   height: 47px;
   margin-right: 10px;
   margin-bottom: 10px;
@@ -167,7 +150,6 @@
   clear: none;
   width: 61px;
   height: 80px;
-  padding-right: 11px;
 }
 
 .VertiButton {
@@ -201,27 +183,14 @@
   background-color: #89a8bd;
 }
 
-.VertiImg {
-  width: 35px;
-  margin-top: 20px;
-  position: relative;
-}
-
-.SelectedMode {
-  display: block;
-  margin-top: -30px;
-  margin-left: 50px;
-}
-
 .FanSpeedLabelVerti {
   position: relative;
   top: 8px;
-  margin-left: 20px;
+  margin-left: 20px !important;
 }
 
 .FanSpeedLabelHori {
   position: relative;
-  top: -10px;
 }
 
 .FanSpeedLabelVerti:hover .FanSpeedLabelHori:hover {
@@ -235,7 +204,6 @@
 
 .RectButton {
   height: 60px;
-  width: 145px;
   text-align: left;
   border-width: 0px;
   border-radius: 0.6em;
@@ -292,20 +260,9 @@
   font-weight: bold;
 }
 
-/* .SetTemp {
-  See .slider.css sheet
-} */
-
-.SetTempTitle {
-  font-size: 16px;
-  display: block;
-  width: 150px;
-}
-
 .VertiZone4 {
   float: left;
   clear: none;
-  width: 76px;
   height: 80px;
   padding-right: 11px;
   text-align: center;
@@ -314,11 +271,9 @@
 
 .WeatherIconBlock {
   background: rgb(87, 119, 142) linear-gradient(rgb(87, 119, 142) 0%, rgb(128, 157, 177) 100%) repeat scroll 0% 0%;
-  display: block;
   height: 95px;
   border-radius: 00.6em;
-  font-weight: normal;
-  text-shadow: rgb(68, 68, 68) 0px 1px 1px;
+  text-shadow: rgb(68, 68, 68) 0px 1px 1px !important;
 }
 
 /* Background images related to specific ID */
@@ -383,14 +338,12 @@
   background-image: url("../../../data/img/Operate_on_Ata_8.png");
 }
 
-
   /* Fan speed */
 #ButtonFanSpeed_1::after {
   background-image: url("../../../data/img/Fan_speed_off_Ata_1.png");
   background-size: 35px 35px;
   width: 35px;
   height: 35px;
-  top: 4px;
   left: 7px;
 }
 #ButtonFanSpeed_1:hover::after, #ButtonFanSpeed_1.ZoneOn::after {
@@ -402,7 +355,6 @@
   background-size: 35px 35px;
   width: 35px;
   height: 35px;
-  top: 4px;
   left: 7px;
 }
 #ButtonFanSpeed_2:hover::after, #ButtonFanSpeed_2.ZoneOn::after {
@@ -414,7 +366,6 @@
   background-size: 35px 35px;
   width: 35px;
   height: 35px;
-  top: 4px;
   left: 7px;
 }
 #ButtonFanSpeed_3:hover::after, #ButtonFanSpeed_3.ZoneOn::after {
@@ -426,7 +377,6 @@
   background-size: 35px 35px;
   width: 35px;
   height: 35px;
-  top: 4px;
   left: 7px;
 }
 #ButtonFanSpeed_4:hover::after, #ButtonFanSpeed_4.ZoneOn::after {
@@ -438,7 +388,6 @@
   background-size: 35px 35px;
   width: 35px;
   height: 35px;
-  top: 4px;
   left: 7px;
 }
 #ButtonFanSpeed_5:hover::after, #ButtonFanSpeed_5.ZoneOn::after {
@@ -450,13 +399,12 @@
   background-size: 35px 35px;
   width: 35px;
   height: 35px;
-  top: 2.5px;
 }
 #ButtonFanSpeed_0:hover::before, #ButtonFanSpeed_0.ZoneOn::before {
   background-image: url("../../../data/img/Operate_on_Ata_8.png");
 }
 
-/* Horizontal vane */
+  /* Horizontal vane */
 #ButtonHori_0::before {
   background-image: url("../../../data/img/Operate_off_Ata_8.png");
   background-size: 35px 35px;
@@ -465,7 +413,7 @@
   top: 13px;
   left: 4px;
 }
-#ButtonHori_0:hover::before, #ButtonHori_0.ZoneOn::before{
+#ButtonHori_0:hover::before, #ButtonHori_0.ZoneOn::before {
   background-image: url("../../../data/img/Operate_on_Ata_8.png");
   background-size: 35px 35px;
   width: 35px;
@@ -494,7 +442,6 @@
 #ButtonHori {
   background-image: url("../../../data/img/VaneHorizontal_transitions_off.png");
   background-size: 130px 130px;
-  width: 130px;
   height: 130px;
   top: 0px;
   z-index: 1;
@@ -528,7 +475,6 @@
   height: 65px;
   width: 12px;
   z-index: 2;
-  /* transform: rotate(-45deg); */
   top: 28px;
   left: 35px;
 }
@@ -555,8 +501,7 @@
   left: 59px;
 }
 
-
-/* Vertical vane */
+  /* Vertical vane */
 #ButtonVerti_0::before {
   background-image: url("../../../data/img/Operate_off_Ata_8.png");
   background-size: 35px 35px;
@@ -594,7 +539,6 @@
 #ButtonVerti {
   background-image: url("../../../data/img/VaneVertical_transitions_off.png");
   background-size: 130px 130px;
-  width: 130px;
   height: 130px;
   top: 0px;
   z-index: 1;

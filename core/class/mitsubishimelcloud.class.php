@@ -25,10 +25,11 @@ class mitsubishimelcloud extends eqLogic {
   const DEFAULT_SPLIT_CRON = '*/5 * * * *'; //default cron to update splits data
 
   /*
-   * Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
-   * Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
-   public static $_widgetPossibility = array();
-   */
+  * Permet de définir les possibilités de personnalisation du widget (en cas d'utilisation de la fonction 'toHtml' par exemple)
+  * Tableau multidimensionnel - exemple: array('custom' => true, 'custom::layout' => false)
+  public static $_widgetPossibility = array();
+  */
+  public static $_widgetPossibility = array('custom' => true, 'custom::layout' => true);
 
   /*     * ***********************Methode static*************************** */
   /** Get token from MELCloud*/
@@ -304,8 +305,13 @@ class mitsubishimelcloud extends eqLogic {
       }
     }
 
-    // Update
-    $mylogical->Refresh();
+    // Update templates
+    $mylogical->emptyCacheWidget();
+    $mc = cache::byKey('mitsubishimelcloudWidgetmobile' . $mylogical->getId());
+    $mc->remove();
+    $mc = cache::byKey('mitsubishimelcloudWidgetdashboard' . $mylogical->getId());
+    $mc->remove();
+    $mylogical->toHtml('mobile');
     $mylogical->toHtml('dashboard');
     $mylogical->refreshWidget();
   }
@@ -848,12 +854,19 @@ class mitsubishimelcloud extends eqLogic {
     }
     $version = jeedom::versionAlias($_version);
 
-    $replace['#TemplateWidth#'] = 804;
-    $replace['#TemplateHeight#'] = 640;
-
+    if($version == 'dashboard') {
+      $replace['#width#'] = '804px';
+      $replace['#height#'] = '640px';
+    } else {
+      $replace['#width#'] = '350px';
+      $replace['#height#'] = '1524px';
+    }
+    
     $Power = $this->getCmd(null, 'Power');
     $Power_Value = is_object($Power) ? $Power->execCmd() : '';
     $replace['#Power#'] = ($Power_Value == 1) ? 'checked' : '';
+    $replace['#PowerOnMobile#'] = ($Power_Value == 1) ? '' : 'none';
+    $replace['#PowerOffMobile#'] = ($Power_Value == 1) ? 'none' : '';
     $PowerOn = $this->getCmd(null, 'On');
     $replace['#On_Cmd#'] = is_object($PowerOn) ? $PowerOn->getId() : '';
     $PowerOff = $this->getCmd(null, 'Off');
@@ -975,7 +988,10 @@ class mitsubishimelcloud extends eqLogic {
 }
 
 class mitsubishimelcloudCmd extends cmd {
-  // Exécution d'une commande  
+	/* * ************************* Attributes ****************************** */
+	public static $_widgetPossibility = array('custom' => false);
+
+	/* * ********************* Instance method ************************* */
   public function execute($_options = array()) {
     if('refresh' == $this->logicalId) {
       log::add('mitsubishimelcloud', 'debug', '<------------ Refresh requested by button ------------>');
